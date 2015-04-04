@@ -1,11 +1,23 @@
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
+import soc.base.GameController;
+import soc.base.gui.GameIcons;
+import soc.base.gui.TradeInFrame;
+import soc.base.model.Player;
 
-public class Test {
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+/**
+ * Tests the TradeInFrame class. Constructs a new player and gives them 4
+ * resources cards of one type, 3 resource cards of another type, and two
+ * resource cards of another type. Also gives them access to a harbor of type
+ * "Any", so the TradeInFrame should only allow the player to trade in 3
+ * resource cards of the same type, no more, no less.
+ * @author Connor Barnes
+ */
+public class TradeInFrameTest {
     TradeInFrame tradeInFrame;
 
-    public Test() {
+    public TradeInFrameTest() {
         GameIcons icons = new GameIcons();
         Player player = new Player("John Doe", "Red");
         player.giveResource(GameController.RESOURCE_TYPES[0], 4);
@@ -19,7 +31,7 @@ public class Test {
         public void actionPerformed(ActionEvent e) {
             System.out.println("Resource discarded: " + GameController.RESOURCE_TYPES[tradeInFrame.getDiscardedResource()]);
             System.out.println("Number of resource cards traded in: " + tradeInFrame.getNumDiscardedResources());
-            System.out.println("Resource desired: " + tradeInFrame.getDesiredResource());
+            System.out.println("Resource desired: " + GameController.RESOURCE_TYPES[tradeInFrame.getDesiredResource()]);
             System.exit(0);
         }
     }
@@ -28,6 +40,6 @@ public class Test {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Test mainTest = new Test();
+        TradeInFrameTest mainTest = new TradeInFrameTest();
     }
 }

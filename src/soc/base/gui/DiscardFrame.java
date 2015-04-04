@@ -1,3 +1,8 @@
+package soc.base.gui;
+
+import soc.base.GameController;
+import soc.base.model.Player;
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
@@ -17,13 +22,11 @@ public class DiscardFrame extends JFrame {
     //GUI variables
     private GameIcons icons;
     private JLayeredPane keepPane, discardPane;
-    private JPanel confirmDiscardPanel;
-    private JButton confirmDiscardButton, triggerButton;
+    private JButton triggerButton;
     private ArrayList<ResourceLabel> keepLabels, discardLabels;
     //Information variables
     private int[] discardedResources;
     private Player player;
-    private int resourceWidth, resourceHeight;
 
     /**
      * Creates and displays a frame that allows the specified player to discard half of their cards.
@@ -40,8 +43,6 @@ public class DiscardFrame extends JFrame {
         discardedResources = new int[GameController.RESOURCE_TYPES.length];
         keepLabels = new ArrayList<ResourceLabel>(player.getSumResourceCards());
         discardLabels = new ArrayList<ResourceLabel>(player.getSumResourceCards());
-        resourceWidth = icons.getResourceIcon(GameController.RESOURCE_TYPES[0]).getIconWidth();
-        resourceHeight = icons.getResourceIcon(GameController.RESOURCE_TYPES[0]).getIconHeight();
 
         //Create the trigger button and add the given ActionListener to it
         triggerButton = new JButton();
@@ -55,17 +56,17 @@ public class DiscardFrame extends JFrame {
         //Construct a label for each of the player's card and add them to keepLabels
         ResourceLabel tempLabel;
         for (int resource = 0; resource < GameController.RESOURCE_TYPES.length; resource++) {
-            for (int i = 0; i < player.getNumResourceCards(GameController.RESOURCE_TYPES[resource]); i++) {
-                tempLabel = new ResourceLabel(icons.getResourceIcon(GameController.RESOURCE_TYPES[resource]), resource, keepLabels.size());
+            for (int i = 0; i < player.getNumResourceCards(resource); i++) {
+                tempLabel = new ResourceLabel(icons.getResourceIcon(resource), resource, keepLabels.size());
                 tempLabel.addMouseListener(new KeepListener());
-                tempLabel.setSize(resourceWidth, resourceHeight);
+                tempLabel.setSize(GameIcons.CARD_WIDTH, GameIcons.CARD_HEIGHT);
                 keepLabels.add(tempLabel);
             }
         }
 
         //Create the contents of the frame
         buildResourcePanels();
-        buildButtonPanel();
+        JPanel confirmDiscardPanel = buildButtonPanel();
 
         //Add the contents to the frame
         setLayout(new BorderLayout());
@@ -111,16 +112,17 @@ public class DiscardFrame extends JFrame {
     private void buildResourcePanels() {
         keepPane = new JLayeredPane();
         discardPane = new JLayeredPane();
-        keepPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), resourceHeight));
-        discardPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), resourceHeight));
+        keepPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), GameIcons.CARD_HEIGHT));
+        discardPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), GameIcons.CARD_HEIGHT));
     }
 
     //Builds the panel that holds the discard button
-    private void buildButtonPanel()	{
-        confirmDiscardPanel = new JPanel();
-        confirmDiscardButton = new JButton("Discard");
+    private JPanel buildButtonPanel()	{
+        JPanel confirmDiscardPanel = new JPanel();
+        JButton confirmDiscardButton = new JButton("Discard");
         confirmDiscardButton.addActionListener(new ConfirmDiscardListener());
         confirmDiscardPanel.add(confirmDiscardButton);
+        return confirmDiscardPanel;
         //TODO: Add button to view development cards?
     }
 
@@ -141,24 +143,24 @@ public class DiscardFrame extends JFrame {
         discardPane.removeAll();
         //Add the keep labels to keepPane
         int offset, margin;
-        if (keepLabels.size() * resourceWidth > icons.getBoardIcon().getIconWidth()) {
-            offset = resourceWidth - ((keepLabels.size() * resourceWidth - icons.getBoardIcon().getIconWidth()) / (keepLabels.size() - 1));
+        if (keepLabels.size() * GameIcons.CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
+            offset = GameIcons.CARD_WIDTH - ((keepLabels.size() * GameIcons.CARD_WIDTH - icons.getBoardIcon().getIconWidth()) / (keepLabels.size() - 1));
             margin = 0;
         } else {
-            offset = resourceWidth;
-            margin = (icons.getBoardIcon().getIconWidth() - (keepLabels.size() * resourceWidth)) / 2;
+            offset = GameIcons.CARD_WIDTH;
+            margin = (icons.getBoardIcon().getIconWidth() - (keepLabels.size() * GameIcons.CARD_WIDTH)) / 2;
         }
         for (int i = 0; i < keepLabels.size(); i++) {
             keepLabels.get(i).setLocation(offset * i + margin, 0);
             keepPane.add(keepLabels.get(i), new Integer(i));
         }
         //Add the discard labels to discardPane
-        if (discardLabels.size() * resourceWidth > icons.getBoardIcon().getIconWidth()) {
-            offset = resourceWidth - ((discardLabels.size() * resourceWidth - icons.getBoardIcon().getIconWidth()) / (discardLabels.size() - 1));
+        if (discardLabels.size() * GameIcons.CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
+            offset = GameIcons.CARD_WIDTH - ((discardLabels.size() * GameIcons.CARD_WIDTH - icons.getBoardIcon().getIconWidth()) / (discardLabels.size() - 1));
             margin = 0;
         } else {
-            offset = resourceWidth;
-            margin = (icons.getBoardIcon().getIconWidth() - (discardLabels.size() * resourceWidth)) / 2;
+            offset = GameIcons.CARD_WIDTH;
+            margin = (icons.getBoardIcon().getIconWidth() - (discardLabels.size() * GameIcons.CARD_WIDTH)) / 2;
         }
         for (int i = 0; i < discardLabels.size(); i++) {
             discardLabels.get(i).setLocation(offset * i + margin, 0);

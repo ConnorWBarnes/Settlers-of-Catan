@@ -1,3 +1,8 @@
+package soc.base.gui;
+
+import soc.base.GameController;
+import soc.base.model.Player;
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
@@ -30,7 +35,7 @@ public class TradeInFrame extends JFrame {
     //Information variables
     private Player player;
     private ArrayList<ResourceLabel> keepLabels, discardLabels;
-    private int resourceWidth, resourceHeight, discardedResource, desiredResource, numDiscardedResources;
+    private int discardedResource, desiredResource, numDiscardedResources;
 
     /**
      * Creates and displays a frame that allows the specified player to trade
@@ -44,8 +49,6 @@ public class TradeInFrame extends JFrame {
         super("Trade In Resource Cards");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         icons = inIcons;
-        resourceWidth = icons.getResourceIcon(GameController.RESOURCE_TYPES[0]).getIconWidth();
-        resourceHeight = icons.getResourceIcon(GameController.RESOURCE_TYPES[0]).getIconHeight();
         player = inPlayer;
         keepLabels = new ArrayList<ResourceLabel>(player.getSumResourceCards());
         discardLabels = new ArrayList<ResourceLabel>(4);
@@ -57,10 +60,10 @@ public class TradeInFrame extends JFrame {
         //Construct a label for each of the player's card and add them to keepLabels
         ResourceLabel tempLabel;
         for (int resource = 0; resource < GameController.RESOURCE_TYPES.length; resource++) {
-            for (int i = 0; i < player.getNumResourceCards(GameController.RESOURCE_TYPES[resource]); i++) {
-                tempLabel = new ResourceLabel(icons.getResourceIcon(GameController.RESOURCE_TYPES[resource]), resource);
+            for (int i = 0; i < player.getNumResourceCards(resource); i++) {
+                tempLabel = new ResourceLabel(icons.getResourceIcon(resource), resource);
                 tempLabel.addMouseListener(new KeepListener());
-                tempLabel.setSize(resourceWidth, resourceHeight);
+                tempLabel.setSize(GameIcons.CARD_WIDTH, GameIcons.CARD_HEIGHT);
                 keepLabels.add(tempLabel);
             }
         }
@@ -121,7 +124,7 @@ public class TradeInFrame extends JFrame {
     private JPanel buildHarborPanel() {
         JPanel harborPanel = new JPanel();
         harborPanel.setBorder(BorderFactory.createTitledBorder("Your Harbors"));
-        for (String harbor : player.getHarbors()) {
+        for (int harbor : player.getHarbors()) {
             harborPanel.add(new JLabel(icons.getHarborIcon(harbor)));
         }
         return harborPanel;
@@ -133,10 +136,10 @@ public class TradeInFrame extends JFrame {
      */
     private JPanel buildKeepPanel() {
         keepPane = new JLayeredPane();
-        if (player.getSumResourceCards() * resourceWidth > icons.getBoardIcon().getIconWidth()) {
-            keepPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), resourceHeight));
+        if (player.getSumResourceCards() * GameIcons.CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
+            keepPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), GameIcons.CARD_HEIGHT));
         } else {
-            keepPane.setPreferredSize(new Dimension(player.getSumResourceCards() * resourceWidth, resourceHeight));
+            keepPane.setPreferredSize(new Dimension(player.getSumResourceCards() * GameIcons.CARD_WIDTH, GameIcons.CARD_HEIGHT));
         }
         JPanel cardPanel = new JPanel();
         cardPanel.add(keepPane);
@@ -152,11 +155,11 @@ public class TradeInFrame extends JFrame {
     private JPanel buildDiscardPanel() {
         //Construct discardPane
         discardPane = new JLayeredPane();
-        discardPane.setPreferredSize(new Dimension((int) (resourceWidth * 1.5), resourceHeight));
+        discardPane.setPreferredSize(new Dimension((int) (GameIcons.CARD_WIDTH * 1.5), GameIcons.CARD_HEIGHT));
         //Construct the JComboBox that holds each resource type
         ImageIcon[] resourceIcons = new ImageIcon[GameController.RESOURCE_TYPES.length];
         for (int i = 0; i < resourceIcons.length; i++) {
-            resourceIcons[i] = icons.getResourceIcon(GameController.RESOURCE_TYPES[i]);
+            resourceIcons[i] = icons.getResourceIcon(i);
         }
         resourceComboBox = new JComboBox<ImageIcon>(resourceIcons);
         resourceComboBox.setSelectedIndex(0);
@@ -164,7 +167,7 @@ public class TradeInFrame extends JFrame {
         resourceComboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
         //Construct and add the renderer
         ResourceListRenderer renderer = new ResourceListRenderer();
-        renderer.setPreferredSize(new Dimension(resourceWidth, resourceHeight));
+        renderer.setPreferredSize(new Dimension(GameIcons.CARD_WIDTH, GameIcons.CARD_HEIGHT));
         resourceComboBox.setRenderer(renderer);
         //Construct the rest of the panel and return it
         JPanel discardPanel = new JPanel(new GridLayout(1, 0));
@@ -207,12 +210,12 @@ public class TradeInFrame extends JFrame {
         discardPane.removeAll();
         //Add the keep labels to keepPane
         int offset, margin;
-        if (keepLabels.size() * resourceWidth > icons.getBoardIcon().getIconWidth()) {
-            offset = resourceWidth - ((keepLabels.size() * resourceWidth - icons.getBoardIcon().getIconWidth()) / (keepLabels.size() - 1));
+        if (keepLabels.size() * GameIcons.CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
+            offset = GameIcons.CARD_WIDTH - ((keepLabels.size() * GameIcons.CARD_WIDTH - icons.getBoardIcon().getIconWidth()) / (keepLabels.size() - 1));
             margin = 0;
         } else {
-            offset = resourceWidth;
-            margin = (icons.getBoardIcon().getIconWidth() - (keepLabels.size() * resourceWidth)) / 2;
+            offset = GameIcons.CARD_WIDTH;
+            margin = (icons.getBoardIcon().getIconWidth() - (keepLabels.size() * GameIcons.CARD_WIDTH)) / 2;
         }
         for (int i = 0; i < keepLabels.size(); i++) {
             keepLabels.get(i).setLocation(offset * i + margin, 0);
@@ -220,11 +223,11 @@ public class TradeInFrame extends JFrame {
         }
         //Add the discard labels to discardPane
         if (discardLabels.size() > 1) {
-            offset = resourceWidth - ((discardLabels.size() * resourceWidth - discardPane.getWidth()) / (discardLabels.size() - 1));
+            offset = GameIcons.CARD_WIDTH - ((discardLabels.size() * GameIcons.CARD_WIDTH - discardPane.getWidth()) / (discardLabels.size() - 1));
             margin = 0;
         } else {
-            offset = resourceWidth;
-            margin = (discardPane.getWidth() - (discardLabels.size() * resourceWidth)) / 2;
+            offset = GameIcons.CARD_WIDTH;
+            margin = (discardPane.getWidth() - (discardLabels.size() * GameIcons.CARD_WIDTH)) / 2;
         }
         for (int i = 0; i < discardLabels.size(); i++) {
             discardLabels.get(i).setLocation(offset * i + margin, 0);
@@ -255,9 +258,9 @@ public class TradeInFrame extends JFrame {
             }
             //Move the minimum amount of labels of the same resource type as the card selected from keepLabels to discardLabels
             int min = 4;
-            if (player.getHarbors().contains(GameController.RESOURCE_TYPES[labelClicked.resourceIndex])) {
+            if (player.getHarbors().contains(labelClicked.resourceIndex)) {
                 min = 2;
-            } else if (player.getHarbors().contains("Any")) {
+            } else if (player.getHarbors().contains(GameController.HARBOR_TYPE_ANY)) {
                 min = 3;
             }
             for (int i = 0; i < keepLabels.size(); i++) {
@@ -367,7 +370,7 @@ public class TradeInFrame extends JFrame {
         }
 
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            setPreferredSize(new Dimension(resourceWidth, resourceHeight + 7));
+            setPreferredSize(new Dimension(GameIcons.CARD_WIDTH, GameIcons.CARD_HEIGHT + 7));
             if (isSelected) {
                 setBackground(list.getSelectionBackground());
                 setForeground(list.getSelectionForeground());

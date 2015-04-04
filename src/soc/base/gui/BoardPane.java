@@ -1,5 +1,8 @@
+package soc.base.gui;
+
+import soc.base.model.Tile;
+
 import javax.swing.*;
-import javax.xml.stream.Location;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;

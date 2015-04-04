@@ -1,4 +1,7 @@
-import javax.swing.*;
+package soc.base.gui;
+
+import soc.base.GameController;
+import javax.swing.ImageIcon;
 import java.util.HashMap;
 
 /**
@@ -9,6 +12,8 @@ import java.util.HashMap;
  * @author Connor Barnes
  */
 public class GameIcons {
+    public static final int CARD_WIDTH = 90;
+    public static final int CARD_HEIGHT = 135;
     public static final boolean PLAYER_TOKEN_STAR = true;
     public static final boolean ROBBER_STAR = false;
 
@@ -19,10 +24,10 @@ public class GameIcons {
     private HashMap<String, ImageIcon> verticalRoadIcons;//Key is the color of the road
     private HashMap<String, ImageIcon> negativeSlopeRoadIcons;//Left end of road is higher than right end
     private HashMap<String, ImageIcon> positiveSlopeRoadIcons;//Right end of road is higher than left end
-    private HashMap<String, ImageIcon> resourceIcons;//Key is the type of resource
+    private HashMap<Integer, ImageIcon> resourceIcons;//Key is the type of resource
     private HashMap<String, ImageIcon> devCardIcons;//Key is the title of the development card
     private HashMap<String, ImageIcon> costsCardIcons;//Key is the color of the card
-    private HashMap<String, ImageIcon> harborIcons;
+    private HashMap<Integer, ImageIcon> harborIcons;
     private ImageIcon boardIcon, robberIcon, resourceCardBackIcon, devCardBackIcon, longestRoadIcon, largestArmyIcon;
     private ImageIcon tokenStarIcon, robberStarIcon, cancelIcon;
 
@@ -34,10 +39,10 @@ public class GameIcons {
         verticalRoadIcons = new HashMap<String, ImageIcon>();
         negativeSlopeRoadIcons = new HashMap<String, ImageIcon>();
         positiveSlopeRoadIcons = new HashMap<String, ImageIcon>();
-        resourceIcons = new HashMap<String, ImageIcon>();
+        resourceIcons = new HashMap<Integer, ImageIcon>();
         devCardIcons = new HashMap<String, ImageIcon>();
         costsCardIcons = new HashMap<String, ImageIcon>();
-        harborIcons = new HashMap<String, ImageIcon>();
+        harborIcons = new HashMap<Integer, ImageIcon>();
         String filePath;
 
         //Populate tileIcons
@@ -68,8 +73,8 @@ public class GameIcons {
         }
         //Populate resourceIcons
         filePath = "Images/Resource Cards/";
-        for (String resourceType : GameController.RESOURCE_TYPES) {
-            resourceIcons.put(resourceType, createImageIcon(filePath + resourceType + ".png", resourceType));
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            resourceIcons.put(i, createImageIcon(filePath + GameController.RESOURCE_TYPES[i] + ".png", GameController.RESOURCE_TYPES[i]));
         }
         resourceCardBackIcon = createImageIcon(filePath + "Resource Card Back.png", "Resource Cards");
         //Populate devCardIcons
@@ -81,10 +86,10 @@ public class GameIcons {
         devCardBackIcon = createImageIcon(filePath + "Development Card Back.png", "Development Cards");
         //TODO: Populate harborIcons
         filePath = "Images/Harbors/";
-        harborIcons.put("Any", createImageIcon(filePath + "Any.png", "Any"));
-        for (String resourceType : GameController.RESOURCE_TYPES) {
-            harborIcons.put(resourceType, createImageIcon(filePath + resourceType + ".png", resourceType));
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            harborIcons.put(i, createImageIcon(filePath + GameController.RESOURCE_TYPES[i] + ".png", GameController.RESOURCE_TYPES[i]));
         }
+        harborIcons.put(GameController.HARBOR_TYPE_ANY, createImageIcon(filePath + "Any.png", "Any"));
         //Last miscellaneous icons
         filePath = "Images/";
         boardIcon = createImageIcon(filePath + "Game Board.png", "");
@@ -184,11 +189,26 @@ public class GameIcons {
 
     /**
      * Returns the ImageIcon of a resource card of the specified type.
+     * @param resource the index of the type of resource in
+     *                 GameController.RESOURCE_TYPES
+     * @return the ImageIcon of a resource card of the specified type
+     */
+    public ImageIcon getResourceIcon(int resource) {
+        return resourceIcons.get(resource);
+    }
+
+    /**
+     * Returns the ImageIcon of a resource card of the specified type.
      * @param resource the type of resource
      * @return the ImageIcon of a resource card of the specified type
      */
     public ImageIcon getResourceIcon(String resource) {
-        return resourceIcons.get(resource);
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            if (GameController.RESOURCE_TYPES[i].equals(resource)) {
+                return resourceIcons.get(i);
+            }
+        }
+        return null;
     }
 
     /**
@@ -210,12 +230,32 @@ public class GameIcons {
     }
 
     /**
-     * Returns the ImageIcon of the specified harbor.
-     * @param harbor the type of resource that the harbor affects
+     * Returns the ImageIcon of the specified harbor (or null if no such harbor
+     * exists).
+     * @param type the index of the type of resource in
+     *             GameController.RESOURCE_TYPES that the harbor affects
      * @return the ImageIcon of the specified harbor
      */
-    public ImageIcon getHarborIcon(String harbor) {
-        return harborIcons.get(harbor);
+    public ImageIcon getHarborIcon(int type) {
+        return harborIcons.get(type);
+    }
+
+    /**
+     * Returns the ImageIcon of the specified harbor (or null if no such harbor
+     * exists).
+     * @param type the type of resource that the harbor affects
+     * @return the ImageIcon of the specified harbor
+     */
+    public ImageIcon getHarborIcon(String type) {
+        if (type.equals("Any")) {
+            return harborIcons.get(GameController.HARBOR_TYPE_ANY);
+        }
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            if (GameController.RESOURCE_TYPES[i].equals(type)) {
+                return harborIcons.get(i);
+            }
+        }
+        return null;
     }
 
     /**

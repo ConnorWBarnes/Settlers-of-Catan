@@ -1,3 +1,7 @@
+package soc.base.gui;
+
+import soc.base.model.Player;
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
@@ -49,9 +53,11 @@ public class PlayerPanel extends JPanel {
         settlementLabel.setIcon(icons.getSettlementIcon(nextPlayer.getColor()));
         cityLabel.setIcon(icons.getCityIcon(nextPlayer.getColor()));
         //Show the number of tokens the next player has
-        roadLabel.setText(" x " + String.valueOf(nextPlayer.getNumRemainingRoads()));
-        settlementLabel.setText(" x " + String.valueOf(nextPlayer.getNumRemainingSettlements()));
-        cityLabel.setText(" x " + String.valueOf(nextPlayer.getNumRemainingCities()));
+        roadLabel.setText(" x " + nextPlayer.getNumRemainingRoads());
+        settlementLabel.setText(" x " + nextPlayer.getNumRemainingSettlements());
+        cityLabel.setText(" x " + nextPlayer.getNumRemainingCities());
+        resourceCardLabel.setText(" x " + nextPlayer.getSumResourceCards());
+        devCardLabel.setText(" x " + nextPlayer.getSumDevCards());
         //Show or hide Longest Road and Largest Army
         if (nextPlayer.hasLongestRoad()) {
             longestRoadLabel.setIcon(icons.getLongestRoadIcon());
@@ -197,12 +203,8 @@ public class PlayerPanel extends JPanel {
         }
         //Remove the "View Cards" button so it doesn't get disabled
         JButton[] tempButtons = new JButton[playerButtons.length - 1];
-        for (int i = 0; i < VIEW_CARDS_INDEX; i++) {
-            tempButtons[i] = playerButtons[i];
-        }
-        for (int i = VIEW_CARDS_INDEX + 1; i < playerButtons.length; i++) {
-            tempButtons[i] = playerButtons[i];
-        }
+        System.arraycopy(playerButtons, 0, tempButtons, 0, VIEW_CARDS_INDEX);
+        System.arraycopy(playerButtons, VIEW_CARDS_INDEX + 1, tempButtons, VIEW_CARDS_INDEX, tempButtons.length - VIEW_CARDS_INDEX);
         playerButtons = tempButtons;
         //Add the "End Turn" button to a separate JPanel
         JPanel endTurnPanel = new JPanel();

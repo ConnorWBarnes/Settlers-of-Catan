@@ -1,3 +1,5 @@
+package soc.base.model;
+
 /**
  * Represents a Development Card.
  * @author Connor Barnes

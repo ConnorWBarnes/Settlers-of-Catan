@@ -1,3 +1,5 @@
+package soc.base.gui;
+
 import java.awt.Point;
 import java.util.HashMap;
 

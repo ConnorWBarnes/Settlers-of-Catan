@@ -1,3 +1,5 @@
+package soc.base.model;
+
 /**
  * Represents a number token on a tile. Consists of a number and a letter.
  * @author Connor Barnes

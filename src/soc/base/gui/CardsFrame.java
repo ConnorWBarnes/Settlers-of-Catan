@@ -1,3 +1,9 @@
+package soc.base.gui;
+
+import soc.base.GameController;
+import soc.base.model.Player;
+import soc.base.model.DevelopmentCard;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
@@ -8,9 +14,6 @@ import java.util.Arrays;
  * @author Connor Barnes
  */
 public class CardsFrame extends JFrame {
-    private static final int CARD_WIDTH = 90;
-    private static final int CARD_HEIGHT = 135;
-
     private GameIcons icons;
     private Player player;
     private JPanel resourceCardsPanel, devCardsPanel;
@@ -40,15 +43,15 @@ public class CardsFrame extends JFrame {
 
     private void buildResourceCardsPanel() {
         JLayeredPane resourceCardsPane = new JLayeredPane();
-        resourceCardsPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), CARD_HEIGHT));
+        resourceCardsPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), GameIcons.CARD_HEIGHT));
         int offset, margin;
-        if (player.getSumResourceCards() * CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
-            int overlap = (player.getSumResourceCards() * CARD_WIDTH - icons.getBoardIcon().getIconWidth()) / (player.getSumResourceCards() - 1);
-            offset = CARD_WIDTH - overlap;
+        if (player.getSumResourceCards() * GameIcons.CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
+            int overlap = (player.getSumResourceCards() * GameIcons.CARD_WIDTH - icons.getBoardIcon().getIconWidth()) / (player.getSumResourceCards() - 1);
+            offset = GameIcons.CARD_WIDTH - overlap;
             margin = 0;
         } else {
-            offset = CARD_WIDTH;
-            margin = (icons.getBoardIcon().getIconWidth() - (player.getSumResourceCards() * CARD_WIDTH)) / 2;
+            offset = GameIcons.CARD_WIDTH;
+            margin = (icons.getBoardIcon().getIconWidth() - (player.getSumResourceCards() * GameIcons.CARD_WIDTH)) / 2;
         }
         JLabel tempLabel;
         int numCards = 0;
@@ -67,15 +70,15 @@ public class CardsFrame extends JFrame {
 
     private void buildDevCardsPanel() {
         JLayeredPane devCardsPane = new JLayeredPane();
-        devCardsPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), CARD_HEIGHT));
+        devCardsPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), GameIcons.CARD_HEIGHT));
         int overlap, offset, margin;
-        if (player.getSumResourceCards() * CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
-            overlap = ((player.getSumDevCards() * CARD_WIDTH - icons.getBoardIcon().getIconWidth()) / (player.getSumDevCards() - 1));
-            offset = CARD_WIDTH - overlap;
+        if (player.getSumResourceCards() * GameIcons.CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
+            overlap = ((player.getSumDevCards() * GameIcons.CARD_WIDTH - icons.getBoardIcon().getIconWidth()) / (player.getSumDevCards() - 1));
+            offset = GameIcons.CARD_WIDTH - overlap;
             margin = 0;
         } else {
-            offset = CARD_WIDTH;
-            margin = (icons.getBoardIcon().getIconWidth() - (player.getSumResourceCards() * CARD_WIDTH)) / 2;
+            offset = GameIcons.CARD_WIDTH;
+            margin = (icons.getBoardIcon().getIconWidth() - (player.getSumResourceCards() * GameIcons.CARD_WIDTH)) / 2;
         }
         //Sort the development cards
         DevelopmentCard[] devCards = player.getDevCards().toArray(new DevelopmentCard[player.getSumDevCards()]);

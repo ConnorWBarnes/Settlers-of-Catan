@@ -1,3 +1,5 @@
+package soc.base.model;
+
 import java.util.LinkedList;
 
 /**

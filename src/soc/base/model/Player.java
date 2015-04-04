@@ -1,3 +1,6 @@
+package soc.base.model;
+
+import soc.base.GameController;
 import java.util.LinkedList;
 import java.util.ArrayList;
 
@@ -8,11 +11,11 @@ import java.util.ArrayList;
 public class Player {
     private String color, name;//The color of this player's tokens (i.e. settlements, roads, etc.)
     private int numRemainingSettlements, numRemainingCities, numRemainingRoads;//Number of remaining tokens this player has
-    private int brickCards, woolCards, oreCards, grainCards, lumberCards;
+    private int[] resourceCards;
     private ArrayList<DevelopmentCard> devCards;
     private LinkedList<Integer> settlementLocs;//Locations of settlements and cities owned by this player
     private LinkedList<Integer> roadLocs;//Locations of the roads owned by this player
-    private LinkedList<String> harbors;//All types of harbors that this player has access to
+    private ArrayList<Integer> harbors;//All types of harbors that this player has access to
     private int victoryPoints, longestRoadLength, numKnightCardsPlayed;
     private boolean longestRoad, largestArmy;//Whether or not this player has Longest Road or Largest Army, respectively
 
@@ -22,18 +25,17 @@ public class Player {
     public Player() {
         color = null;
         name = "John Doe";
-        brickCards = 0;
-        woolCards = 0;
-        oreCards = 0;
-        grainCards = 0;
-        lumberCards = 0;
+        resourceCards = new int[GameController.RESOURCE_TYPES.length];
+        for (int i = 0; i < resourceCards.length; i++) {
+            resourceCards[i] = 0;
+        }
         numRemainingSettlements = 5;
         numRemainingCities = 4;
         numRemainingRoads = 15;
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
         roadLocs = new LinkedList<Integer>();
-        harbors = new LinkedList<String>();
+        harbors = new ArrayList<Integer>(GameController.HARBOR_TYPE_ANY);
         victoryPoints = 0;
         longestRoadLength = 0;
         numKnightCardsPlayed = 0;
@@ -48,18 +50,17 @@ public class Player {
     public Player(String inColor) {
         color = inColor;
         name = "John Doe";
-        brickCards = 0;
-        woolCards = 0;
-        oreCards = 0;
-        grainCards = 0;
-        lumberCards = 0;
+        resourceCards = new int[GameController.RESOURCE_TYPES.length];
+        for (int i = 0; i < resourceCards.length; i++) {
+            resourceCards[i] = 0;
+        }
         numRemainingSettlements = 5;
         numRemainingCities = 4;
         numRemainingRoads = 15;
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
         roadLocs = new LinkedList<Integer>();
-        harbors = new LinkedList<String>();
+        harbors = new ArrayList<Integer>(GameController.HARBOR_TYPE_ANY);
         victoryPoints = 0;
         longestRoadLength = 0;
         numKnightCardsPlayed = 0;
@@ -75,18 +76,17 @@ public class Player {
     public Player(String inColor, String inName) {
         color = inColor;
         name = inName;
-        brickCards = 0;
-        woolCards = 0;
-        oreCards = 0;
-        grainCards = 0;
-        lumberCards = 0;
+        resourceCards = new int[GameController.RESOURCE_TYPES.length];
+        for (int i = 0; i < resourceCards.length; i++) {
+            resourceCards[i] = 0;
+        }
         numRemainingSettlements = 5;
         numRemainingCities = 4;
         numRemainingRoads = 15;
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
         roadLocs = new LinkedList<Integer>();
-        harbors = new LinkedList<String>();
+        harbors = new ArrayList<Integer>(GameController.HARBOR_TYPE_ANY);
         victoryPoints = 0;
         longestRoadLength = 0;
         numKnightCardsPlayed = 0;
@@ -101,18 +101,17 @@ public class Player {
     public Player(Player inPlayer) {
         color = inPlayer.color;
         name = "John Doe";
-        brickCards = inPlayer.brickCards;
-        woolCards = inPlayer.woolCards;
-        oreCards = inPlayer.oreCards;
-        grainCards = inPlayer.grainCards;
-        lumberCards = inPlayer.lumberCards;
+        resourceCards = new int[GameController.RESOURCE_TYPES.length];
+        for (int i = 0; i < resourceCards.length; i++) {
+            resourceCards[i] = 0;
+        }
         numRemainingSettlements = inPlayer.numRemainingSettlements;
         numRemainingCities = inPlayer.numRemainingCities;
         numRemainingRoads = inPlayer.numRemainingRoads;
         devCards = new ArrayList<DevelopmentCard>(inPlayer.devCards);
         settlementLocs = new LinkedList<Integer>(inPlayer.settlementLocs);
         roadLocs = new LinkedList<Integer>(inPlayer.roadLocs);
-        harbors = new LinkedList<String>(inPlayer.harbors);
+        harbors = new ArrayList<Integer>(inPlayer.harbors);
         victoryPoints = inPlayer.victoryPoints;
         longestRoadLength = inPlayer.longestRoadLength;
         numKnightCardsPlayed = inPlayer.numKnightCardsPlayed;
@@ -147,21 +146,40 @@ public class Player {
     /**
      * Gives this player the specified amount of resource cards of the
      * specified type.
+     * @param resource the index of the type of resource in
+     *                 GameController.RESOURCE_CARDS to give
+     * @param amount the number of resource cards to give
+     */
+    public void giveResource(int resource, int amount) {
+        //TODO: Throw exception when amount < 0 or when trying to take more resources than the player has?
+        resourceCards[resource] += amount;
+    }
+
+    /**
+     * Gives this player the specified amount of resource cards of the
+     * specified type.
      * @param resource the type of resource cards to give
      * @param amount the number of resource cards to give
      */
     public void giveResource(String resource, int amount) {
-        if (resource.equals("Brick")) {
-            brickCards += amount;
-        } else if (resource.equals("Wool")) {
-            woolCards += amount;
-        } else if (resource.equals("Ore")) {
-            oreCards += amount;
-        } else if (resource.equals("Grain")) {
-            grainCards += amount;
-        } else { //resource.equals("Lumber")
-            lumberCards += amount;
+        //TODO: Throw exception when amount < 0 or when trying to take more resources than the player has?
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            if (GameController.RESOURCE_TYPES[i].equals(resource)) {
+                resourceCards[i] += amount;
+                break;
+            }
         }
+    }
+
+    /**
+     * Takes the specified amount of resource cards of the specified type.
+     * @param resource the index of the type of resource in
+     *                 GameController.RESOURCE_CARDS to take
+     * @param amount the number of resource cards to take
+     */
+    public void takeResource(int resource, int amount) {
+        //TODO: Throw exception when amount < 0 or when trying to take more resources than the player has?
+        resourceCards[resource] -= amount;
     }
 
     /**
@@ -170,17 +188,12 @@ public class Player {
      * @param amount the number of resource cards to take
      */
     public void takeResource(String resource, int amount) {
-        //TODO: Throw exception?
-        if (resource.equals("Brick")) {
-            brickCards -= amount;
-        } else if (resource.equals("Wool")) {
-            woolCards -= amount;
-        } else if (resource.equals("Ore")) {
-            oreCards -= amount;
-        } else if (resource.equals("Grain")) {
-            grainCards -= amount;
-        } else { //resource.equals("Lumber")
-            lumberCards -= amount;
+        //TODO: Throw exception when amount > 0 or when trying to take more resources than the player has?
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            if (GameController.RESOURCE_TYPES[i].equals(resource)) {
+                resourceCards[i] -= amount;
+                break;
+            }
         }
     }
 
@@ -253,11 +266,32 @@ public class Player {
 
     /**
      * Adds the specified harbor to the list of harbors this player can access.
-     * @param harbor the resource that the new harbor affects
+     * @param type the index of the resource type in
+     *             GameController.RESOURCE_TYPES that the new harbor affects
      */
-    public void addHarbor(String harbor) {
-        if (!(harbors.contains(harbor))) {
-            harbors.add(harbor);
+    public void addHarbor(int type) {
+        //TODO: Throw exception if type > GameController.HARBOR_TYPE_ANY?
+        if (!harbors.contains(type)) {
+            harbors.add(type);
+        }
+    }
+
+    /**
+     * Adds the specified harbor to the list of harbors this player can access.
+     * @param type the resource type that the new harbor affects
+     */
+    public void addHarbor(String type) {
+        if (type.equals("Any") && !harbors.contains(GameController.HARBOR_TYPE_ANY)) {
+            harbors.add(GameController.HARBOR_TYPE_ANY);
+        } else {
+            for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+                if (GameController.RESOURCE_TYPES[i].equals(type)) {
+                    if (!harbors.contains(i)) {
+                        harbors.add(i);
+                    }
+                    break;
+                }
+            }
         }
     }
 
@@ -332,21 +366,27 @@ public class Player {
     /**
      * Returns the number of resource cards of the specified type that this
      * player has.
+     * @param resource the index of the type of resource in
+     *                 GameController.RESOURCE_TYPES
+     * @return the number of resource cards of the specified type
+     */
+    public int getNumResourceCards(int resource) {
+        return resourceCards[resource];
+    }
+
+    /**
+     * Returns the number of resource cards of the specified type that this
+     * player has. Returns -1 if the specified resource does not exist.
      * @param resource the type of resource
      * @return the number of resource cards of the specified type
      */
     public int getNumResourceCards(String resource) {
-        if (resource.equals("Brick")) {
-            return brickCards;
-        } else if (resource.equals("Wool")) {
-            return woolCards;
-        } else if (resource.equals("Ore")) {
-            return oreCards;
-        } else if (resource.equals("Grain")) {
-            return grainCards;
-        } else { //if (resource.equals("Lumber"))
-            return lumberCards;
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            if (GameController.RESOURCE_TYPES[i].equals(resource)) {
+                return resourceCards[i];
+            }
         }
+        return -1;
     }
 
     /**
@@ -354,7 +394,11 @@ public class Player {
      * @return the total number of resource cards that this player has
      */
     public int getSumResourceCards() {
-        return brickCards + woolCards + oreCards + grainCards + lumberCards;
+        int sum = 0;
+        for (int num : resourceCards) {
+            sum += num;
+        }
+        return sum;
     }
 
     /**
@@ -393,8 +437,8 @@ public class Player {
      * Returns a list of all the harbors that this player can access.
      * @return a list of all the harbors that this player can access
      */
-    public LinkedList<String> getHarbors() {
-        return new LinkedList<String>(harbors);
+    public ArrayList<Integer> getHarbors() {
+        return new ArrayList<Integer>(harbors);
     }
 
     /**

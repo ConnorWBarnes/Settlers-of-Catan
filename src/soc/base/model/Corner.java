@@ -1,3 +1,5 @@
+package soc.base.model;
+
 import java.util.LinkedList;
 
 /**
@@ -113,10 +115,7 @@ public class Corner {
 	}
 
 	public boolean hasSettlement() {
-		if (settlement.color != null) {
-			return true;
-		}
-		return false;
+		return settlement.color != null;
 	}
 
 	public boolean hasCity() {
@@ -124,10 +123,7 @@ public class Corner {
 	}
 
 	public boolean hasHarbor() {
-		if (harbor != null) {
-            return true;
-        }
-		return false;
+		return harbor != null;
 	}
 
     //A settlement or a city
