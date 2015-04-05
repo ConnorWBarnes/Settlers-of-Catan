@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Settlers of Catan.iml" filepath="$PROJECT_DIR$/Settlers of Catan.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Testers/Testers.iml" filepath="$PROJECT_DIR$/Testers/Testers.iml" />
     </modules>
   </component>
 </project>
