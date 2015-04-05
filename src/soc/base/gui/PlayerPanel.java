@@ -22,6 +22,8 @@ public class PlayerPanel extends JPanel {
     private JButton[] playerButtons;
 	private JLabel costsLabel, roadLabel, settlementLabel, cityLabel, resourceCardLabel, devCardLabel;
 	private JLabel longestRoadLabel, largestArmyLabel;
+    private JFrame costsFrame;
+    private String playerColor;
 
     /**
      * Constructs a new player panel with the specified icons and adds the
@@ -47,8 +49,12 @@ public class PlayerPanel extends JPanel {
      * @param nextPlayer the player whose information will be displayed
      */
     public void updatePlayer(Player nextPlayer) {
+        if (costsFrame != null) {
+            costsFrame.dispose();
+        }
+        playerColor = nextPlayer.getColor();
         //Change the color of the costs panel and the player's tokens
-        costsLabel.setIcon(icons.getCostsCardIcon(nextPlayer.getColor()));
+        costsLabel.setIcon(icons.getScaledCostsCardIcon(nextPlayer.getColor()));
         roadLabel.setIcon(icons.getVerticalRoadIcon(nextPlayer.getColor()));
         settlementLabel.setIcon(icons.getSettlementIcon(nextPlayer.getColor()));
         cityLabel.setIcon(icons.getCityIcon(nextPlayer.getColor()));
@@ -167,9 +173,11 @@ public class PlayerPanel extends JPanel {
      *         icon
      */
     private JPanel buildCostsPanel() {
+        playerColor = "Red"; //Red is default/placeholder
         costsLabel = new JLabel();
         JPanel costsPanel = new JPanel();
-        costsLabel.setIcon(icons.getCostsCardIcon("Red"));//Red is default/placeholder
+        costsLabel.setIcon(icons.getScaledCostsCardIcon(playerColor));
+        costsLabel.addMouseListener(new CostsCardListener());
         costsPanel.setLayout(new BorderLayout());
         costsPanel.add(costsLabel, BorderLayout.CENTER);
         return costsPanel;
@@ -280,5 +288,17 @@ public class PlayerPanel extends JPanel {
         largestArmyPanel.setLayout(new BorderLayout());
         largestArmyPanel.add(longestRoadLabel, BorderLayout.CENTER);
         return largestArmyPanel;
+    }
+
+    private class CostsCardListener extends MouseAdapter {
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            costsFrame = new JFrame("Building Costs");
+            costsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            costsFrame.add(new JLabel(icons.getUnscaledCostsCardIcon(playerColor)));
+            costsFrame.pack();
+            costsFrame.setLocationRelativeTo(null);
+            costsFrame.setVisible(true);
+        }
     }
 }

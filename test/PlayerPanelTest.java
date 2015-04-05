@@ -7,6 +7,7 @@ import soc.base.model.Player;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Tests the PlayerPanel class by constructing a new player with a few resource
@@ -15,11 +16,17 @@ import java.awt.event.ActionListener;
  * button's action command is printed out.
  */
 public class PlayerPanelTest {
+    private static final String[] PLAYER_COLORS = {"Blue", "Orange", "Red", "White"};
+    private PlayerPanel playerPanel;
+    private Player player;
+    private int colorIndex;
+
     public PlayerPanelTest() {
         JFrame frame = new JFrame("PlayerPanel Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GameIcons icons = new GameIcons();
-        Player player = new Player("Blue");
+        colorIndex = 0;
+        player = new Player(PLAYER_COLORS[colorIndex]);
         for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
             player.giveResource(i, 1);
         }
@@ -30,7 +37,7 @@ public class PlayerPanelTest {
         player.giveDevCard(new DevelopmentCard("Road Building"));
         player.giveDevCard(new DevelopmentCard("Knight"));
 
-        PlayerPanel playerPanel = new PlayerPanel(icons, new ButtonListener());
+        playerPanel = new PlayerPanel(icons, new ButtonListener());
         playerPanel.updatePlayer(player);
         playerPanel.setButtonsEnabled(true);
         frame.add(playerPanel);
@@ -43,6 +50,15 @@ public class PlayerPanelTest {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             System.out.println("Button pressed: " + actionEvent.getActionCommand());
+            if (actionEvent.getActionCommand().equals("End Turn")) {
+                if (colorIndex + 1 == PLAYER_COLORS.length) {
+                    colorIndex = 0;
+                } else {
+                    colorIndex++;
+                }
+                player.setColor(PLAYER_COLORS[colorIndex]);
+                playerPanel.updatePlayer(player);
+            }
         }
     }
 

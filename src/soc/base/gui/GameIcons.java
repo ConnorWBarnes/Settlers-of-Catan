@@ -26,7 +26,8 @@ public class GameIcons {
     private HashMap<String, ImageIcon> positiveSlopeRoadIcons;//Right end of road is higher than left end
     private HashMap<Integer, ImageIcon> resourceIcons;//Key is the type of resource
     private HashMap<String, ImageIcon> devCardIcons;//Key is the title of the development card
-    private HashMap<String, ImageIcon> costsCardIcons;//Key is the color of the card
+    private HashMap<String, ImageIcon> scaledCostsCardIcons;//Key is the color of the card
+    private HashMap<String, ImageIcon> unscaledCostsCardIcons;//Key is the color of the card
     private HashMap<Integer, ImageIcon> harborIcons;
     private ImageIcon boardIcon, robberIcon, resourceCardBackIcon, devCardBackIcon, longestRoadIcon, largestArmyIcon;
     private ImageIcon tokenStarIcon, robberStarIcon, cancelIcon;
@@ -41,7 +42,8 @@ public class GameIcons {
         positiveSlopeRoadIcons = new HashMap<String, ImageIcon>();
         resourceIcons = new HashMap<Integer, ImageIcon>();
         devCardIcons = new HashMap<String, ImageIcon>();
-        costsCardIcons = new HashMap<String, ImageIcon>();
+        scaledCostsCardIcons = new HashMap<String, ImageIcon>();
+        unscaledCostsCardIcons = new HashMap<String, ImageIcon>();
         harborIcons = new HashMap<Integer, ImageIcon>();
         String filePath;
 
@@ -66,10 +68,15 @@ public class GameIcons {
             negativeSlopeRoadIcons.put(color, createImageIcon(filePath + "Negative Slope Roads/" + color + " Negative Slope Road.png", color));
             positiveSlopeRoadIcons.put(color, createImageIcon(filePath + "Positive Slope Roads/" + color + " Positive Slope Road.png", color));
         }
-        //Populate costsCardIcons
-        filePath = "Images/Building Costs Cards/";
+        //Populate scaledCostsCardIcons
+        filePath = "Images/Building Costs Cards/Scaled/";
         for (String color : playerColors) {
-            costsCardIcons.put(color, createImageIcon(filePath + color + " Building Costs Card.png", "Building Costs"));
+            scaledCostsCardIcons.put(color, createImageIcon(filePath + color + " Building Costs Card.png", "Building Costs"));
+        }
+        //Populate unscaledCostsCardIcons
+        filePath = "Images/Building Costs Cards/Unscaled/";
+        for (String color : playerColors) {
+            unscaledCostsCardIcons.put(color, createImageIcon(filePath + color + " Building Costs Card.png", "Building Costs"));
         }
         //Populate resourceIcons
         filePath = "Images/Resource Cards/";
@@ -221,12 +228,21 @@ public class GameIcons {
     }
 
     /**
-     * Returns the ImageIcon of a building costs card of the specified color.
+     * Returns the scaled ImageIcon of a building costs card of the specified color.
      * @param color the color of the building costs card
-     * @return the ImageIcon of a building costs card of the specified color
+     * @return the scaled ImageIcon of a building costs card of the specified color
      */
-    public ImageIcon getCostsCardIcon(String color) {
-        return costsCardIcons.get(color);
+    public ImageIcon getScaledCostsCardIcon(String color) {
+        return scaledCostsCardIcons.get(color);
+    }
+
+    /**
+     * Returns the unscaled ImageIcon of a building costs card of the specified color.
+     * @param color the color of the building costs card
+     * @return the unscaled ImageIcon of a building costs card of the specified color
+     */
+    public ImageIcon getUnscaledCostsCardIcon(String color) {
+        return unscaledCostsCardIcons.get(color);
     }
 
     /**
