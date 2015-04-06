@@ -364,6 +364,18 @@ public class Player {
     }
 
     /**
+     * Returns an array of the number of resource cards of each type this
+     * player has.
+     * @return an array of the number of resource cards of each type this
+     * player has
+     */
+    public int[] getResourceCards() {
+        int[] temp = new int[resourceCards.length];
+        System.arraycopy(resourceCards, 0, temp, 0, resourceCards.length);
+        return temp;
+    }
+
+    /**
      * Returns the number of resource cards of the specified type that this
      * player has.
      * @param resource the index of the type of resource in

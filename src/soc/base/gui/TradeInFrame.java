@@ -29,12 +29,11 @@ public class TradeInFrame extends JFrame {
     //GUI variables
     private GameIcons icons;
     private JButton triggerButton;
-    private JLayeredPane keepPane, discardPane;
+    private CardPane keepPane, discardPane;
     private JComboBox<ImageIcon> resourceComboBox;
     private JButton confirmTradeInButton;
     //Information variables
     private Player player;
-    private ArrayList<ResourceLabel> keepLabels, discardLabels;
     private int discardedResource, desiredResource, numDiscardedResources;
 
     /**
@@ -50,23 +49,10 @@ public class TradeInFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         icons = inIcons;
         player = inPlayer;
-        keepLabels = new ArrayList<ResourceLabel>(player.getSumResourceCards());
-        discardLabels = new ArrayList<ResourceLabel>(4);
 
         //Create the trigger button and add the given ActionListener to it
         triggerButton = new JButton();
         triggerButton.addActionListener(triggerListener);
-
-        //Construct a label for each of the player's card and add them to keepLabels
-        ResourceLabel tempLabel;
-        for (int resource = 0; resource < GameController.RESOURCE_TYPES.length; resource++) {
-            for (int i = 0; i < player.getNumResourceCards(resource); i++) {
-                tempLabel = new ResourceLabel(icons.getResourceIcon(resource), resource);
-                tempLabel.addMouseListener(new KeepListener());
-                tempLabel.setSize(GameIcons.CARD_WIDTH, GameIcons.CARD_HEIGHT);
-                keepLabels.add(tempLabel);
-            }
-        }
 
         //Create the contents of the frame
         JPanel harborPanel = buildHarborPanel();
@@ -87,7 +73,6 @@ public class TradeInFrame extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-        update();
     }
 
     /**
@@ -135,11 +120,14 @@ public class TradeInFrame extends JFrame {
      * @return a JPanel containing keepPane
      */
     private JPanel buildKeepPanel() {
-        keepPane = new JLayeredPane();
+        keepPane = new CardPane(icons, player.getResourceCards());
         if (player.getSumResourceCards() * GameIcons.CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
             keepPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), GameIcons.CARD_HEIGHT));
         } else {
             keepPane.setPreferredSize(new Dimension(player.getSumResourceCards() * GameIcons.CARD_WIDTH, GameIcons.CARD_HEIGHT));
+        }
+        for (Component comp : keepPane.getComponents()) {
+            comp.addMouseListener(new KeepListener());
         }
         JPanel cardPanel = new JPanel();
         cardPanel.add(keepPane);
@@ -154,7 +142,7 @@ public class TradeInFrame extends JFrame {
      */
     private JPanel buildDiscardPanel() {
         //Construct discardPane
-        discardPane = new JLayeredPane();
+        discardPane = new CardPane(icons);
         discardPane.setPreferredSize(new Dimension((int) (GameIcons.CARD_WIDTH * 1.5), GameIcons.CARD_HEIGHT));
         //Construct the JComboBox that holds each resource type
         ImageIcon[] resourceIcons = new ImageIcon[GameController.RESOURCE_TYPES.length];
@@ -201,44 +189,6 @@ public class TradeInFrame extends JFrame {
     }
 
     /*
-     * Updates keepPane and discardPane to show the cards in keepLabels and
-     * discardLabels, respectively.
-     */
-    private void update() {
-        //Remove all the labels and re-add them to their panes in order
-        keepPane.removeAll();
-        discardPane.removeAll();
-        //Add the keep labels to keepPane
-        int offset, margin;
-        if (keepLabels.size() * GameIcons.CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
-            offset = GameIcons.CARD_WIDTH - ((keepLabels.size() * GameIcons.CARD_WIDTH - icons.getBoardIcon().getIconWidth()) / (keepLabels.size() - 1));
-            margin = 0;
-        } else {
-            offset = GameIcons.CARD_WIDTH;
-            margin = (icons.getBoardIcon().getIconWidth() - (keepLabels.size() * GameIcons.CARD_WIDTH)) / 2;
-        }
-        for (int i = 0; i < keepLabels.size(); i++) {
-            keepLabels.get(i).setLocation(offset * i + margin, 0);
-            keepPane.add(keepLabels.get(i), new Integer(i));
-        }
-        //Add the discard labels to discardPane
-        if (discardLabels.size() > 1) {
-            offset = GameIcons.CARD_WIDTH - ((discardLabels.size() * GameIcons.CARD_WIDTH - discardPane.getWidth()) / (discardLabels.size() - 1));
-            margin = 0;
-        } else {
-            offset = GameIcons.CARD_WIDTH;
-            margin = (discardPane.getWidth() - (discardLabels.size() * GameIcons.CARD_WIDTH)) / 2;
-        }
-        for (int i = 0; i < discardLabels.size(); i++) {
-            discardLabels.get(i).setLocation(offset * i + margin, 0);
-            discardPane.add(discardLabels.get(i), new Integer(i));
-        }
-
-        revalidate();
-        repaint();
-    }
-
-    /*
      * Moves the minimum amount of cards needed for the player to receive a
      * resource card of their choice. Only moves resource cards of the type
      * that was clicked by the player. This listener is added to every label in
@@ -247,41 +197,44 @@ public class TradeInFrame extends JFrame {
     private class KeepListener extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
             ResourceLabel labelClicked = (ResourceLabel) e.getComponent();
-            if (!discardLabels.isEmpty()) {
+            if (discardPane.getComponentCount() > 0) {
                 //If the resource that was clicked on is not the same type as the resource(s) already selected for discard,
                 //remove all the labels in discardLabels
-                if (labelClicked.resourceIndex != discardLabels.get(0).resourceIndex) {
-                    discardLabels.get(0).dispatchEvent(new MouseEvent(discardLabels.get(0), MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), 0, 10, 10, 1, false));
+                if (labelClicked.getResource() != ((ResourceLabel)discardPane.getComponents()[0]).getResource()) {
+                    discardPane.getComponents()[0].dispatchEvent(new MouseEvent(discardPane.getComponents()[0], MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), 0, 10, 10, 1, false));
                 } else { //If they are the same resource type, then don't do anything because the minimum amount of resource cards has already been added
                     return;
                 }
             }
             //Move the minimum amount of labels of the same resource type as the card selected from keepLabels to discardLabels
             int min = 4;
-            if (player.getHarbors().contains(labelClicked.resourceIndex)) {
+            if (player.getHarbors().contains(labelClicked.getResource())) {
                 min = 2;
             } else if (player.getHarbors().contains(GameController.HARBOR_TYPE_ANY)) {
                 min = 3;
             }
-            for (int i = 0; i < keepLabels.size(); i++) {
-                if (discardLabels.size() == min) {
+            ResourceLabel tempLabel;
+            int cardsRemoved = 0;
+            while (cardsRemoved < min) {
+                tempLabel = keepPane.removeResourceCard(labelClicked.getResource());
+                cardsRemoved++;
+                if (tempLabel == null) {
                     break;
-                } else if (keepLabels.get(i).resourceIndex == labelClicked.resourceIndex) {
-                    //Replace the label's current mouse listener with a new DiscardListener
-                    for (MouseListener listener : keepLabels.get(i).getMouseListeners()) {
-                        keepLabels.get(i).removeMouseListener(listener);
+                } else {
+                    for (MouseListener listener : tempLabel.getMouseListeners()) {
+                        tempLabel.removeMouseListener(listener);
                     }
-                    keepLabels.get(i).addMouseListener(new DiscardListener());
-                    discardLabels.add(keepLabels.remove(i));
-                    i--;
+                    tempLabel.addMouseListener(new DiscardListener());
+                    discardPane.addResourceCard(tempLabel);
                 }
             }
-            if (discardLabels.size() < min) {
+            if (discardPane.getComponentCount() < min) {
                 confirmTradeInButton.setEnabled(false);
             } else {
                 confirmTradeInButton.setEnabled(true);
             }
-            update();
+            revalidate();
+            repaint();
         }
     }
 
@@ -292,26 +245,23 @@ public class TradeInFrame extends JFrame {
     private class DiscardListener extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
             //Move all the labels in discardLabels to keepLabels
-            boolean labelTransferred;
-            while (!discardLabels.isEmpty()) {
-                labelTransferred = false;
-                for (MouseListener listener : discardLabels.get(0).getMouseListeners()) {
-                    discardLabels.get(0).removeMouseListener(listener);
-                }
-                discardLabels.get(0).addMouseListener(new KeepListener());
-                for (int i = 0; i < keepLabels.size(); i++) {
-                    if (keepLabels.get(i).resourceIndex >= discardLabels.get(0).resourceIndex) {
-                        keepLabels.add(i, discardLabels.remove(0));
-                        labelTransferred = true;
-                        break;
+            int resourceType = ((ResourceLabel)e.getComponent()).getResource();
+            ResourceLabel tempLabel;
+            while (true) {
+                tempLabel = discardPane.removeResourceCard(resourceType);
+                if (tempLabel == null) {
+                    break;
+                } else {
+                    for (MouseListener listener : tempLabel.getMouseListeners()) {
+                        tempLabel.removeMouseListener(listener);
                     }
-                }
-                if (!labelTransferred) {
-                    keepLabels.add(discardLabels.remove(0));
+                    tempLabel.addMouseListener(new KeepListener());
+                    keepPane.addResourceCard(tempLabel);
                 }
             }
             confirmTradeInButton.setEnabled(false);
-            update();
+            revalidate();
+            repaint();
         }
     }
 
@@ -327,8 +277,8 @@ public class TradeInFrame extends JFrame {
                 dispose();
             } else {
                 desiredResource = resourceComboBox.getSelectedIndex();
-                discardedResource = discardLabels.get(0).resourceIndex;
-                numDiscardedResources = discardLabels.size();
+                discardedResource = ((ResourceLabel)discardPane.getComponents()[0]).getResource();
+                numDiscardedResources = discardPane.getComponentCount();
                 if (desiredResource == discardedResource) {
                     JLabel topWarning = new JLabel("You have selected to receive the same type of resource that you are discarding.");
                     topWarning.setHorizontalAlignment(JLabel.CENTER);
@@ -345,19 +295,6 @@ public class TradeInFrame extends JFrame {
                 } //else
                 triggerButton.doClick();
             }
-        }
-    }
-
-    /*
-     * Represents a resource card in either the keepPane or the discardPane.
-     * Stores the card's resource type.
-     */
-    private class ResourceLabel extends JLabel {
-        private int resourceIndex;
-
-        public ResourceLabel(ImageIcon resourceIcon, int inResourceIndex) {
-            super(resourceIcon);
-            resourceIndex = inResourceIndex;
         }
     }
 

@@ -7,13 +7,13 @@ import soc.base.model.Player;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 /**
  * Tests the PlayerPanel class by constructing a new player with a few resource
  * cards and a few development cards, and then using said player to construct
  * and test a new PlayerPanel. When a button in the PlayerPanel is pressed, the
  * button's action command is printed out.
+ * @author Connor Barnes
  */
 public class PlayerPanelTest {
     private static final String[] PLAYER_COLORS = {"Blue", "Orange", "Red", "White"};

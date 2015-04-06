@@ -290,6 +290,7 @@ public class PlayerPanel extends JPanel {
         return largestArmyPanel;
     }
 
+    /* Shows a larger version of the building costs card. */
     private class CostsCardListener extends MouseAdapter {
         @Override
         public void mouseReleased(MouseEvent e) {

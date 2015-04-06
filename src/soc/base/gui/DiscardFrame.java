@@ -6,7 +6,6 @@ import soc.base.model.Player;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * DiscardFrame is a frame that allows the specified player to discard half of their resource cards (rounding down).
@@ -21,9 +20,8 @@ import java.util.ArrayList;
 public class DiscardFrame extends JFrame {
     //GUI variables
     private GameIcons icons;
-    private JLayeredPane keepPane, discardPane;
+    private CardPane keepPane, discardPane;
     private JButton triggerButton;
-    private ArrayList<ResourceLabel> keepLabels, discardLabels;
     //Information variables
     private int[] discardedResources;
     private Player player;
@@ -41,8 +39,6 @@ public class DiscardFrame extends JFrame {
         icons = inIcons;
         player = inPlayer;
         discardedResources = new int[GameController.RESOURCE_TYPES.length];
-        keepLabels = new ArrayList<ResourceLabel>(player.getSumResourceCards());
-        discardLabels = new ArrayList<ResourceLabel>(player.getSumResourceCards());
 
         //Create the trigger button and add the given ActionListener to it
         triggerButton = new JButton();
@@ -51,17 +47,6 @@ public class DiscardFrame extends JFrame {
         //Set every value in discardedResources to zero (to make counting the discarded cards easier)
         for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
             discardedResources[i] = 0;
-        }
-
-        //Construct a label for each of the player's card and add them to keepLabels
-        ResourceLabel tempLabel;
-        for (int resource = 0; resource < GameController.RESOURCE_TYPES.length; resource++) {
-            for (int i = 0; i < player.getNumResourceCards(resource); i++) {
-                tempLabel = new ResourceLabel(icons.getResourceIcon(resource), resource, keepLabels.size());
-                tempLabel.addMouseListener(new KeepListener());
-                tempLabel.setSize(GameIcons.CARD_WIDTH, GameIcons.CARD_HEIGHT);
-                keepLabels.add(tempLabel);
-            }
         }
 
         //Create the contents of the frame
@@ -89,7 +74,6 @@ public class DiscardFrame extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-        update();
     }
 
     /**
@@ -110,8 +94,11 @@ public class DiscardFrame extends JFrame {
 
     //Builds the panels that hold the cards
     private void buildResourcePanels() {
-        keepPane = new JLayeredPane();
-        discardPane = new JLayeredPane();
+        keepPane = new CardPane(icons, player.getResourceCards());
+        for (Component label : keepPane.getComponents()) {
+            label.addMouseListener(new KeepListener());
+        }
+        discardPane = new CardPane(icons);
         keepPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), GameIcons.CARD_HEIGHT));
         discardPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), GameIcons.CARD_HEIGHT));
     }
@@ -126,99 +113,35 @@ public class DiscardFrame extends JFrame {
         //TODO: Add button to view development cards?
     }
 
-    /*
-     * Updates keepPane and discardPane to show the cards in keepLabels and
-     * discardLabels, respectively.
-     */
-    private void update() {
-        //Update the index in each label's name
-        for (int i = 0; i < keepLabels.size(); i++) {
-            keepLabels.get(i).listIndex = i;
-        }
-        for (int i = 0; i < discardLabels.size(); i++) {
-            discardLabels.get(i).listIndex = i;
-        }
-        //Remove all the labels and re-add them to their panes in order
-        keepPane.removeAll();
-        discardPane.removeAll();
-        //Add the keep labels to keepPane
-        int offset, margin;
-        if (keepLabels.size() * GameIcons.CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
-            offset = GameIcons.CARD_WIDTH - ((keepLabels.size() * GameIcons.CARD_WIDTH - icons.getBoardIcon().getIconWidth()) / (keepLabels.size() - 1));
-            margin = 0;
-        } else {
-            offset = GameIcons.CARD_WIDTH;
-            margin = (icons.getBoardIcon().getIconWidth() - (keepLabels.size() * GameIcons.CARD_WIDTH)) / 2;
-        }
-        for (int i = 0; i < keepLabels.size(); i++) {
-            keepLabels.get(i).setLocation(offset * i + margin, 0);
-            keepPane.add(keepLabels.get(i), new Integer(i));
-        }
-        //Add the discard labels to discardPane
-        if (discardLabels.size() * GameIcons.CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
-            offset = GameIcons.CARD_WIDTH - ((discardLabels.size() * GameIcons.CARD_WIDTH - icons.getBoardIcon().getIconWidth()) / (discardLabels.size() - 1));
-            margin = 0;
-        } else {
-            offset = GameIcons.CARD_WIDTH;
-            margin = (icons.getBoardIcon().getIconWidth() - (discardLabels.size() * GameIcons.CARD_WIDTH)) / 2;
-        }
-        for (int i = 0; i < discardLabels.size(); i++) {
-            discardLabels.get(i).setLocation(offset * i + margin, 0);
-            discardPane.add(discardLabels.get(i), new Integer(i));
-        }
-
-        revalidate();
-        repaint();
-    }
-
     /* Moves the card the card that was clicked from the keep panel to the discard panel */
     private class KeepListener extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
-            ResourceLabel labelClicked = (ResourceLabel) e.getComponent();
+            ResourceLabel labelClicked = keepPane.removeResourceCard(((ResourceLabel) e.getComponent()).getResource());
             //Replace the button's current action listener with a new DiscardListener
-            for (MouseListener listener : keepLabels.get(labelClicked.listIndex).getMouseListeners()) {
-                keepLabels.get(labelClicked.listIndex).removeMouseListener(listener);
+            for (MouseListener listener : labelClicked.getMouseListeners()) {
+                labelClicked.removeMouseListener(listener);
             }
-            keepLabels.get(labelClicked.listIndex).addMouseListener(new DiscardListener());
-
-            //Remove the label from keepLabels and add it to discardLabels
-            boolean labelTransferred = false;
-            for (int i = discardLabels.size() - 1; i >= 0; i--) {
-                if (discardLabels.get(i).resourceIndex <= labelClicked.resourceIndex) {
-                    discardLabels.add(i + 1, keepLabels.remove(labelClicked.listIndex));
-                    labelTransferred = true;
-                    break;
-                }
-            }
-            if (!labelTransferred) {
-                discardLabels.add(0, keepLabels.remove(labelClicked.listIndex));
-            }
-            update();
+            labelClicked.addMouseListener(new DiscardListener());
+            //Move the resource that was clicked from the keep pane to the discard pane
+            discardPane.addResourceCard(labelClicked);
+            revalidate();
+            repaint();
         }
     }
 
     /* Moves the card the card that was clicked from the discard panel to the keep panel */
     private class DiscardListener extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
-            ResourceLabel labelClicked = (ResourceLabel) e.getComponent();
-            //Replace the label's current listener with a new DiscardListener
-            for (MouseListener listener : discardLabels.get(labelClicked.listIndex).getMouseListeners()) {
-                discardLabels.get(labelClicked.listIndex).removeMouseListener(listener);
+            ResourceLabel labelClicked = discardPane.removeResourceCard(((ResourceLabel) e.getComponent()).getResource());
+            //Replace the button's current action listener with a new DiscardListener
+            for (MouseListener listener : labelClicked.getMouseListeners()) {
+                labelClicked.removeMouseListener(listener);
             }
-            discardLabels.get(labelClicked.listIndex).addMouseListener(new KeepListener());
-
-            boolean labelTransferred = false;
-            for (int i = keepLabels.size() - 1; i >= 0; i--) {
-                if (keepLabels.get(i).resourceIndex <= labelClicked.resourceIndex) {
-                    keepLabels.add(i + 1, discardLabels.remove(labelClicked.listIndex));
-                    labelTransferred = true;
-                    break;
-                }
-            }
-            if (!labelTransferred) {
-                keepLabels.add(0, discardLabels.remove(labelClicked.listIndex));
-            }
-            update();
+            labelClicked.addMouseListener(new KeepListener());
+            //Move the resource that was clicked from the keep pane to the discard pane
+            keepPane.addResourceCard(labelClicked);
+            revalidate();
+            repaint();
         }
     }
 
@@ -227,17 +150,18 @@ public class DiscardFrame extends JFrame {
      */
     private class ConfirmDiscardListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if (discardLabels.size() < (player.getSumResourceCards() / 2)) {
+            Component[] discardLabels = discardPane.getComponents();
+            if (discardLabels.length < (player.getSumResourceCards() / 2)) {
                 JOptionPane.showMessageDialog(null, "You must discard at least " + (player.getSumResourceCards() / 2)
                         + " resource cards", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 String confirmMessage = "Are you sure you want to discard these cards?";
-                if ((discardLabels.size() > (player.getSumResourceCards() / 2)) ) {
+                if ((discardLabels.length > (player.getSumResourceCards() / 2)) ) {
                     confirmMessage = "You are about to discard more resource cards than you need to. Are you sure you want to do this?";
                 }
                 if (JOptionPane.showConfirmDialog(null, confirmMessage, "Warning!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-                    for (ResourceLabel label : discardLabels) {
-                        discardedResources[label.resourceIndex]++;
+                    for (Component label : discardLabels) {
+                        discardedResources[((ResourceLabel)label).getResource()]++;
                     }
                     //Notify GameView that all the necessary data has been read in and stored
                     triggerButton.doClick();
@@ -250,20 +174,6 @@ public class DiscardFrame extends JFrame {
         public void windowClosing(WindowEvent e) {
             JOptionPane.showMessageDialog(null, "You must discard half of your resource cards before continuing",
                     "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    /*
-     * Represents a resource card in either the keep or discard pane. Stores the card's resource type and its index
-     * in its ArrayList.
-     */
-    private class ResourceLabel extends JLabel {
-        private int resourceIndex, listIndex;
-
-        public ResourceLabel(ImageIcon resourceIcon, int inResourceIndex, int inListIndex) {
-            super(resourceIcon);
-            resourceIndex = inResourceIndex;
-            listIndex = inListIndex;
         }
     }
 }
