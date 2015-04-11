@@ -12,6 +12,7 @@ import java.util.HashMap;
  * @author Connor Barnes
  */
 public class GameIcons {
+    public static final int BOARD_WIDTH = 632;
     public static final int CARD_WIDTH = 90;
     public static final int CARD_HEIGHT = 135;
     public static final boolean PLAYER_TOKEN_STAR = true;

@@ -4,7 +4,7 @@ package soc.base.model;
  * Represents a Development Card.
  * @author Connor Barnes
  */
-public class DevelopmentCard implements Comparable<DevelopmentCard> {
+public class DevelopmentCard {
     private String title, description;
 
     /**
@@ -54,25 +54,5 @@ public class DevelopmentCard implements Comparable<DevelopmentCard> {
         } else {
             description = "1 Victory Point!";
         }
-    }
-
-    /**
-     * Compares this Development Card to the specified Development Card. If
-     * both this card and the specified card are victory point cards, the
-     * comparison of this card's title to the specified card's title is
-     * returned. Otherwise, the comparison of this card's description to the
-     * specified card's description is returned.
-     * @param devCard the Development Card that is compared to this Development
-     *                Card
-     * @return if both cards are victory point cards, the comparison of their
-     * titles is returned. Otherwise, the comparison of their descriptions is
-     * returned.
-     */
-    //TODO: Add annotation to devCard argument?
-    public int compareTo(DevelopmentCard devCard) {
-        if (description.equals("1 Victory Point") && devCard.description.equals("1 Victory Point")) {
-            return title.compareTo(devCard.title);
-        } //else
-        return description.compareTo(devCard.description);
     }
 }

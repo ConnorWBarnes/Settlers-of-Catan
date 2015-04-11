@@ -6,6 +6,7 @@ import soc.base.model.Player;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * DiscardFrame is a frame that allows the specified player to discard half of their resource cards (rounding down).
@@ -94,13 +95,18 @@ public class DiscardFrame extends JFrame {
 
     //Builds the panels that hold the cards
     private void buildResourcePanels() {
-        keepPane = new CardPane(icons, player.getResourceCards());
-        for (Component label : keepPane.getComponents()) {
-            label.addMouseListener(new KeepListener());
+        ArrayList<JLabel> cards = new ArrayList<JLabel>(player.getSumResourceCards());
+        JLabel tempLabel;
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            for (int j = 0; j < player.getNumResourceCards(i); j++) {
+                tempLabel = new JLabel(icons.getResourceIcon(i));
+                tempLabel.setName(String.valueOf(i));
+                tempLabel.addMouseListener(new KeepListener());
+                cards.add(tempLabel);
+            }
         }
-        discardPane = new CardPane(icons);
-        keepPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), GameIcons.CARD_HEIGHT));
-        discardPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), GameIcons.CARD_HEIGHT));
+        keepPane = new CardPane(cards, GameIcons.BOARD_WIDTH);
+        discardPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
     }
 
     //Builds the panel that holds the discard button
@@ -116,14 +122,14 @@ public class DiscardFrame extends JFrame {
     /* Moves the card the card that was clicked from the keep panel to the discard panel */
     private class KeepListener extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
-            ResourceLabel labelClicked = keepPane.removeResourceCard(((ResourceLabel) e.getComponent()).getResource());
+            JLabel labelClicked = keepPane.removeResourceCard(e.getComponent().getName());
             //Replace the button's current action listener with a new DiscardListener
             for (MouseListener listener : labelClicked.getMouseListeners()) {
                 labelClicked.removeMouseListener(listener);
             }
             labelClicked.addMouseListener(new DiscardListener());
             //Move the resource that was clicked from the keep pane to the discard pane
-            discardPane.addResourceCard(labelClicked);
+            discardPane.addCard(labelClicked);
             revalidate();
             repaint();
         }
@@ -132,14 +138,14 @@ public class DiscardFrame extends JFrame {
     /* Moves the card the card that was clicked from the discard panel to the keep panel */
     private class DiscardListener extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
-            ResourceLabel labelClicked = discardPane.removeResourceCard(((ResourceLabel) e.getComponent()).getResource());
+            JLabel labelClicked = discardPane.removeResourceCard(e.getComponent().getName());
             //Replace the button's current action listener with a new DiscardListener
             for (MouseListener listener : labelClicked.getMouseListeners()) {
                 labelClicked.removeMouseListener(listener);
             }
             labelClicked.addMouseListener(new KeepListener());
             //Move the resource that was clicked from the keep pane to the discard pane
-            keepPane.addResourceCard(labelClicked);
+            keepPane.addCard(labelClicked);
             revalidate();
             repaint();
         }
@@ -161,7 +167,7 @@ public class DiscardFrame extends JFrame {
                 }
                 if (JOptionPane.showConfirmDialog(null, confirmMessage, "Warning!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
                     for (Component label : discardLabels) {
-                        discardedResources[((ResourceLabel)label).getResource()]++;
+                        discardedResources[Integer.parseInt(label.getName())]++;
                     }
                     //Notify GameView that all the necessary data has been read in and stored
                     triggerButton.doClick();

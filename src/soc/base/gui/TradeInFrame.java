@@ -120,15 +120,17 @@ public class TradeInFrame extends JFrame {
      * @return a JPanel containing keepPane
      */
     private JPanel buildKeepPanel() {
-        keepPane = new CardPane(icons, player.getResourceCards());
-        if (player.getSumResourceCards() * GameIcons.CARD_WIDTH > icons.getBoardIcon().getIconWidth()) {
-            keepPane.setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), GameIcons.CARD_HEIGHT));
-        } else {
-            keepPane.setPreferredSize(new Dimension(player.getSumResourceCards() * GameIcons.CARD_WIDTH, GameIcons.CARD_HEIGHT));
+        ArrayList<JLabel> cards = new ArrayList<JLabel>(player.getSumResourceCards());
+        JLabel tempLabel;
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            for (int j = 0; j < player.getNumResourceCards(i); j++) {
+                tempLabel = new JLabel(icons.getResourceIcon(i));
+                tempLabel.setName(String.valueOf(i));
+                tempLabel.addMouseListener(new KeepListener());
+                cards.add(tempLabel);
+            }
         }
-        for (Component comp : keepPane.getComponents()) {
-            comp.addMouseListener(new KeepListener());
-        }
+        keepPane = new CardPane(cards, GameIcons.BOARD_WIDTH);
         JPanel cardPanel = new JPanel();
         cardPanel.add(keepPane);
         cardPanel.setBorder(BorderFactory.createTitledBorder("Your Resource Cards"));
@@ -142,8 +144,7 @@ public class TradeInFrame extends JFrame {
      */
     private JPanel buildDiscardPanel() {
         //Construct discardPane
-        discardPane = new CardPane(icons);
-        discardPane.setPreferredSize(new Dimension((int) (GameIcons.CARD_WIDTH * 1.5), GameIcons.CARD_HEIGHT));
+        discardPane = new CardPane((int) (GameIcons.CARD_WIDTH * 1.5), GameIcons.CARD_HEIGHT);
         //Construct the JComboBox that holds each resource type
         ImageIcon[] resourceIcons = new ImageIcon[GameController.RESOURCE_TYPES.length];
         for (int i = 0; i < resourceIcons.length; i++) {
@@ -195,12 +196,12 @@ public class TradeInFrame extends JFrame {
      * keepPane/keepLabels.
      */
     private class KeepListener extends MouseAdapter {
+        @Override
         public void mouseReleased(MouseEvent e) {
-            ResourceLabel labelClicked = (ResourceLabel) e.getComponent();
             if (discardPane.getComponentCount() > 0) {
                 //If the resource that was clicked on is not the same type as the resource(s) already selected for discard,
                 //remove all the labels in discardLabels
-                if (labelClicked.getResource() != ((ResourceLabel)discardPane.getComponents()[0]).getResource()) {
+                if (!e.getComponent().getName().equals(discardPane.getComponents()[0].getName())) {
                     discardPane.getComponents()[0].dispatchEvent(new MouseEvent(discardPane.getComponents()[0], MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), 0, 10, 10, 1, false));
                 } else { //If they are the same resource type, then don't do anything because the minimum amount of resource cards has already been added
                     return;
@@ -208,15 +209,15 @@ public class TradeInFrame extends JFrame {
             }
             //Move the minimum amount of labels of the same resource type as the card selected from keepLabels to discardLabels
             int min = 4;
-            if (player.getHarbors().contains(labelClicked.getResource())) {
+            if (player.getHarbors().contains(Integer.parseInt(e.getComponent().getName()))) {
                 min = 2;
             } else if (player.getHarbors().contains(GameController.HARBOR_TYPE_ANY)) {
                 min = 3;
             }
-            ResourceLabel tempLabel;
+            JLabel tempLabel;
             int cardsRemoved = 0;
             while (cardsRemoved < min) {
-                tempLabel = keepPane.removeResourceCard(labelClicked.getResource());
+                tempLabel = keepPane.removeResourceCard(e.getComponent().getName());
                 cardsRemoved++;
                 if (tempLabel == null) {
                     break;
@@ -225,7 +226,7 @@ public class TradeInFrame extends JFrame {
                         tempLabel.removeMouseListener(listener);
                     }
                     tempLabel.addMouseListener(new DiscardListener());
-                    discardPane.addResourceCard(tempLabel);
+                    discardPane.addCard(tempLabel);
                 }
             }
             if (discardPane.getComponentCount() < min) {
@@ -245,10 +246,9 @@ public class TradeInFrame extends JFrame {
     private class DiscardListener extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
             //Move all the labels in discardLabels to keepLabels
-            int resourceType = ((ResourceLabel)e.getComponent()).getResource();
-            ResourceLabel tempLabel;
+            JLabel tempLabel;
             while (true) {
-                tempLabel = discardPane.removeResourceCard(resourceType);
+                tempLabel = discardPane.removeResourceCard(e.getComponent().getName());
                 if (tempLabel == null) {
                     break;
                 } else {
@@ -256,7 +256,7 @@ public class TradeInFrame extends JFrame {
                         tempLabel.removeMouseListener(listener);
                     }
                     tempLabel.addMouseListener(new KeepListener());
-                    keepPane.addResourceCard(tempLabel);
+                    keepPane.addCard(tempLabel);
                 }
             }
             confirmTradeInButton.setEnabled(false);
@@ -277,7 +277,7 @@ public class TradeInFrame extends JFrame {
                 dispose();
             } else {
                 desiredResource = resourceComboBox.getSelectedIndex();
-                discardedResource = ((ResourceLabel)discardPane.getComponents()[0]).getResource();
+                discardedResource = Integer.parseInt(discardPane.getComponents()[0].getName());
                 numDiscardedResources = discardPane.getComponentCount();
                 if (desiredResource == discardedResource) {
                     JLabel topWarning = new JLabel("You have selected to receive the same type of resource that you are discarding.");

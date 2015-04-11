@@ -1,6 +1,8 @@
 package soc.base.model;
 
 import soc.base.GameController;
+
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ArrayList;
 
@@ -9,21 +11,26 @@ import java.util.ArrayList;
  * @author Connor Barnes
  */
 public class Player {
+    public static final String BLUE = "Blue";
+    public static final String ORANGE = "Orange";
+    public static final String RED = "Red";
+    public static final String WHITE = "White";
+
     private String color, name;//The color of this player's tokens (i.e. settlements, roads, etc.)
     private int numRemainingSettlements, numRemainingCities, numRemainingRoads;//Number of remaining tokens this player has
     private int[] resourceCards;
     private ArrayList<DevelopmentCard> devCards;
     private LinkedList<Integer> settlementLocs;//Locations of settlements and cities owned by this player
     private LinkedList<Integer> roadLocs;//Locations of the roads owned by this player
-    private ArrayList<Integer> harbors;//All types of harbors that this player has access to
+    private HashSet<Integer> harbors;//All types of harbors that this player has access to
     private int victoryPoints, longestRoadLength, numKnightCardsPlayed;
     private boolean longestRoad, largestArmy;//Whether or not this player has Longest Road or Largest Army, respectively
 
     /**
-     * Constructs a player without a color with the name "John Doe".
+     * Constructs a player with red player tokens and with the name "John Doe".
      */
     public Player() {
-        color = null;
+        color = RED;
         name = "John Doe";
         resourceCards = new int[GameController.RESOURCE_TYPES.length];
         for (int i = 0; i < resourceCards.length; i++) {
@@ -35,7 +42,7 @@ public class Player {
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
         roadLocs = new LinkedList<Integer>();
-        harbors = new ArrayList<Integer>(GameController.HARBOR_TYPE_ANY);
+        harbors = new HashSet<Integer>();
         victoryPoints = 0;
         longestRoadLength = 0;
         numKnightCardsPlayed = 0;
@@ -60,7 +67,7 @@ public class Player {
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
         roadLocs = new LinkedList<Integer>();
-        harbors = new ArrayList<Integer>(GameController.HARBOR_TYPE_ANY);
+        harbors = new HashSet<Integer>();
         victoryPoints = 0;
         longestRoadLength = 0;
         numKnightCardsPlayed = 0;
@@ -86,7 +93,7 @@ public class Player {
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
         roadLocs = new LinkedList<Integer>();
-        harbors = new ArrayList<Integer>(GameController.HARBOR_TYPE_ANY);
+        harbors = new HashSet<Integer>();
         victoryPoints = 0;
         longestRoadLength = 0;
         numKnightCardsPlayed = 0;
@@ -111,7 +118,7 @@ public class Player {
         devCards = new ArrayList<DevelopmentCard>(inPlayer.devCards);
         settlementLocs = new LinkedList<Integer>(inPlayer.settlementLocs);
         roadLocs = new LinkedList<Integer>(inPlayer.roadLocs);
-        harbors = new ArrayList<Integer>(inPlayer.harbors);
+        harbors = new HashSet<Integer>(inPlayer.harbors);
         victoryPoints = inPlayer.victoryPoints;
         longestRoadLength = inPlayer.longestRoadLength;
         numKnightCardsPlayed = inPlayer.numKnightCardsPlayed;
@@ -271,9 +278,7 @@ public class Player {
      */
     public void addHarbor(int type) {
         //TODO: Throw exception if type > GameController.HARBOR_TYPE_ANY?
-        if (!harbors.contains(type)) {
-            harbors.add(type);
-        }
+        harbors.add(type);
     }
 
     /**
@@ -286,9 +291,7 @@ public class Player {
         } else {
             for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
                 if (GameController.RESOURCE_TYPES[i].equals(type)) {
-                    if (!harbors.contains(i)) {
-                        harbors.add(i);
-                    }
+                    harbors.add(i);
                     break;
                 }
             }
@@ -449,8 +452,8 @@ public class Player {
      * Returns a list of all the harbors that this player can access.
      * @return a list of all the harbors that this player can access
      */
-    public ArrayList<Integer> getHarbors() {
-        return new ArrayList<Integer>(harbors);
+    public HashSet<Integer> getHarbors() {
+        return new HashSet<Integer>(harbors);
     }
 
     /**
