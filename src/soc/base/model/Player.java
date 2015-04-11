@@ -11,12 +11,6 @@ import java.util.ArrayList;
  * @author Connor Barnes
  */
 public class Player {
-    //Player colors
-    public static final String BLUE = "Blue";
-    public static final String ORANGE = "Orange";
-    public static final String RED = "Red";
-    public static final String WHITE = "White";
-
     private String color, name;//The color of this player's tokens (i.e. settlements, roads, etc.)
     private int numRemainingSettlements, numRemainingCities, numRemainingRoads;//Number of remaining tokens this player has
     private int[] resourceCards;
@@ -31,7 +25,7 @@ public class Player {
      * Constructs a player with red player tokens and with the name "John Doe".
      */
     public Player() {
-        color = RED;
+        color = "Red";
         name = "John Doe";
         resourceCards = new int[GameController.RESOURCE_TYPES.length];
         for (int i = 0; i < resourceCards.length; i++) {

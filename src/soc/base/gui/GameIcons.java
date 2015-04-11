@@ -92,7 +92,6 @@ public class GameIcons {
             devCardIcons.put(devCard, createImageIcon(filePath + devCard + ".png", devCard));
         }
         devCardBackIcon = createImageIcon(filePath + "Development Card Back.png", "Development Cards");
-        //TODO: Populate harborIcons
         filePath = "Images/Harbors/";
         for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
             harborIcons.put(i, createImageIcon(filePath + GameController.RESOURCE_TYPES[i] + ".png", GameController.RESOURCE_TYPES[i]));

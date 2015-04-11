@@ -35,7 +35,7 @@ public class DevelopmentCard {
 
     /**
      * Returns the description of this Development Card.
-     * @return the description of this Developmnet Card
+     * @return the description of this Development Card
      */
     public String getDescription() {
         return description;
