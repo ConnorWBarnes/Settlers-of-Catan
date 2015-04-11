@@ -7,10 +7,11 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 
 /**
- * Represents a person playing Settlers of Catan.
+ * Represents a player in a game of Settlers of Catan.
  * @author Connor Barnes
  */
 public class Player {
+    //Player colors
     public static final String BLUE = "Blue";
     public static final String ORANGE = "Orange";
     public static final String RED = "Red";
