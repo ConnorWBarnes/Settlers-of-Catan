@@ -29,7 +29,9 @@ public class GameIcons {
     private HashMap<String, ImageIcon> devCardIcons;//Key is the title of the development card
     private HashMap<String, ImageIcon> scaledCostsCardIcons;//Key is the color of the card
     private HashMap<String, ImageIcon> unscaledCostsCardIcons;//Key is the color of the card
-    private HashMap<Integer, ImageIcon> harborIcons;
+    private HashMap<Integer, ImageIcon> harborIcons;//Key is the type of resource
+    private HashMap<Integer, ImageIcon> redDieIcons;//Key is the number of dots
+    private HashMap<Integer, ImageIcon> yellowDieIcons;//Key is the number of dots
     private ImageIcon boardIcon, robberIcon, resourceCardBackIcon, devCardBackIcon, longestRoadIcon, largestArmyIcon;
     private ImageIcon tokenStarIcon, robberStarIcon, cancelIcon;
 
@@ -46,6 +48,8 @@ public class GameIcons {
         scaledCostsCardIcons = new HashMap<String, ImageIcon>();
         unscaledCostsCardIcons = new HashMap<String, ImageIcon>();
         harborIcons = new HashMap<Integer, ImageIcon>();
+        redDieIcons = new HashMap<Integer, ImageIcon>();
+        yellowDieIcons = new HashMap<Integer, ImageIcon>();
         String filePath;
 
         //Populate tileIcons
@@ -54,11 +58,13 @@ public class GameIcons {
         for (String terrain : tileTerrains) {
             tileIcons.put(terrain, createImageIcon(filePath + terrain + " Tile.png", terrain));
         }
+
         //Populate numberTokenIcons
         filePath = "Images/Number Tokens/";
         for (int i = 'A'; i < 'S'; i++) {
             numberTokenIcons.put((char) i, createImageIcon(filePath + Character.toString((char) i) + ".png", Character.toString((char) i)));
         }
+
         //Populate the map for each player token
         filePath = "Images/Player Tokens/";
         String[] playerColors = {"Blue", "Orange", "Red", "White"};
@@ -69,22 +75,26 @@ public class GameIcons {
             negativeSlopeRoadIcons.put(color, createImageIcon(filePath + "Negative Slope Roads/" + color + " Negative Slope Road.png", color));
             positiveSlopeRoadIcons.put(color, createImageIcon(filePath + "Positive Slope Roads/" + color + " Positive Slope Road.png", color));
         }
+
         //Populate scaledCostsCardIcons
         filePath = "Images/Building Costs Cards/Scaled/";
         for (String color : playerColors) {
             scaledCostsCardIcons.put(color, createImageIcon(filePath + color + " Building Costs Card.png", "Building Costs"));
         }
+
         //Populate unscaledCostsCardIcons
         filePath = "Images/Building Costs Cards/Unscaled/";
         for (String color : playerColors) {
             unscaledCostsCardIcons.put(color, createImageIcon(filePath + color + " Building Costs Card.png", "Building Costs"));
         }
+
         //Populate resourceIcons
         filePath = "Images/Resource Cards/";
         for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
             resourceIcons.put(i, createImageIcon(filePath + GameController.RESOURCE_TYPES[i] + ".png", GameController.RESOURCE_TYPES[i]));
         }
         resourceCardBackIcon = createImageIcon(filePath + "Resource Card Back.png", "Resource Cards");
+
         //Populate devCardIcons
         filePath = "Images/Development Cards/";
         String[] devCards = {"Chapel", "Knight", "Library", "Market", "Monopoly", "Palace", "Road Building", "University", "Year of Plenty"};
@@ -92,11 +102,21 @@ public class GameIcons {
             devCardIcons.put(devCard, createImageIcon(filePath + devCard + ".png", devCard));
         }
         devCardBackIcon = createImageIcon(filePath + "Development Card Back.png", "Development Cards");
+
+        //Populate harborIcons
         filePath = "Images/Harbors/";
         for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
             harborIcons.put(i, createImageIcon(filePath + GameController.RESOURCE_TYPES[i] + ".png", GameController.RESOURCE_TYPES[i]));
         }
         harborIcons.put(GameController.HARBOR_TYPE_ANY, createImageIcon(filePath + "Any.png", "Any"));
+
+        //Populate redDieIcons and yellowDieIcons
+        filePath = "Images/Dice/";
+        for (int i = 1; i < 7; i++) {
+            redDieIcons.put(i, createImageIcon(filePath + "Red Die/" + i + ".png", String.valueOf(i)));
+            yellowDieIcons.put(i, createImageIcon(filePath + "Yellow Die/" + i + ".png", String.valueOf(i)));
+        }
+
         //Last miscellaneous icons
         filePath = "Images/";
         boardIcon = createImageIcon(filePath + "Game Board.png", "");
@@ -272,6 +292,24 @@ public class GameIcons {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the ImageIcon of the red die with the specified number of dots.
+     * @param dots the number of dots on the die
+     * @return the ImageIcon of the red die with the specified number of dots
+     */
+    public ImageIcon getRedDieIcon(int dots) {
+        return redDieIcons.get(dots);
+    }
+
+    /**
+     * Returns the ImageIcon of the yellow die with the specified number of dots.
+     * @param dots the number of dots on the die
+     * @return the ImageIcon of the yellow die with the specified number of dots
+     */
+    public ImageIcon getYellowDieIcon(int dots) {
+        return yellowDieIcons.get(dots);
     }
 
     /**
