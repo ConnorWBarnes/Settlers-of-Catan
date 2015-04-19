@@ -18,10 +18,10 @@ public class DiscardFrameTest {
     public DiscardFrameTest() {
         GameIcons icons = new GameIcons();
         Player player = new Player("John Doe", "Red");
-        for (String resourceType : GameController.RESOURCE_TYPES) {
-            player.giveResource(resourceType, 2);
+        for (int i = 1; i <= GameController.RESOURCE_TYPES.length; i++) {
+            player.giveResource(i, 2);
         }
-        player.takeResource("Lumber", 1);
+        player.takeResource(GameController.LUMBER, 1);
         discardFrame = new DiscardFrame(icons, new TestListener(), player);
     }
 

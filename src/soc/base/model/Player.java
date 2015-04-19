@@ -158,22 +158,6 @@ public class Player {
     }
 
     /**
-     * Gives this player the specified amount of resource cards of the
-     * specified type.
-     * @param resource the type of resource cards to give
-     * @param amount the number of resource cards to give
-     */
-    public void giveResource(String resource, int amount) {
-        //TODO: Throw exception when amount < 0 or when trying to take more resources than the player has?
-        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-            if (GameController.RESOURCE_TYPES[i].equals(resource)) {
-                resourceCards[i] += amount;
-                break;
-            }
-        }
-    }
-
-    /**
      * Takes the specified amount of resource cards of the specified type.
      * @param resource the index of the type of resource in
      *                 GameController.RESOURCE_CARDS to take
@@ -182,21 +166,6 @@ public class Player {
     public void takeResource(int resource, int amount) {
         //TODO: Throw exception when amount < 0 or when trying to take more resources than the player has?
         resourceCards[resource] -= amount;
-    }
-
-    /**
-     * Takes the specified amount of resource cards of the specified type.
-     * @param resource the type of resource cards to take
-     * @param amount the number of resource cards to take
-     */
-    public void takeResource(String resource, int amount) {
-        //TODO: Throw exception when amount > 0 or when trying to take more resources than the player has?
-        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-            if (GameController.RESOURCE_TYPES[i].equals(resource)) {
-                resourceCards[i] -= amount;
-                break;
-            }
-        }
     }
 
     /**
@@ -249,7 +218,6 @@ public class Player {
      * a settlement with a city.
      */
     public void upgradeSettlement() {
-        //Error checking occurs in controller
         numRemainingSettlements++;
         numRemainingCities--;
         victoryPoints++;
@@ -261,7 +229,6 @@ public class Player {
      * @param roadLoc the location of the new road
      */
     public void addRoad(int roadLoc) {
-        //Error checking occurs in controller
         roadLocs.add(roadLoc);
         numRemainingRoads--;
     }
@@ -274,23 +241,6 @@ public class Player {
     public void addHarbor(int type) {
         //TODO: Throw exception if type > GameController.HARBOR_TYPE_ANY?
         harbors.add(type);
-    }
-
-    /**
-     * Adds the specified harbor to the list of harbors this player can access.
-     * @param type the resource type that the new harbor affects
-     */
-    public void addHarbor(String type) {
-        if (type.equals("Any") && !harbors.contains(GameController.HARBOR_TYPE_ANY)) {
-            harbors.add(GameController.HARBOR_TYPE_ANY);
-        } else {
-            for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-                if (GameController.RESOURCE_TYPES[i].equals(type)) {
-                    harbors.add(i);
-                    break;
-                }
-            }
-        }
     }
 
     /**
@@ -362,18 +312,6 @@ public class Player {
     }
 
     /**
-     * Returns an array of the number of resource cards of each type this
-     * player has.
-     * @return an array of the number of resource cards of each type this
-     * player has
-     */
-    public int[] getResourceCards() {
-        int[] temp = new int[resourceCards.length];
-        System.arraycopy(resourceCards, 0, temp, 0, resourceCards.length);
-        return temp;
-    }
-
-    /**
      * Returns the number of resource cards of the specified type that this
      * player has.
      * @param resource the index of the type of resource in
@@ -382,21 +320,6 @@ public class Player {
      */
     public int getNumResourceCards(int resource) {
         return resourceCards[resource];
-    }
-
-    /**
-     * Returns the number of resource cards of the specified type that this
-     * player has. Returns -1 if the specified resource does not exist.
-     * @param resource the type of resource
-     * @return the number of resource cards of the specified type
-     */
-    public int getNumResourceCards(String resource) {
-        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-            if (GameController.RESOURCE_TYPES[i].equals(resource)) {
-                return resourceCards[i];
-            }
-        }
-        return -1;
     }
 
     /**

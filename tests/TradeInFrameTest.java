@@ -20,9 +20,9 @@ public class TradeInFrameTest {
     public TradeInFrameTest() {
         GameIcons icons = new GameIcons();
         Player player = new Player("John Doe", "Red");
-        player.giveResource(GameController.RESOURCE_TYPES[0], 4);
-        player.giveResource(GameController.RESOURCE_TYPES[1], 3);
-        player.giveResource(GameController.RESOURCE_TYPES[2], 2);
+        player.giveResource(GameController.BRICK, 4);
+        player.giveResource(GameController.GRAIN, 3);
+        player.giveResource(GameController.LUMBER, 2);
         player.addHarbor(GameController.RESOURCE_TYPES.length - 1);
         player.addHarbor(GameController.HARBOR_TYPE_ANY);
         tradeInFrame = new TradeInFrame(icons, new TestListener(), player);

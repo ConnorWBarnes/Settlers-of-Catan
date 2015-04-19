@@ -225,20 +225,6 @@ public class GameIcons {
     }
 
     /**
-     * Returns the ImageIcon of a resource card of the specified type.
-     * @param resource the type of resource
-     * @return the ImageIcon of a resource card of the specified type
-     */
-    public ImageIcon getResourceIcon(String resource) {
-        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-            if (GameController.RESOURCE_TYPES[i].equals(resource)) {
-                return resourceIcons.get(i);
-            }
-        }
-        return null;
-    }
-
-    /**
      * Returns the ImageIcon of a development card with the specified title.
      * @param title the title of the development card
      * @return the ImageIcon of a development card with the specified title
