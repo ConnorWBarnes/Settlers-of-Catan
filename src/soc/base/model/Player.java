@@ -18,7 +18,7 @@ public class Player {
     private LinkedList<Integer> settlementLocs;//Locations of settlements and cities owned by this player
     private LinkedList<Integer> roadLocs;//Locations of the roads owned by this player
     private HashSet<Integer> harbors;//All types of harbors that this player has access to
-    private int victoryPoints, longestRoadLength, numKnightCardsPlayed;
+    private int sumResourceCards, victoryPoints, longestRoadLength, numKnightCardsPlayed;
     private boolean longestRoad, largestArmy;//Whether or not this player has Longest Road or Largest Army, respectively
 
     /**
@@ -31,6 +31,7 @@ public class Player {
         for (int i = 0; i < resourceCards.length; i++) {
             resourceCards[i] = 0;
         }
+        sumResourceCards = 0;
         numRemainingSettlements = 5;
         numRemainingCities = 4;
         numRemainingRoads = 15;
@@ -56,6 +57,7 @@ public class Player {
         for (int i = 0; i < resourceCards.length; i++) {
             resourceCards[i] = 0;
         }
+        sumResourceCards = 0;
         numRemainingSettlements = 5;
         numRemainingCities = 4;
         numRemainingRoads = 15;
@@ -82,6 +84,7 @@ public class Player {
         for (int i = 0; i < resourceCards.length; i++) {
             resourceCards[i] = 0;
         }
+        sumResourceCards = 0;
         numRemainingSettlements = 5;
         numRemainingCities = 4;
         numRemainingRoads = 15;
@@ -107,6 +110,7 @@ public class Player {
         for (int i = 0; i < resourceCards.length; i++) {
             resourceCards[i] = 0;
         }
+        sumResourceCards = inPlayer.sumResourceCards;
         numRemainingSettlements = inPlayer.numRemainingSettlements;
         numRemainingCities = inPlayer.numRemainingCities;
         numRemainingRoads = inPlayer.numRemainingRoads;
@@ -155,6 +159,7 @@ public class Player {
     public void giveResource(int resource, int amount) {
         //TODO: Throw exception when amount < 0 or when trying to take more resources than the player has?
         resourceCards[resource] += amount;
+        sumResourceCards += amount;
     }
 
     /**
@@ -166,6 +171,7 @@ public class Player {
     public void takeResource(int resource, int amount) {
         //TODO: Throw exception when amount < 0 or when trying to take more resources than the player has?
         resourceCards[resource] -= amount;
+        sumResourceCards -= amount;
     }
 
     /**
@@ -327,11 +333,7 @@ public class Player {
      * @return the total number of resource cards that this player has
      */
     public int getSumResourceCards() {
-        int sum = 0;
-        for (int num : resourceCards) {
-            sum += num;
-        }
-        return sum;
+        return sumResourceCards;
     }
 
     /**

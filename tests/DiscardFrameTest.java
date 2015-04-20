@@ -18,7 +18,7 @@ public class DiscardFrameTest {
     public DiscardFrameTest() {
         GameIcons icons = new GameIcons();
         Player player = new Player("John Doe", "Red");
-        for (int i = 1; i <= GameController.RESOURCE_TYPES.length; i++) {
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
             player.giveResource(i, 2);
         }
         player.takeResource(GameController.LUMBER, 1);

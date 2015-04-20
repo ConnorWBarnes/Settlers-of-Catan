@@ -1,5 +1,7 @@
 package soc.base.gui;
 
+import soc.base.GameController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +13,6 @@ import java.util.ArrayList;
  * @author Connor Barnes
  */
 public class CreatePlayersFrame extends JFrame {
-    private static final String[] PLAYER_COLORS = {"Blue", "Orange", "Red", "White"};//This will need to become modular in order to support the 5-6 player expansion
     //GUI variables
     private JButton triggerButton;
     private JTextField[] nameFields;
@@ -25,10 +26,10 @@ public class CreatePlayersFrame extends JFrame {
         triggerButton = new JButton();
         triggerButton.addActionListener(triggerListener);
 
-        nameFields = new JTextField[PLAYER_COLORS.length];
-        colorBoxes = new JComboBox[PLAYER_COLORS.length];
+        nameFields = new JTextField[GameController.PLAYER_COLORS.length];
+        colorBoxes = new JComboBox[GameController.PLAYER_COLORS.length];
         //Create information fields for each player
-        JPanel[] panels = new JPanel[PLAYER_COLORS.length];
+        JPanel[] panels = new JPanel[GameController.PLAYER_COLORS.length];
         JPanel tempPanel;
         JLabel tempLabel;
         for (int i = 0; i < panels.length; i++) {
@@ -39,7 +40,7 @@ public class CreatePlayersFrame extends JFrame {
             //Create and add the color combo box
             tempLabel = new JLabel("Color:");
             tempLabel.setHorizontalAlignment(JLabel.RIGHT);
-            colorBoxes[i] = new JComboBox<String>(PLAYER_COLORS);
+            colorBoxes[i] = new JComboBox<String>(GameController.PLAYER_COLORS);
             colorBoxes[i].setSelectedIndex(i);
             tempPanel.add(tempLabel);
             tempPanel.add(colorBoxes[i]);
@@ -105,7 +106,7 @@ public class CreatePlayersFrame extends JFrame {
             for (int i = 0; i < nameFields.length; i++) {
                 if (nameFields[i].getText().length() > 0) {
                     names.add(nameFields[i].getText());
-                    colors.add(PLAYER_COLORS[colorBoxes[i].getSelectedIndex()]);
+                    colors.add(GameController.PLAYER_COLORS[colorBoxes[i].getSelectedIndex()]);
                 }
             }
             if (names.size() == 0) {
