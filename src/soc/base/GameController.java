@@ -8,7 +8,6 @@ import soc.base.model.Board;
 import soc.base.model.Player;
 
 import javax.swing.*;
-import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,6 +44,10 @@ public class GameController {
     //Setup variables
     private Iterator<Player> setupIterator;
     private ArrayList<Integer> validSetupSettlementLocs;
+
+    public static void main(String[] args) {
+        new GameController();
+    }
 
     public GameController() {
         icons = new GameIcons();

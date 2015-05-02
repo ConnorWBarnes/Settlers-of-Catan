@@ -23,13 +23,10 @@ public class BoardPane extends JLayeredPane {
     public static final int LOC_TYPE_SETTLEMENT = 1;
     public static final int LOC_TYPE_ROBBER = 2;
 
-	/*
-	 * Objects on each layer:
-	 * JLayeredPane.DEFAULT_LAYER: Surrounding board (i.e. the ocean)
-	 * JLayeredPane.PALETTE_LAYER: Tile hexes (i.e. Mountain, Pasture, etc.)
-	 * JLayeredPane.MODAL_LAYER: Number tokens, roads, settlements, and cities
-     * JLayeredPane.POPUP_LAYER: Stars, cancel button, and the robber
-	 */
+    private final Integer BACKGROUND_LAYER = 0; //Surrounding board (i.e. the ocean)
+    private final Integer TILE_LAYER = 1;       //Terrain hexes (i.e. Mountain, Pasture, etc.)
+    private final Integer TOKEN_LAYER = 2;      //Number tokens, roads, settlements, and cities
+    private final Integer TOP_LAYER = 3;        //Stars, cancel button, and the robber
 
 	private GameIcons icons;
 	private LocationConverter locConverter;
@@ -67,20 +64,20 @@ public class BoardPane extends JLayeredPane {
 		setNumberTokenLabelBounds(numberTokenLabels);
 		
 		//Add boardPanel to the layered pane
-		add(baseLabel, JLayeredPane.DEFAULT_LAYER);
+        add(baseLabel, BACKGROUND_LAYER);
 
 		//Add the tile panels to the board
 		for (JLabel label : tileLabels) {
-            add(label, JLayeredPane.PALETTE_LAYER, 100);
-		}
+            add(label, TILE_LAYER);
+        }
 		
 		//Add the number token panels to the board
 		for (JLabel label : numberTokenLabels) {
 			if (label == robberLabel) {
-				add(robberLabel, JLayeredPane.POPUP_LAYER, 100);
-			} else {
-				add(label, JLayeredPane.MODAL_LAYER, 100);
-			}
+                add(robberLabel, TOP_LAYER);
+            } else {
+                add(label, TOKEN_LAYER);
+            }
 		}
         starListener = new StarListener();
         validLocTriggerButton = new JButton();
@@ -103,8 +100,8 @@ public class BoardPane extends JLayeredPane {
 		tempLabel.setName("Cancel");
         tempLabel.addMouseListener(starListener);
         tempLabel.setBounds(10, 10, tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
-		add(tempLabel, JLayeredPane.POPUP_LAYER);
-		stars.add(tempLabel);
+        add(tempLabel, TOP_LAYER);
+        stars.add(tempLabel);
         //Put a star on every valid roadLoc
 		for (int loc : validLocs) {
             if (locType == LOC_TYPE_ROAD) {
@@ -120,7 +117,7 @@ public class BoardPane extends JLayeredPane {
             tempLabel.setSize(tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
             tempLabel.setName(String.valueOf(loc));
             tempLabel.addMouseListener(starListener);
-			add(tempLabel, JLayeredPane.POPUP_LAYER);
+            add(tempLabel, TOP_LAYER);
             stars.add(tempLabel);
 		}
 		repaint();
@@ -146,7 +143,7 @@ public class BoardPane extends JLayeredPane {
 		tempLabel.setLocation(locConverter.getRoadPoint(roadLoc));
         tempLabel.setSize(tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
 		//Add the road to the board
-		add(tempLabel, JLayeredPane.MODAL_LAYER);
+        add(tempLabel, TOKEN_LAYER);
         repaint();
 	}
 
@@ -161,7 +158,7 @@ public class BoardPane extends JLayeredPane {
 		//Add the correct icon to the panel and set the panel bounds
         tempLabel.setLocation(locConverter.getSettlementPoint(cornerLoc));
         tempLabel.setSize(tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
-        add(tempLabel, JLayeredPane.MODAL_LAYER);
+        add(tempLabel, TOKEN_LAYER);
         settlementLabels.put(cornerLoc, tempLabel);
 		repaint();
 	}
@@ -178,7 +175,7 @@ public class BoardPane extends JLayeredPane {
 		tempLabel.setLocation(locConverter.getCityPoint(cornerLoc));
         tempLabel.setSize(tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
 		//Add the city to the board
-		add(tempLabel, JLayeredPane.MODAL_LAYER, 100);
+        add(tempLabel, TOKEN_LAYER);
         repaint();
 	}
 
@@ -192,7 +189,7 @@ public class BoardPane extends JLayeredPane {
         repaint();
 	}
 
-    /*
+    /**
      * Creates and returns an array of JPanels, each of which contain the
      * ImageIcon of the terrain of the terrain hex in the corresponding index
      * in the tiles argument.
@@ -211,13 +208,12 @@ public class BoardPane extends JLayeredPane {
 		return tileLabels;
 	}
 
-    /*
+    /**
      * Creates and returns an array of JPanels, each of which contain the
      * ImageIcon of the number token specified by the number in the
      * corresponding index of the numberTokenOrder argument. Puts the robber
      * icon on the desert tile instead of a number token.
      * @param tiles the terrain hexes on the board
-     * @param numberTokenOrder the number tokens to add to each tile
      * @return an array of JPanels that contain the images of the number tokens
      * that go on each tile
      */
@@ -237,7 +233,7 @@ public class BoardPane extends JLayeredPane {
 		return numberTokenLabels;
 	}
 
-    /*
+    /**
      * Moves and re-sizes each tile label so that they are in the correct
      * location and the correct size.
      * @param tileLabels the JLabels of each terrain hex
@@ -250,7 +246,7 @@ public class BoardPane extends JLayeredPane {
         }
     }
 
-    /*
+    /**
      * Moves and re-sizes each number token label so that they are in the
      * correct location and the correct size.
      * @param numberTokenLabels the JLabels of each number token
@@ -263,7 +259,7 @@ public class BoardPane extends JLayeredPane {
         }
     }
 
-    /*
+    /**
      * MouseListener that is added to each star icon when displaying valid
      * locations. When a star is clicked, the ActionCommand of the trigger
      * button is set to the star's location, and then the button is clicked.
