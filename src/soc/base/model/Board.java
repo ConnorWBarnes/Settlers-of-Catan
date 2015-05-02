@@ -10,7 +10,7 @@ import java.util.LinkedList;
  * @author Connor Barnes
  */
 public class Board {
-    private static final int CENTER_TILE_INDEX = 9;
+	private final int CENTER_TILE_INDEX = 9;
 
 	private Tile[] tileMap;
 	private Corner[] cornerMap;
