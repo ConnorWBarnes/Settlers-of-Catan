@@ -1,5 +1,7 @@
 package soc.base.model;
 
+import soc.base.GameController;
+
 import java.util.LinkedList;
 
 /**
@@ -10,31 +12,29 @@ import java.util.LinkedList;
  * @author Connor Barnes
  */
 public class Tile {
-	private String terrain;//Dictates what resource this tile yields
-	private NumberToken numberToken;
+    //The index of a terrain is the index of the resource it produces in GameController.RESOURCE_TYPES
+    public static final String[] TERRAIN_TYPES = {"Hills", "Fields", "Forrest", "Mountains", "Pasture", "Desert"};
+    public static final int HILLS = GameController.BRICK;
+    public static final int FIELDS = GameController.GRAIN;
+    public static final int FORREST = GameController.LUMBER;
+    public static final int MOUNTAINS = GameController.ORE;
+    public static final int PASTURE = GameController.WOOL;
+    public static final int DESERT = TERRAIN_TYPES.length - 1;
+
+    private int terrain;//Dictates what resource this tile yields
+    private NumberToken numberToken;
     private boolean occupiedByRobber;//true if the robber is on this tile, false if not
 	private LinkedList<Integer> settlementLocs;//Corner locations of all the settlements that are touching the tile
 
     /**
-     * Constructs a tile whose terrain is null, number token is zero, and is
-     * not occupied by the robber.
-     */
-	public Tile() {
-		terrain = null;
-		numberToken = null;
-		occupiedByRobber = false;
-		settlementLocs = new LinkedList<Integer>();
-	}
-
-    /**
      * Constructs a tile with the specified terrain. The number token for this
      * tile is zero and is not occupied by the robber.
-     * @param inTerrain the terrain of the tile
+     * @param terrain the terrain of the tile
      */
-	public Tile(String inTerrain) {
-		//TODO: Throw InvalidTerrainException?
-		terrain = inTerrain;
-		numberToken = null;
+    public Tile(int terrain) {
+        //TODO: Throw InvalidTerrainException?
+        this.terrain = terrain;
+        numberToken = null;
 		occupiedByRobber = false;
 		settlementLocs = new LinkedList<Integer>();
 	}
@@ -43,14 +43,14 @@ public class Tile {
      * Constructs a tile with the specified terrain and is occupied by the
      * robber if the robberStatus argument is true (otherwise not). The number
      * token for this tile is zero.
-     * @param inTerrain the terrain of the tile
+     * @param terrain the terrain of the tile
      * @param robberStatus the robber occupies this tile if robberStatus is
      *                     true (otherwise not).
      */
-	public Tile(String inTerrain, boolean robberStatus)	{
-		//TODO: Throw InvalidTerrainException?
-		terrain = inTerrain;
-		numberToken = null;
+    public Tile(int terrain, boolean robberStatus) {
+        //TODO: Throw InvalidTerrainException?
+        this.terrain = terrain;
+        numberToken = null;
 		occupiedByRobber = robberStatus;
 		settlementLocs = new LinkedList<Integer>();
 	}
@@ -67,19 +67,10 @@ public class Tile {
 	}
 
     /**
-     * Sets the terrain of this tile to the specified terrain.
-     * @param newTerrain this tile's new terrain
-     */
-	public void setTerrain(String newTerrain) {
-		//TODO: Throw InvalidTerrainException?
-		terrain = newTerrain;
-	}
-
-    /**
      * Returns this tile's terrain.
      * @return this tile's terrain
      */
-    public String getTerrain() {
+    public int getTerrain() {
         return terrain;
     }
 
@@ -138,23 +129,5 @@ public class Tile {
      */
 	public LinkedList<Integer> getSettlementLocs() {
 		return new LinkedList<Integer>(settlementLocs);
-	}
-
-    /**
-     * Returns the type of resource this tile produces.
-     * @return the type of resource this tile produces
-     */
-	public String getResource() {
-		if (terrain.equals("Hills")) {
-            return "Brick";
-        } else if (terrain.equals("Pasture")) {
-            return "Wool";
-        } else if (terrain.equals("Mountains")) {
-            return "Ore";
-        } else if (terrain.equals("Fields")) {
-            return "Grain";
-        } else { //terrain.equals("Forrest")
-            return "Lumber";
-        }
 	}
 }

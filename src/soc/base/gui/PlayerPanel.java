@@ -166,7 +166,7 @@ public class PlayerPanel extends JPanel {
         }
     }
 
-    /*
+    /**
      * Creates and returns a JPanel containing the JLabel that contains the
      * building costs icon.
      * @return a JPanel containing the JLabel that contains the building costs
@@ -183,7 +183,7 @@ public class PlayerPanel extends JPanel {
         return costsPanel;
     }
 
-    /*
+    /**
      * Creates all the player buttons and adds them to a JPanel (which is
      * returned).
      * @param buttonListener the ActionListener to add to all the player buttons
@@ -227,7 +227,7 @@ public class PlayerPanel extends JPanel {
         return buttonPanel;
     }
 
-    /*
+    /**
      * Creates and returns a JPanel that displays how many roads, settlements,
      * cities, resource cards, and development cards the current player has
      * @return a JPanel containing the current player's token and card info
@@ -264,7 +264,7 @@ public class PlayerPanel extends JPanel {
         return tokensAndCardsPanel;
     }
 
-    /*
+    /**
      * Creates and return a JPanel containing the JLabel that displays the
      * "Longest Road" icon
      * @return a JPanel containing longestRoadLabel
@@ -277,7 +277,7 @@ public class PlayerPanel extends JPanel {
         return longestRoadPanel;
     }
 
-    /*
+    /**
      * Creates and return a JPanel containing the JLabel that displays the
      * "Largest Army" icon
      * @return a JPanel containing largestArmyLabel
@@ -290,7 +290,9 @@ public class PlayerPanel extends JPanel {
         return largestArmyPanel;
     }
 
-    /* Shows a larger version of the building costs card. */
+    /**
+     * Shows a larger version of the building costs card.
+     */
     private class CostsCardListener extends MouseAdapter {
         @Override
         public void mouseReleased(MouseEvent e) {

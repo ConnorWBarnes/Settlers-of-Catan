@@ -90,18 +90,22 @@ public class BoardPane extends JLayeredPane {
      * @param triggerListener the ActionListener that listens for when the player selects a location (or cancels)
      * @param locType the type of locations in the specified list (see static variables)
      */
-	public void showValidLocs(Collection<Integer> validLocs, ActionListener triggerListener, int locType) {
-		for (ActionListener listener : validLocTriggerButton.getActionListeners()) {
+    public void showValidLocs(Collection<Integer> validLocs, ActionListener triggerListener, int locType, boolean cancelOption) {
+        for (ActionListener listener : validLocTriggerButton.getActionListeners()) {
             validLocTriggerButton.removeActionListener(listener);
         }
         validLocTriggerButton.addActionListener(triggerListener);
         JLabel tempLabel = new JLabel(icons.getCancelIcon());
-		//Create and add the cancel option
-		tempLabel.setName("Cancel");
-        tempLabel.addMouseListener(starListener);
-        tempLabel.setBounds(10, 10, tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
-        add(tempLabel, TOP_LAYER);
-        stars.add(tempLabel);
+        if (cancelOption) {
+            //Create and add the cancel option
+            tempLabel.setName("Cancel");
+            tempLabel.addMouseListener(starListener);
+            tempLabel.setBounds((int) getPreferredSize().getWidth() - tempLabel.getIcon().getIconWidth(),
+                    (int) getPreferredSize().getHeight() - tempLabel.getIcon().getIconHeight(),
+                    tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
+            add(tempLabel, TOP_LAYER);
+            stars.add(tempLabel);
+        }
         //Put a star on every valid roadLoc
 		for (int loc : validLocs) {
             if (locType == LOC_TYPE_ROAD) {
@@ -222,8 +226,8 @@ public class BoardPane extends JLayeredPane {
 		JLabel tempLabel;
 		for (int i = 0; i < tiles.length; i++) {
 			//If the current tile is the desert tile, create and put the robber there
-			if (tiles[i].getTerrain().equals("Desert")) {
-				robberLabel = new JLabel(icons.getRobberIcon());
+            if (tiles[i].getTerrain() == Tile.DESERT) {
+                robberLabel = new JLabel(icons.getRobberIcon());
 				numberTokenLabels[i] = robberLabel;
 			} else {
                 tempLabel = new JLabel(icons.getNumberTokenIcon(tiles[i].getNumberTokenLetter()));

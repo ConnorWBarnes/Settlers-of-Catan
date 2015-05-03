@@ -1,19 +1,17 @@
 package soc.base;
 
-import soc.base.gui.BoardPane;
-import soc.base.gui.ConstructPlayersPanel;
-import soc.base.gui.GameIcons;
-import soc.base.gui.PlayerPanel;
+import soc.base.gui.*;
 import soc.base.model.Board;
 import soc.base.model.Player;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -24,7 +22,7 @@ import java.util.Iterator;
  */
 public class GameController {
     public static final String[] PLAYER_COLORS = {"Blue", "Orange", "Red", "White"};//Does not support the 5-6 player expansion
-    public static final String[] RESOURCE_TYPES = {"Brick", "Wool", "Ore", "Grain", "Lumber"};
+    public static final String[] RESOURCE_TYPES = {"Brick", "Grain", "Lumber", "Ore", "Wool"};
     public static final int BRICK = 0;
     public static final int GRAIN = 1;
     public static final int LUMBER = 2;
@@ -34,6 +32,7 @@ public class GameController {
 
     //Model variables
     private Player[] players;
+    private Iterator<Player> turnIterator;
     private Player currentPlayer;
     private Board gameBoard;
     //GUI variables
@@ -41,9 +40,13 @@ public class GameController {
     private JFrame mainFrame;
     private BoardPane boardPane;
     private PlayerPanel playerPanel;
+    private CardsFrame cardsFrame;
+    private PlayDevCardFrame devCardFrame;
+    private TradeInFrame tradeInFrame;
     //Setup variables
-    private Iterator<Player> setupIterator;
     private ArrayList<Integer> validSetupSettlementLocs;
+    private int[] secondSettlementLocs;
+    private int playerIndex;
 
     public static void main(String[] args) {
         new GameController();
@@ -54,37 +57,44 @@ public class GameController {
 
         //Construct players and gameBoard
         players = constructPlayers();
+        if (players == null) {//The dialog created by constructPlayers() was closed
+            System.exit(0);
+        }
         //rollForOrder();
         constructGameBoard();
 
         //Construct the remaining contents of the frame and add the contents to the frame
         playerPanel = new PlayerPanel(icons, new PlayerPanelListener());
+        JPanel boardPanel = new JPanel();
+        boardPanel.add(boardPane);
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.add(boardPane, BorderLayout.NORTH);
+        mainPanel.add(boardPanel, BorderLayout.NORTH);
         mainPanel.add(playerPanel, BorderLayout.CENTER);
         mainFrame = new JFrame("Settlers of Catan");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.add(mainPanel);
 
         //Let each player place their two initial settlements and roads
+        secondSettlementLocs = new int[players.length];
+        playerIndex = players.length * 2 - 1;
         validSetupSettlementLocs = new ArrayList<Integer>(gameBoard.getNumCorners());
         for (int i = 0; i < gameBoard.getNumCorners(); i++) {
             validSetupSettlementLocs.add(i);
         }
-        ArrayDeque<Player> setupQueue = new ArrayDeque<Player>(players.length * 2);
-        for (int i = players.length - 1; i >= 0; i--) {
-            setupQueue.addFirst(players[i]);
-            setupQueue.addLast(players[i]);
+        Player[] setupQueue = Arrays.copyOf(players, players.length * 2);
+        for (int i = 0; i < players.length; i++) {
+            setupQueue[setupQueue.length - 1 - i] = players[i];
         }
-        setupIterator = setupQueue.iterator();
-        currentPlayer = setupIterator.next();
+        turnIterator = Arrays.asList(setupQueue).iterator();
+        currentPlayer = turnIterator.next();
+        playerPanel.updatePlayer(currentPlayer);
 
         //Show the frame and let the first player place their first settlement
         mainFrame.pack();
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
-        boardPane.showValidLocs(validSetupSettlementLocs, new SetUpSettlementListener(), BoardPane.LOC_TYPE_SETTLEMENT);
-        JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + ", please place a settlement", "Setup", JOptionPane.INFORMATION_MESSAGE);
+        boardPane.showValidLocs(validSetupSettlementLocs, new SetUpSettlementListener(), BoardPane.LOC_TYPE_SETTLEMENT, false);
+        JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + ", please place a settlement and a road next to the new settlement", "Setup", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -248,6 +258,36 @@ public class GameController {
     }
 
     /**
+     * Starts the next player's turn. Rolls the dice for the player and then
+     * either distributes the appropriate resources, or lets the current player
+     * move the robber.
+     */
+    private void startNextTurn() {
+        //Close any frames (other than mainFrame) that may be open
+        if (cardsFrame != null) {
+            cardsFrame.dispose();
+        }
+        if (devCardFrame != null) {
+            devCardFrame.dispose();
+        }
+        //TODO: Uncomment once TradeFrame is finished
+        /*if (tradeFrame != null) {
+            tradeFrame.dispose();
+        }*/
+        if (tradeInFrame != null) {
+            tradeInFrame.dispose();
+        }
+        if (!turnIterator.hasNext()) {
+            turnIterator = Arrays.asList(players).iterator();
+        }
+        currentPlayer = turnIterator.next();
+        playerPanel.updatePlayer(currentPlayer);
+        //Roll the dice
+        JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + ", it is now your turn", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+
+    }
+
+    /**
      * ActionListener that is added to every button in the PlayerPanel.
      */
     private class PlayerPanelListener implements ActionListener {
@@ -264,7 +304,81 @@ public class GameController {
     private class SetUpSettlementListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
+            int settlementLoc = Integer.parseInt(actionEvent.getActionCommand());
+            //Record settlementLoc in firstSettlementLocs if appropriate
+            if (playerIndex < players.length) {
+                secondSettlementLocs[playerIndex] = settlementLoc;
+            }
+            playerIndex--;
+            //Add the settlement to the board
+            gameBoard.addSettlement(settlementLoc, currentPlayer.getColor());
+            currentPlayer.addSettlement(settlementLoc);
+            boardPane.addSettlement(settlementLoc, currentPlayer.getColor());
+            playerPanel.setNumSettlements(currentPlayer.getNumRemainingSettlements());
+            //Update validSetupSettlementLocs
+            validSetupSettlementLocs.remove(new Integer(settlementLoc));
+            for (Integer adjacentSettlementLoc : gameBoard.getCorner(settlementLoc).getAdjacentCornerLocs()) {
+                validSetupSettlementLocs.remove(adjacentSettlementLoc);
+            }
+            //Let the player place a road adjacent to the settlement they just placed
+            boardPane.showValidLocs(gameBoard.getCorner(settlementLoc).getAdjacentRoadLocs(), new SetUpRoadListener(), BoardPane.LOC_TYPE_ROAD, false);
+        }
+    }
 
+    /**
+     * Places one of the current player's roads at the location they chose and
+     * lets the next player take their turn. Gives each player a corresponding
+     * resource card for each terrain hex adjacent to the player's second
+     * settlement once everyone has placed their first settlements and roads.
+     */
+    private class SetUpRoadListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            int roadLoc = Integer.parseInt(actionEvent.getActionCommand());
+            //Add the road to the board
+            gameBoard.addRoad(roadLoc, currentPlayer.getColor());
+            currentPlayer.addRoad(roadLoc);
+            boardPane.addRoad(roadLoc, currentPlayer.getColor());
+            playerPanel.setNumRoads(currentPlayer.getNumRemainingRoads());
+            //Let the next player take their turn
+            if (turnIterator.hasNext()) {
+                currentPlayer = turnIterator.next();
+                playerPanel.updatePlayer(currentPlayer);
+                boardPane.showValidLocs(validSetupSettlementLocs, new SetUpSettlementListener(), BoardPane.LOC_TYPE_SETTLEMENT, false);
+                JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + ", please place a settlement and a road next to the new settlement", "Setup", JOptionPane.INFORMATION_MESSAGE);
+            } else {//Every player has placed their first two settlements and roads
+                //Distribute resources from second settlements
+                JLabel playerName;
+                JPanel initialResources;
+                JPanel resourceTable = new JPanel(new GridLayout(players.length, 2, -1, -1));
+                for (int i = 0; i < players.length; i++) {
+                    initialResources = new JPanel();
+                    initialResources.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+                    for (int tileLoc : gameBoard.getCorner(secondSettlementLocs[i]).getAdjacentTileLocs()) {
+                        try {
+                            players[i].giveResource(gameBoard.getTile(tileLoc).getTerrain(), 1);
+                            initialResources.add(new JLabel(icons.getResourceIcon(gameBoard.getTile(tileLoc).getTerrain())));
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            //A player placed their second settlement next to the desert, no need to do anything
+                        }
+                    }
+                    playerName = new JLabel(players[i].getName() + ":");
+                    playerName.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+                    playerName.setHorizontalAlignment(JLabel.CENTER);
+                    playerName.setVerticalAlignment(JLabel.CENTER);
+                    resourceTable.add(playerName);
+                    resourceTable.add(initialResources);
+                }
+                playerName = new JLabel("Resources received from second settlement");
+                playerName.setHorizontalAlignment(JLabel.CENTER);
+                playerName.setVerticalAlignment(JLabel.CENTER);
+                initialResources = new JPanel(new BorderLayout());
+                initialResources.add(playerName, BorderLayout.NORTH);
+                initialResources.add(resourceTable, BorderLayout.CENTER);
+                JOptionPane.showMessageDialog(mainFrame, initialResources, "Setup", JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
+                turnIterator = Arrays.asList(players).iterator();//TODO: Move this line of code into the rollForOrder() method
+                startNextTurn();
+            }
         }
     }
 }

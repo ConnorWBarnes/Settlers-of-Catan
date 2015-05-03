@@ -8,10 +8,8 @@ import java.util.LinkedList;
  */
 public class Corner {
 	private Settlement settlement;//null means the corner is unoccupied
-	private String harbor;//null means this corner has no harbor
-						  //"any" means the harbor allows 3 cards that are the same resource to be traded in for a new card
-						  //The name of a resource means the harbor allows 2 cards of this resource to be traded in for a new card
-	private LinkedList<Integer> adjacentCornerLocs;//Used when checking for adjacent settlements when adding a settlement
+    private int harbor;//-1 means this corner has no harbor
+    private LinkedList<Integer> adjacentCornerLocs;//Used when checking for adjacent settlements when adding a settlement
 	private LinkedList<Integer> adjacentTileLocs;//Used when adding a settlement to the board
 	private LinkedList<Integer> adjacentRoadLocs;
 
@@ -20,33 +18,34 @@ public class Corner {
      */
 	public Corner()	{
 		settlement = new Settlement();
-		harbor = null;
-		adjacentCornerLocs = new LinkedList<Integer>();
+        harbor = -1;
+        adjacentCornerLocs = new LinkedList<Integer>();
 		adjacentTileLocs = new LinkedList<Integer>();
 		adjacentRoadLocs = new LinkedList<Integer>();
 	}
 
     /**
      * Constructs a corner with the specified harbor.
-     * @param inHarbor the harbor that is adjacent to this corner
+     * @param harbor the harbor that is adjacent to this corner
      */
-	public Corner(String inHarbor) {
-		settlement = new Settlement();
-		harbor = inHarbor;
-		adjacentCornerLocs = new LinkedList<Integer>();
+    public Corner(int harbor) {
+        settlement = new Settlement();
+        this.harbor = harbor;
+        adjacentCornerLocs = new LinkedList<Integer>();
 		adjacentTileLocs = new LinkedList<Integer>();
 	}
 
     /**
      * Constructs a deep copy of the specified corner.
-     * @param inCorner the corner to copy
+     * @param corner the corner to copy
      */
-	public Corner(Corner inCorner) {
-		settlement = new Settlement(inCorner.settlement);
-		harbor = inCorner.harbor;
-		adjacentCornerLocs = new LinkedList<Integer>(inCorner.adjacentCornerLocs);
-		adjacentTileLocs = new LinkedList<Integer>();
-	}
+    public Corner(Corner corner) {
+        settlement = new Settlement(corner.settlement);
+        harbor = corner.harbor;
+        adjacentCornerLocs = new LinkedList<Integer>(corner.adjacentCornerLocs);
+        adjacentTileLocs = new LinkedList<Integer>(corner.adjacentTileLocs);
+        adjacentRoadLocs = new LinkedList<Integer>(corner.adjacentRoadLocs);
+    }
 
     /**
      * Adds a settlement of the specified color to this corner
@@ -65,12 +64,12 @@ public class Corner {
 
     /**
      * Sets this corner's harbor to the specified harbor.
-     * @param inHarbor the harbor that is adjacent to this corner
+     * @param harbor the harbor that is adjacent to this corner
      */
-	public void setHarbor(String inHarbor) {
-		//Throw InvalidHarborException?
-		harbor = inHarbor;
-	}
+    public void setHarbor(int harbor) {
+        //Throw InvalidHarborException?
+        this.harbor = harbor;
+    }
 
 	//TODO: Finish documentation
 	//Set the adjacentCornerLocs for corners with 3 adjacent corners
@@ -98,8 +97,8 @@ public class Corner {
 		return settlement.color;
 	}
 
-	public String getHarbor() {
-		return harbor;
+    public int getHarbor() {
+        return harbor;
 	}
 	
 	public LinkedList<Integer> getAdjacentCornerLocs() {
@@ -123,8 +122,8 @@ public class Corner {
 	}
 
 	public boolean hasHarbor() {
-		return harbor != null;
-	}
+        return harbor > -1;
+    }
 
     //A settlement or a city
 	private class Settlement {
@@ -136,35 +135,9 @@ public class Corner {
             isCity = false;
         }
 
-        private Settlement(String newColor) {
-            color = newColor;
-            isCity = false;
+        private Settlement(Settlement settlement) {
+            color = settlement.color;
+            isCity = settlement.isCity;
         }
-
-        private Settlement(String newColor, boolean cityStatus) {
-            color = newColor;
-            isCity = cityStatus;
-        }
-
-        private Settlement(Settlement inSettlement) {
-            color = inSettlement.color;
-            isCity = inSettlement.isCity;
-        }
-
-		/*
-		private boolean colorIsValid(String inColor)
-		{
-			if (inColor.equalsIgnoreCase("red")
-				|| inColor.equalsIgnoreCase("white")
-				|| inColor.equalsIgnoreCase("blue")
-				|| inColor.equalsIgnoreCase("orange"))
-			{
-				return true;	
-			}
-			
-			else
-				return false;
-		}
-		*/
 	}
 }

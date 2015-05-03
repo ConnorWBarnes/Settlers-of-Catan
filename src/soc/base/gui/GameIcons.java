@@ -1,6 +1,8 @@
 package soc.base.gui;
 
 import soc.base.GameController;
+import soc.base.model.Tile;
+
 import javax.swing.ImageIcon;
 import java.util.HashMap;
 
@@ -18,7 +20,7 @@ public class GameIcons {
     public static final boolean PLAYER_TOKEN_STAR = true;
     public static final boolean ROBBER_STAR = false;
 
-    private HashMap<String, ImageIcon> tileIcons;//Key is name of terrain
+    private HashMap<Integer, ImageIcon> tileIcons;//Key is name of terrain
     private HashMap<Character, ImageIcon> numberTokenIcons;//Key is the number of the token
     private HashMap<String, ImageIcon> settlementIcons;//Key is the color of the settlement
     private HashMap<String, ImageIcon> cityIcons;//Key is the color of the city
@@ -36,7 +38,7 @@ public class GameIcons {
     private ImageIcon tokenStarIcon, robberStarIcon, cancelIcon;
 
     public GameIcons() {
-        tileIcons = new HashMap<String, ImageIcon>();
+        tileIcons = new HashMap<Integer, ImageIcon>();
         numberTokenIcons = new HashMap<Character, ImageIcon>();
         settlementIcons = new HashMap<String, ImageIcon>();
         cityIcons = new HashMap<String, ImageIcon>();
@@ -54,9 +56,8 @@ public class GameIcons {
 
         //Populate tileIcons
         filePath = "Images/Tiles/";
-        String[] tileTerrains = {"Hills", "Pasture", "Mountains", "Fields", "Forrest", "Desert"};
-        for (String terrain : tileTerrains) {
-            tileIcons.put(terrain, createImageIcon(filePath + terrain + " Tile.png", terrain));
+        for (int terrain = 0; terrain < Tile.TERRAIN_TYPES.length; terrain++) {
+            tileIcons.put(terrain, createImageIcon(filePath + Tile.TERRAIN_TYPES[terrain] + " Tile.png", Tile.TERRAIN_TYPES[terrain]));
         }
 
         //Populate numberTokenIcons
@@ -152,7 +153,7 @@ public class GameIcons {
      * @param terrain the terrain of the tile
      * @return the ImageIcon of a tile with the specified terrain
      */
-    public ImageIcon getTileIcon(String terrain) {
+    public ImageIcon getTileIcon(int terrain) {
         return tileIcons.get(terrain);
     }
 
@@ -260,24 +261,6 @@ public class GameIcons {
      */
     public ImageIcon getHarborIcon(int type) {
         return harborIcons.get(type);
-    }
-
-    /**
-     * Returns the ImageIcon of the specified harbor (or null if no such harbor
-     * exists).
-     * @param type the type of resource that the harbor affects
-     * @return the ImageIcon of the specified harbor
-     */
-    public ImageIcon getHarborIcon(String type) {
-        if (type.equals("Any")) {
-            return harborIcons.get(GameController.HARBOR_TYPE_ANY);
-        }
-        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-            if (GameController.RESOURCE_TYPES[i].equals(type)) {
-                return harborIcons.get(i);
-            }
-        }
-        return null;
     }
 
     /**

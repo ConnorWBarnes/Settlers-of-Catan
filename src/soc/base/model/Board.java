@@ -1,5 +1,7 @@
 package soc.base.model;
 
+import soc.base.GameController;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -182,24 +184,16 @@ public class Board {
 	//Create a list of the default set of tiles
 	private ArrayList<Tile> generateDefaultTiles() {
 		ArrayList<Tile> defaultTileList = new ArrayList<Tile>(tileMap.length);
-		int i;
-		for (i = 0; i < 3; i++) {
-            defaultTileList.add(new Tile("Hills"));//Yields brick
+        for (int i = 0; i < Tile.TERRAIN_TYPES.length - 1; i++) {
+            for (int j = 0; j < 3; j++) {
+                defaultTileList.add(new Tile(i));
+            }
         }
-		for (i = 0; i < 4; i++) {
-            defaultTileList.add(new Tile("Pasture"));//Yields wool
-        }
-		for (i = 0; i < 3; i++) {
-            defaultTileList.add(new Tile("Mountains"));//Yields ore
-        }
-		for (i = 0; i < 4; i++) {
-            defaultTileList.add(new Tile("Fields"));//Yields grain
-        }
-		for (i = 0; i < 4; i++) {
-            defaultTileList.add(new Tile("Forrest"));//Yields lumber
-        }
-		defaultTileList.add(new Tile("Desert", true));//Yields nothing
-		return defaultTileList;
+        defaultTileList.add(new Tile(Tile.FIELDS));
+        defaultTileList.add(new Tile(Tile.FORREST));
+        defaultTileList.add(new Tile(Tile.PASTURE));
+        defaultTileList.add(new Tile(Tile.DESERT, true));
+        return defaultTileList;
 	}
 
 	//Semi-randomly gives each tile a number token (see rulebook for details)
@@ -272,25 +266,25 @@ public class Board {
 	//TODO: Fix the methods below?
 	//Give certain harbor values for certain corners determined by the game board
 	private void setHarbors() {
-		cornerMap[2].setHarbor("Ore");
-		cornerMap[3].setHarbor("Ore");
-		cornerMap[5].setHarbor("Any");
-		cornerMap[6].setHarbor("Any");
-		cornerMap[15].setHarbor("Wool");
-		cornerMap[25].setHarbor("Wool");
-		cornerMap[36].setHarbor("Any");
-		cornerMap[46].setHarbor("Any");
-		cornerMap[52].setHarbor("Any");
-		cornerMap[53].setHarbor("Any");
-		cornerMap[49].setHarbor("Brick");
-		cornerMap[50].setHarbor("Brick");
-		cornerMap[38].setHarbor("Lumber");
-		cornerMap[39].setHarbor("Lumber");
-		cornerMap[16].setHarbor("Any");
-		cornerMap[27].setHarbor("Any");
-		cornerMap[7].setHarbor("Grain");
-		cornerMap[8].setHarbor("Grain");
-	}
+        cornerMap[2].setHarbor(GameController.ORE);
+        cornerMap[3].setHarbor(GameController.ORE);
+        cornerMap[5].setHarbor(GameController.HARBOR_TYPE_ANY);
+        cornerMap[6].setHarbor(GameController.HARBOR_TYPE_ANY);
+        cornerMap[15].setHarbor(GameController.WOOL);
+        cornerMap[25].setHarbor(GameController.WOOL);
+        cornerMap[36].setHarbor(GameController.HARBOR_TYPE_ANY);
+        cornerMap[46].setHarbor(GameController.HARBOR_TYPE_ANY);
+        cornerMap[52].setHarbor(GameController.HARBOR_TYPE_ANY);
+        cornerMap[53].setHarbor(GameController.HARBOR_TYPE_ANY);
+        cornerMap[49].setHarbor(GameController.BRICK);
+        cornerMap[50].setHarbor(GameController.BRICK);
+        cornerMap[38].setHarbor(GameController.LUMBER);
+        cornerMap[39].setHarbor(GameController.LUMBER);
+        cornerMap[16].setHarbor(GameController.HARBOR_TYPE_ANY);
+        cornerMap[27].setHarbor(GameController.HARBOR_TYPE_ANY);
+        cornerMap[7].setHarbor(GameController.GRAIN);
+        cornerMap[8].setHarbor(GameController.GRAIN);
+    }
 
 	//Sets the adjacent corner locations for each corner
 	private void populateAdjacentCornerLocsForCorners()	{

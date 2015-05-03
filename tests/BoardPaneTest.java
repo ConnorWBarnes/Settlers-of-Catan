@@ -48,7 +48,7 @@ public class BoardPaneTest {
         for (int i = 0; i < limit; i++) {
             validLocs.add(i);
         }
-        boardPane.showValidLocs(validLocs, new TestListener(), type);
+        boardPane.showValidLocs(validLocs, new TestListener(), type, true);
     }
 
     /**
