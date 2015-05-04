@@ -101,7 +101,7 @@ public class TradeInFrame extends JFrame {
         return desiredResource;
     }
 
-    /*
+    /**
      * Constructs and returns a JPanel that shows the harbors that the player
      * can access.
      * @return a JPanel that shows the harbors that the player can access
@@ -109,23 +109,23 @@ public class TradeInFrame extends JFrame {
     private JPanel buildHarborPanel() {
         JPanel harborPanel = new JPanel();
         harborPanel.setBorder(BorderFactory.createTitledBorder("Your Harbors"));
-        for (int harbor : player.getHarbors()) {
+        for (String harbor : player.getHarbors()) {
             harborPanel.add(new JLabel(icons.getHarborIcon(harbor)));
         }
         return harborPanel;
     }
 
-    /*
+    /**
      * Constructs keepPane and returns a JPanel that contains it.
      * @return a JPanel containing keepPane
      */
     private JPanel buildKeepPanel() {
         ArrayList<JLabel> cards = new ArrayList<JLabel>(player.getSumResourceCards());
         JLabel tempLabel;
-        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-            for (int j = 0; j < player.getNumResourceCards(i); j++) {
-                tempLabel = new JLabel(icons.getResourceIcon(i));
-                tempLabel.setName(String.valueOf(i));
+        for (String resource : GameController.RESOURCE_TYPES) {
+            for (int j = 0; j < player.getNumResourceCards(resource); j++) {
+                tempLabel = new JLabel(icons.getResourceIcon(resource));
+                tempLabel.setName(String.valueOf(resource));
                 tempLabel.addMouseListener(new KeepListener());
                 cards.add(tempLabel);
             }
@@ -137,7 +137,7 @@ public class TradeInFrame extends JFrame {
         return cardPanel;
     }
 
-    /*
+    /**
      * Constructs discardPane and resourceComboBox, adds them to a JPanel, and
      * returns the JPanel.
      * @return a JPanel containing discardPane and resourceComboBox
@@ -148,7 +148,7 @@ public class TradeInFrame extends JFrame {
         //Construct the JComboBox that holds each resource type
         ImageIcon[] resourceIcons = new ImageIcon[GameController.RESOURCE_TYPES.length];
         for (int i = 0; i < resourceIcons.length; i++) {
-            resourceIcons[i] = icons.getResourceIcon(i);
+            resourceIcons[i] = icons.getResourceIcon(GameController.RESOURCE_TYPES[i]);
         }
         resourceComboBox = new JComboBox<ImageIcon>(resourceIcons);
         resourceComboBox.setSelectedIndex(0);
@@ -168,7 +168,7 @@ public class TradeInFrame extends JFrame {
         return discardPanel;
     }
 
-    /*
+    /**
      * Constructs and returns a JPanel containing the "Cancel" and "Trade"
      * buttons.
      * @return a JPanel containing the "Cancel" and "Trade" buttons
@@ -189,7 +189,7 @@ public class TradeInFrame extends JFrame {
         return buttonPanel;
     }
 
-    /*
+    /**
      * Moves the minimum amount of cards needed for the player to receive a
      * resource card of their choice. Only moves resource cards of the type
      * that was clicked by the player. This listener is added to every label in
@@ -209,7 +209,7 @@ public class TradeInFrame extends JFrame {
             }
             //Move the minimum amount of labels of the same resource type as the card selected from keepLabels to discardLabels
             int min = 4;
-            if (player.getHarbors().contains(Integer.parseInt(e.getComponent().getName()))) {
+            if (player.getHarbors().contains(e.getComponent().getName())) {
                 min = 2;
             } else if (player.getHarbors().contains(GameController.HARBOR_TYPE_ANY)) {
                 min = 3;
@@ -239,7 +239,7 @@ public class TradeInFrame extends JFrame {
         }
     }
 
-    /*
+    /**
      * Moves every label in discardLabels to keepLabels. This listener is added
      * to every label in discardLabels.
      */
@@ -298,7 +298,9 @@ public class TradeInFrame extends JFrame {
         }
     }
 
-    /* Renders the icon for each option in resourceComboBox. */
+    /**
+     * Renders the icon for each option in resourceComboBox.
+     */
     private class ResourceListRenderer extends JLabel implements ListCellRenderer<Object> {
         private ResourceListRenderer() {
             setOpaque(true);

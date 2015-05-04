@@ -184,11 +184,11 @@ public class Board {
 	//Create a list of the default set of tiles
 	private ArrayList<Tile> generateDefaultTiles() {
 		ArrayList<Tile> defaultTileList = new ArrayList<Tile>(tileMap.length);
-        for (int i = 0; i < Tile.TERRAIN_TYPES.length - 1; i++) {
-            for (int j = 0; j < 3; j++) {
-                defaultTileList.add(new Tile(i));
-            }
-        }
+		for (String terrain : Tile.TERRAIN_TYPES) {
+			for (int j = 0; j < 3; j++) {
+				defaultTileList.add(new Tile(terrain));
+			}
+		}
         defaultTileList.add(new Tile(Tile.FIELDS));
         defaultTileList.add(new Tile(Tile.FORREST));
         defaultTileList.add(new Tile(Tile.PASTURE));

@@ -24,7 +24,7 @@ public class StealResourceCardFrame extends JFrame {
     private GameIcons icons;
     private Player victim;
     private Player[] potentialVictims;
-    private int selectedCard;
+    private String selectedCard;
     private JButton triggerButton, backButton;
     private JLabel instructionLabel;
     private JPanel choicePanel, buttonPanel;
@@ -93,7 +93,7 @@ public class StealResourceCardFrame extends JFrame {
      * Returns the type of resource card the user stole from the victim.
      * @return the type of resource card the user stole from the victim
      */
-    public int getSelectedCard() {
+    public String getSelectedCard() {
         return selectedCard;
     }
 
@@ -131,10 +131,10 @@ public class StealResourceCardFrame extends JFrame {
         ArrayList<JLabel> orderedCards = new ArrayList<JLabel>(victim.getSumResourceCards());
         ArrayList<JLabel> randomizedCards = new ArrayList<JLabel>(victim.getSumResourceCards());
         JLabel tempLabel;
-        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-            for (int j = 0; j < victim.getNumResourceCards(i); j++) {
+        for (String resource : GameController.RESOURCE_TYPES) {
+            for (int j = 0; j < victim.getNumResourceCards(resource); j++) {
                 tempLabel = new JLabel(icons.getResourceCardBackIcon());
-                tempLabel.setName(String.valueOf(i));//The name of each label is its resource type
+                tempLabel.setName(resource);//The name of each label is its resource type
                 tempLabel.addMouseListener(new CardListener());
                 orderedCards.add(tempLabel);
             }
@@ -148,8 +148,6 @@ public class StealResourceCardFrame extends JFrame {
         //Update the frame
         choicePanel.add(new CardPane(randomizedCards, Math.min(GameIcons.BOARD_WIDTH, GameIcons.CARD_WIDTH * victim.getSumResourceCards())));
         buttonPanel.add(backButton);
-        //revalidate();
-        //repaint();
         pack();
     }
 
@@ -172,7 +170,7 @@ public class StealResourceCardFrame extends JFrame {
     private class CardListener extends MouseAdapter {
         @Override
         public void mouseReleased(MouseEvent mouseEvent) {
-            selectedCard = Integer.parseInt(mouseEvent.getComponent().getName());
+            selectedCard = mouseEvent.getComponent().getName();
             triggerButton.doClick();
         }
     }

@@ -11,16 +11,18 @@ import java.util.ArrayList;
  * @author Connor Barnes
  */
 public class ConstructPlayersPanel extends JPanel {
+    private String[] playerColors;
     private JLabel errorLabel;
     private JTextField[] nameFields;
     private JComboBox[] colorBoxes;
 
-    public ConstructPlayersPanel() {
+    public ConstructPlayersPanel(String[] playerColors) {
         super();
-        nameFields = new JTextField[GameController.PLAYER_COLORS.length];
-        colorBoxes = new JComboBox[GameController.PLAYER_COLORS.length];
+        this.playerColors = playerColors;
+        nameFields = new JTextField[playerColors.length];
+        colorBoxes = new JComboBox[playerColors.length];
         //Create information fields for each player
-        JPanel[] panels = new JPanel[GameController.PLAYER_COLORS.length];
+        JPanel[] panels = new JPanel[playerColors.length];
         JPanel tempPanel;
         JLabel tempLabel;
         for (int i = 0; i < panels.length; i++) {
@@ -31,7 +33,7 @@ public class ConstructPlayersPanel extends JPanel {
             //Create and add the color combo box
             tempLabel = new JLabel("Color:");
             tempLabel.setHorizontalAlignment(JLabel.RIGHT);
-            colorBoxes[i] = new JComboBox<String>(GameController.PLAYER_COLORS);
+            colorBoxes[i] = new JComboBox<String>(playerColors);
             colorBoxes[i].setSelectedIndex(i);
             tempPanel.add(tempLabel);
             tempPanel.add(colorBoxes[i]);
@@ -80,7 +82,7 @@ public class ConstructPlayersPanel extends JPanel {
         ArrayList<String> colors = new ArrayList<String>(colorBoxes.length);
         for (int i = 0; i < colorBoxes.length; i++) {
             if (nameFields[i].getText().length() > 0) {
-                colors.add(GameController.PLAYER_COLORS[colorBoxes[i].getSelectedIndex()]);
+                colors.add(playerColors[colorBoxes[i].getSelectedIndex()]);
             }
         }
         return new ArrayList<String>(colors);

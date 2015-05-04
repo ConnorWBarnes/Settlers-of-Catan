@@ -14,7 +14,8 @@ public class ConstructPlayersPanelTest {
     private Player[] players;
 
     public ConstructPlayersPanelTest() {
-        final ConstructPlayersPanel constructPlayersPanel = new ConstructPlayersPanel();
+        String[] playerColors = {"Blue", "Orange", "Red", "White"};
+        final ConstructPlayersPanel constructPlayersPanel = new ConstructPlayersPanel(playerColors);
         final JOptionPane optionPane = new JOptionPane(constructPlayersPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null);
         final JDialog dialog = new JDialog((JDialog) null, "Player Information", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

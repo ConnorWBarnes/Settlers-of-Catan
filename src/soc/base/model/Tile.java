@@ -3,6 +3,7 @@ package soc.base.model;
 import soc.base.GameController;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Represents a terrain hex on a Settlers of Catan board. Contains the tile's
@@ -13,15 +14,15 @@ import java.util.LinkedList;
  */
 public class Tile {
     //The index of a terrain is the index of the resource it produces in GameController.RESOURCE_TYPES
-    public static final String[] TERRAIN_TYPES = {"Hills", "Fields", "Forrest", "Mountains", "Pasture", "Desert"};
-    public static final int HILLS = GameController.BRICK;
-    public static final int FIELDS = GameController.GRAIN;
-    public static final int FORREST = GameController.LUMBER;
-    public static final int MOUNTAINS = GameController.ORE;
-    public static final int PASTURE = GameController.WOOL;
-    public static final int DESERT = TERRAIN_TYPES.length - 1;
+    public static final String HILLS = "Hills";
+    public static final String FIELDS = "Fields";
+    public static final String FORREST = "Forrest";
+    public static final String MOUNTAINS = "Mountains";
+    public static final String PASTURE = "Pasture";
+    public static final String DESERT = "Desert";
+    public static final String[] TERRAIN_TYPES = {HILLS, FIELDS, FORREST, MOUNTAINS, PASTURE, DESERT};
 
-    private int terrain;//Dictates what resource this tile yields
+    private String terrain;//Dictates what resource this tile yields
     private NumberToken numberToken;
     private boolean occupiedByRobber;//true if the robber is on this tile, false if not
 	private LinkedList<Integer> settlementLocs;//Corner locations of all the settlements that are touching the tile
@@ -31,7 +32,7 @@ public class Tile {
      * tile is zero and is not occupied by the robber.
      * @param terrain the terrain of the tile
      */
-    public Tile(int terrain) {
+    public Tile(String terrain) {
         //TODO: Throw InvalidTerrainException?
         this.terrain = terrain;
         numberToken = null;
@@ -47,7 +48,7 @@ public class Tile {
      * @param robberStatus the robber occupies this tile if robberStatus is
      *                     true (otherwise not).
      */
-    public Tile(int terrain, boolean robberStatus) {
+    public Tile(String terrain, boolean robberStatus) {
         //TODO: Throw InvalidTerrainException?
         this.terrain = terrain;
         numberToken = null;
@@ -70,7 +71,7 @@ public class Tile {
      * Returns this tile's terrain.
      * @return this tile's terrain
      */
-    public int getTerrain() {
+    public String getTerrain() {
         return terrain;
     }
 
@@ -127,7 +128,7 @@ public class Tile {
      * Returns the list of locations of settlements adjacent to this tile.
      * @return the list of locations of settlements adjacent to this tile
      */
-	public LinkedList<Integer> getSettlementLocs() {
-		return new LinkedList<Integer>(settlementLocs);
-	}
+    public List<Integer> getSettlementLocs() {
+        return new LinkedList<Integer>(settlementLocs);
+    }
 }

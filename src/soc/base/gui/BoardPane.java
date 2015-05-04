@@ -226,7 +226,7 @@ public class BoardPane extends JLayeredPane {
 		JLabel tempLabel;
 		for (int i = 0; i < tiles.length; i++) {
 			//If the current tile is the desert tile, create and put the robber there
-            if (tiles[i].getTerrain() == Tile.DESERT) {
+            if (tiles[i].getTerrain().equals(Tile.DESERT)) {
                 robberLabel = new JLabel(icons.getRobberIcon());
 				numberTokenLabels[i] = robberLabel;
 			} else {

@@ -5,30 +5,27 @@ import soc.base.model.Board;
 import soc.base.model.Player;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.*;
+import java.util.List;
 
 /**
  * Represents the controller for Settlers of Catan. Enables the players to play
  * the game without breaking any of the rules.
  */
 public class GameController {
-    public static final String[] PLAYER_COLORS = {"Blue", "Orange", "Red", "White"};//Does not support the 5-6 player expansion
-    public static final String[] RESOURCE_TYPES = {"Brick", "Grain", "Lumber", "Ore", "Wool"};
-    public static final int BRICK = 0;
-    public static final int GRAIN = 1;
-    public static final int LUMBER = 2;
-    public static final int ORE = 3;
-    public static final int WOOL = 4;
-    public static final int HARBOR_TYPE_ANY = RESOURCE_TYPES.length;
+    public static final String BRICK = "Brick";
+    public static final String GRAIN = "Grain";
+    public static final String LUMBER = "Lumber";
+    public static final String ORE = "Ore";
+    public static final String WOOL = "Wool";
+    public static final String[] RESOURCE_TYPES = {BRICK, GRAIN, LUMBER, ORE, WOOL};
+    public static final String HARBOR_TYPE_ANY = "Any";
 
     //Model variables
     private Player[] players;
@@ -56,7 +53,8 @@ public class GameController {
         icons = new GameIcons();
 
         //Construct players and gameBoard
-        players = constructPlayers();
+        String[] playerColors = {"Blue", "Orange", "Red", "White"};//TODO: Change in order to support 5-6 player expansion
+        players = constructPlayers(playerColors);
         if (players == null) {//The dialog created by constructPlayers() was closed
             System.exit(0);
         }
@@ -106,12 +104,12 @@ public class GameController {
      * @return An array containing the Player objects constructed with the
      * user's input
      */
-    public static Player[] constructPlayers() {
+    public static Player[] constructPlayers(final String[] playerColors) {
         class ConstructPlayersDialog {
             Player[] constructedPlayers;
 
             ConstructPlayersDialog() {
-                final ConstructPlayersPanel constructPlayersPanel = new ConstructPlayersPanel();
+                final ConstructPlayersPanel constructPlayersPanel = new ConstructPlayersPanel(playerColors);
                 final JOptionPane optionPane = new JOptionPane(constructPlayersPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null);
                 final JDialog dialog = new JDialog((JDialog) null, "Player Information", true);
                 dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -263,6 +261,7 @@ public class GameController {
      * move the robber.
      */
     private void startNextTurn() {
+        //TODO: Disable buttons in playerPanel?
         //Close any frames (other than mainFrame) that may be open
         if (cardsFrame != null) {
             cardsFrame.dispose();
@@ -282,9 +281,31 @@ public class GameController {
         }
         currentPlayer = turnIterator.next();
         playerPanel.updatePlayer(currentPlayer);
-        //Roll the dice
         JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + ", it is now your turn", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
-
+        //Roll the dice
+        int redDie = (int) (Math.random() * 6 + 1);
+        int yellowDie = (int) (Math.random() * 6 + 1);
+        //Show the user what they rolled
+        JPanel dicePanel = new JPanel();
+        dicePanel.add(new JLabel(icons.getRedDieIcon(redDie)));
+        dicePanel.add(new JLabel(icons.getYellowDieIcon(yellowDie)));
+        JPanel message = new JPanel(new BorderLayout());
+        message.add(new JLabel("You rolled:"), BorderLayout.NORTH);
+        message.add(dicePanel, BorderLayout.CENTER);
+        JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
+        int numRolled = redDie + yellowDie;
+        //Move the robber (if appropriate)
+        if (numRolled == 7) {
+            //Construct a list of all the players who have more than 7 resource cards
+            ArrayList<Player> discardingPlayers = new ArrayList<Player>(players.length);
+            for (Player player : players) {
+                if (player.getSumResourceCards() > 7) {
+                    discardingPlayers.add(player);
+                }
+            }
+            //Force these players to discard half of their resource cards
+            new DiscardListener(discardingPlayers);
+        }
     }
 
     /**
@@ -377,7 +398,106 @@ public class GameController {
                 initialResources.add(resourceTable, BorderLayout.CENTER);
                 JOptionPane.showMessageDialog(mainFrame, initialResources, "Setup", JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
                 turnIterator = Arrays.asList(players).iterator();//TODO: Move this line of code into the rollForOrder() method
+                //Clean up variables that are no longer needed
+                validSetupSettlementLocs = null;
+                secondSettlementLocs = null;
                 startNextTurn();
+            }
+        }
+    }
+
+    /**
+     * Forces all of the players in the specified list to discard half of their
+     * resource cards. After each player has discarded, the current player is
+     * allowed to move the robber to the tile of their choice.
+     */
+    private class DiscardListener implements ActionListener {
+        private List<Player> discardingPlayers;
+        private ListIterator<Player> playerIterator;
+        private DiscardFrame discardFrame;
+
+        /**
+         * Constructs a new DiscardListener with the specified collection of
+         * players.
+         * @param discardingPlayers the players who need to discard
+         */
+        public DiscardListener(List<Player> discardingPlayers) {
+            this.discardingPlayers = discardingPlayers;
+            playerIterator = this.discardingPlayers.listIterator();
+            if (playerIterator.hasNext()) {
+                discardFrame = new DiscardFrame(icons, this, playerIterator.next());
+                System.out.println(this.getClass());
+            }
+        }
+
+        /**
+         * Discards the cards specified by the player and forces the next player
+         * in the list to discard half of their cards. If all players have
+         * discarded, the current player gets to move the robber.
+         * @param actionEvent the event fired by DiscardFrame signaling that the
+         *                    player has selected the cards to discard
+         */
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            int[] discardedResources = discardFrame.getDiscardedResources();
+            discardFrame.dispose();
+            //Discard the cards specified by the player
+            for (int i = 0; i < RESOURCE_TYPES.length; i++) {
+                discardingPlayers.get(playerIterator.previousIndex()).takeResource(RESOURCE_TYPES[i], discardedResources[i]);
+            }
+            if (playerIterator.hasNext()) {//Force the next player to discard
+                discardFrame = new DiscardFrame(icons, this, playerIterator.next());
+            } else {//Let the current player move the robber
+                ArrayList<Integer> validRobberLocs = new ArrayList<Integer>(gameBoard.getNumTiles());
+                for (int i = 0; i < gameBoard.getNumTiles(); i++) {
+                    validRobberLocs.add(i);
+                }
+                validRobberLocs.remove(gameBoard.getRobberLoc());
+                JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + ", please move the robber", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+                boardPane.showValidLocs(validRobberLocs, new MoveRobberListener(), BoardPane.LOC_TYPE_ROBBER, false);
+            }
+        }
+    }
+
+    /**
+     * Moves the robber to the location specified by the player and allows them
+     * to steal a resource card from any player who has a settlement adjacent to
+     * the specified tile.
+     */
+    private class MoveRobberListener implements ActionListener {
+        private StealResourceCardFrame stealCardFrame;
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            try {//actionEvent fired by boardPane
+                int tileLoc = Integer.parseInt(actionEvent.getActionCommand());
+                //Move the robber to the specified location
+                gameBoard.moveRobber(tileLoc);
+                boardPane.moveRobber(tileLoc);
+                //Construct a list of players who have a settlement adjacent to the specified tile
+                HashSet<Player> victims = new HashSet<Player>();
+                for (int settlementLoc : gameBoard.getTile(tileLoc).getSettlementLocs()) {
+                    for (Player player : players) {
+                        if (player.getColor().equals(gameBoard.getCorner(settlementLoc).getSettlementColor())) {
+                            victims.add(player);
+                        }
+                    }
+                }
+                victims.remove(currentPlayer);
+                //Let the current player steal from one of these players
+                stealCardFrame = new StealResourceCardFrame(icons, this, (Player[]) victims.toArray());
+            } catch (NumberFormatException e) {//actionEvent fired by stealCardFrame
+                //Take the chosen card from the victim and give it to the current player
+                for (Player player : players) {
+                    if (player.getColor().equals(stealCardFrame.getVictim().getColor())) {
+                        player.takeResource(stealCardFrame.getSelectedCard(), 1);
+                        currentPlayer.giveResource(stealCardFrame.getSelectedCard(), 1);
+                        break;
+                    }
+                }
+                stealCardFrame.dispose();
+                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                playerPanel.setButtonsEnabled(true);
             }
         }
     }

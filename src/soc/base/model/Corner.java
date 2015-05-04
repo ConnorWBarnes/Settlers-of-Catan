@@ -8,8 +8,8 @@ import java.util.LinkedList;
  */
 public class Corner {
 	private Settlement settlement;//null means the corner is unoccupied
-    private int harbor;//-1 means this corner has no harbor
-    private LinkedList<Integer> adjacentCornerLocs;//Used when checking for adjacent settlements when adding a settlement
+	private String harbor;//null means this corner has no harbor
+	private LinkedList<Integer> adjacentCornerLocs;//Used when checking for adjacent settlements when adding a settlement
 	private LinkedList<Integer> adjacentTileLocs;//Used when adding a settlement to the board
 	private LinkedList<Integer> adjacentRoadLocs;
 
@@ -18,21 +18,10 @@ public class Corner {
      */
 	public Corner()	{
 		settlement = new Settlement();
-        harbor = -1;
-        adjacentCornerLocs = new LinkedList<Integer>();
+		harbor = null;
+		adjacentCornerLocs = new LinkedList<Integer>();
 		adjacentTileLocs = new LinkedList<Integer>();
 		adjacentRoadLocs = new LinkedList<Integer>();
-	}
-
-    /**
-     * Constructs a corner with the specified harbor.
-     * @param harbor the harbor that is adjacent to this corner
-     */
-    public Corner(int harbor) {
-        settlement = new Settlement();
-        this.harbor = harbor;
-        adjacentCornerLocs = new LinkedList<Integer>();
-		adjacentTileLocs = new LinkedList<Integer>();
 	}
 
     /**
@@ -66,9 +55,9 @@ public class Corner {
      * Sets this corner's harbor to the specified harbor.
      * @param harbor the harbor that is adjacent to this corner
      */
-    public void setHarbor(int harbor) {
-        //Throw InvalidHarborException?
-        this.harbor = harbor;
+	public void setHarbor(String harbor) {
+		//Throw InvalidHarborException?
+		this.harbor = harbor;
     }
 
 	//TODO: Finish documentation
@@ -97,8 +86,8 @@ public class Corner {
 		return settlement.color;
 	}
 
-    public int getHarbor() {
-        return harbor;
+	public String getHarbor() {
+		return harbor;
 	}
 	
 	public LinkedList<Integer> getAdjacentCornerLocs() {
@@ -122,8 +111,8 @@ public class Corner {
 	}
 
 	public boolean hasHarbor() {
-        return harbor > -1;
-    }
+		return harbor != null;
+	}
 
     //A settlement or a city
 	private class Settlement {

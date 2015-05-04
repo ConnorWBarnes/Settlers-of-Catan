@@ -7,7 +7,8 @@ import soc.base.model.Player;
  */
 public class ConstructPlayersTest {
     public static void main(String[] args) {
-        for (Player player : GameController.constructPlayers()) {
+        String[] playerColors = {"Blue", "Orange", "Red", "White"};
+        for (Player player : GameController.constructPlayers(playerColors)) {
             System.out.println("Color: " + player.getColor() + " Name: " + player.getName());
         }
     }

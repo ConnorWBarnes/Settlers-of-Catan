@@ -46,9 +46,9 @@ public class CardsFrame extends JFrame {
     private void buildResourceCardsPanel() {
         ArrayList<JLabel> cards = new ArrayList<JLabel>(player.getSumResourceCards());
         JLabel tempLabel;
-        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-            for (int j = 0; j < player.getNumResourceCards(i); j++) {
-                tempLabel = new JLabel(icons.getResourceIcon(i));
+        for (String resource : GameController.RESOURCE_TYPES) {
+            for (int j = 0; j < player.getNumResourceCards(resource); j++) {
+                tempLabel = new JLabel(icons.getResourceIcon(resource));
                 cards.add(tempLabel);
             }
         }

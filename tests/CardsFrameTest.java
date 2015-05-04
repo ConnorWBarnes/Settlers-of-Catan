@@ -14,8 +14,8 @@ public class CardsFrameTest {
      */
     public static void main (String[] args) {
         Player player = new Player();
-        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-            player.giveResource(i, 2);
+        for (String resource : GameController.RESOURCE_TYPES) {
+            player.giveResource(resource, 2);
         }
         player.giveDevCard(new DevelopmentCard("Knight"));
         player.giveDevCard(new DevelopmentCard("Year of Plenty"));

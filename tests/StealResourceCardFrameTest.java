@@ -23,10 +23,11 @@ public class StealResourceCardFrameTest {
         }
         //Create the players and give them one resource card of each type
         Player[] victims = new Player[numVictims];
+        String[] playerColors = {"Blue", "Orange", "Red", "White"};
         for (int i = 0; i < victims.length; i++) {
-            victims[i] = new Player(GameController.PLAYER_COLORS[i]);
-            for (int j = 0; j < GameController.RESOURCE_TYPES.length; j++) {
-                victims[i].giveResource(j, 1);
+            victims[i] = new Player(playerColors[i]);
+            for (String resource : GameController.RESOURCE_TYPES) {
+                victims[i].giveResource(resource, 1);
             }
         }
         //Create the StealResourceCardFrame
@@ -38,7 +39,7 @@ public class StealResourceCardFrameTest {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             System.out.println("Player selected: " + frame.getVictim().getColor());
-            System.out.println("Card stolen: " + GameController.RESOURCE_TYPES[frame.getSelectedCard()]);
+            System.out.println("Card stolen: " + frame.getSelectedCard());
             System.exit(0);
         }
     }

@@ -27,8 +27,8 @@ public class PlayerPanelTest {
         GameIcons icons = new GameIcons();
         colorIndex = 0;
         player = new Player(PLAYER_COLORS[colorIndex]);
-        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-            player.giveResource(i, 1);
+        for (String resource : GameController.RESOURCE_TYPES) {
+            player.giveResource(resource, 1);
         }
         player.giveDevCard(new DevelopmentCard("Knight"));
         player.giveDevCard(new DevelopmentCard("Year of Plenty"));

@@ -17,7 +17,7 @@ public class Player {
     private ArrayList<DevelopmentCard> devCards;
     private LinkedList<Integer> settlementLocs;//Locations of settlements and cities owned by this player
     private LinkedList<Integer> roadLocs;//Locations of the roads owned by this player
-    private HashSet<Integer> harbors;//All types of harbors that this player has access to
+    private HashSet<String> harbors;//All types of harbors that this player can access
     private int sumResourceCards, victoryPoints, longestRoadLength, numKnightCardsPlayed;
     private boolean longestRoad, largestArmy;//Whether or not this player has Longest Road or Largest Army, respectively
 
@@ -38,7 +38,7 @@ public class Player {
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
         roadLocs = new LinkedList<Integer>();
-        harbors = new HashSet<Integer>();
+        harbors = new HashSet<String>();
         victoryPoints = 0;
         longestRoadLength = 0;
         numKnightCardsPlayed = 0;
@@ -64,7 +64,7 @@ public class Player {
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
         roadLocs = new LinkedList<Integer>();
-        harbors = new HashSet<Integer>();
+        harbors = new HashSet<String>();
         victoryPoints = 0;
         longestRoadLength = 0;
         numKnightCardsPlayed = 0;
@@ -91,7 +91,7 @@ public class Player {
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
         roadLocs = new LinkedList<Integer>();
-        harbors = new HashSet<Integer>();
+        harbors = new HashSet<String>();
         victoryPoints = 0;
         longestRoadLength = 0;
         numKnightCardsPlayed = 0;
@@ -101,28 +101,28 @@ public class Player {
 
     /**
      * Constructs a deep copy of the specified player.
-     * @param inPlayer the player to copy
+     * @param player the player to copy
      */
-    public Player(Player inPlayer) {
-        color = inPlayer.color;
+    public Player(Player player) {
+        color = player.color;
         name = "John Doe";
         resourceCards = new int[GameController.RESOURCE_TYPES.length];
         for (int i = 0; i < resourceCards.length; i++) {
             resourceCards[i] = 0;
         }
-        sumResourceCards = inPlayer.sumResourceCards;
-        numRemainingSettlements = inPlayer.numRemainingSettlements;
-        numRemainingCities = inPlayer.numRemainingCities;
-        numRemainingRoads = inPlayer.numRemainingRoads;
-        devCards = new ArrayList<DevelopmentCard>(inPlayer.devCards);
-        settlementLocs = new LinkedList<Integer>(inPlayer.settlementLocs);
-        roadLocs = new LinkedList<Integer>(inPlayer.roadLocs);
-        harbors = new HashSet<Integer>(inPlayer.harbors);
-        victoryPoints = inPlayer.victoryPoints;
-        longestRoadLength = inPlayer.longestRoadLength;
-        numKnightCardsPlayed = inPlayer.numKnightCardsPlayed;
-        longestRoad = inPlayer.longestRoad;
-        largestArmy = inPlayer.largestArmy;
+        sumResourceCards = player.sumResourceCards;
+        numRemainingSettlements = player.numRemainingSettlements;
+        numRemainingCities = player.numRemainingCities;
+        numRemainingRoads = player.numRemainingRoads;
+        devCards = new ArrayList<DevelopmentCard>(player.devCards);
+        settlementLocs = new LinkedList<Integer>(player.settlementLocs);
+        roadLocs = new LinkedList<Integer>(player.roadLocs);
+        harbors = new HashSet<String>(player.harbors);
+        victoryPoints = player.victoryPoints;
+        longestRoadLength = player.longestRoadLength;
+        numKnightCardsPlayed = player.numKnightCardsPlayed;
+        longestRoad = player.longestRoad;
+        largestArmy = player.largestArmy;
     }
 
     /**
@@ -152,26 +152,38 @@ public class Player {
     /**
      * Gives this player the specified amount of resource cards of the
      * specified type.
-     * @param resource the index of the type of resource in
-     *                 GameController.RESOURCE_CARDS to give
+     * @param resource the type of resource to give
      * @param amount the number of resource cards to give
+     * @return true if the cards were added, otherwise false
      */
-    public void giveResource(int resource, int amount) {
+    public boolean giveResource(String resource, int amount) {
         //TODO: Throw exception when amount < 0 or when trying to take more resources than the player has?
-        resourceCards[resource] += amount;
-        sumResourceCards += amount;
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            if (GameController.RESOURCE_TYPES[i].equals(resource)) {
+                resourceCards[i] += amount;
+                sumResourceCards += amount;
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
      * Takes the specified amount of resource cards of the specified type.
-     * @param resource the index of the type of resource in
-     *                 GameController.RESOURCE_CARDS to take
+     * @param resource the type of resource to take
      * @param amount the number of resource cards to take
+     * @return true if the cards were removed, otherwise false
      */
-    public void takeResource(int resource, int amount) {
+    public boolean takeResource(String resource, int amount) {
         //TODO: Throw exception when amount < 0 or when trying to take more resources than the player has?
-        resourceCards[resource] -= amount;
-        sumResourceCards -= amount;
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            if (GameController.RESOURCE_TYPES[i].equals(resource)) {
+                resourceCards[i] -= amount;
+                sumResourceCards -= amount;
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -241,10 +253,9 @@ public class Player {
 
     /**
      * Adds the specified harbor to the list of harbors this player can access.
-     * @param type the index of the resource type in
-     *             GameController.RESOURCE_TYPES that the new harbor affects
+     * @param type the resource type that the new harbor affects
      */
-    public void addHarbor(int type) {
+    public void addHarbor(String type) {
         //TODO: Throw exception if type > GameController.HARBOR_TYPE_ANY?
         harbors.add(type);
     }
@@ -320,12 +331,16 @@ public class Player {
     /**
      * Returns the number of resource cards of the specified type that this
      * player has.
-     * @param resource the index of the type of resource in
-     *                 GameController.RESOURCE_TYPES
-     * @return the number of resource cards of the specified type
+     * @param resource the type of resource
+     * @return the number of resource cards of the specified type (or -1 if the specified type doesn't exist)
      */
-    public int getNumResourceCards(int resource) {
-        return resourceCards[resource];
+    public int getNumResourceCards(String resource) {
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            if (GameController.RESOURCE_TYPES[i].equals(resource)) {
+                return resourceCards[i];
+            }
+        }
+        return -1;
     }
 
     /**
@@ -372,8 +387,8 @@ public class Player {
      * Returns a list of all the harbors that this player can access.
      * @return a list of all the harbors that this player can access
      */
-    public HashSet<Integer> getHarbors() {
-        return new HashSet<Integer>(harbors);
+    public HashSet<String> getHarbors() {
+        return new HashSet<String>(harbors);
     }
 
     /**

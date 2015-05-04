@@ -23,7 +23,7 @@ public class TradeInFrameTest {
         player.giveResource(GameController.BRICK, 4);
         player.giveResource(GameController.GRAIN, 3);
         player.giveResource(GameController.LUMBER, 2);
-        player.addHarbor(GameController.RESOURCE_TYPES.length - 1);
+        player.addHarbor(GameController.WOOL);
         player.addHarbor(GameController.HARBOR_TYPE_ANY);
         tradeInFrame = new TradeInFrame(icons, new TestListener(), player);
     }
