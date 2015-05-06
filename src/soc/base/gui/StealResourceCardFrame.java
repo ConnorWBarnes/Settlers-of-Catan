@@ -146,7 +146,7 @@ public class StealResourceCardFrame extends JFrame {
             randomizedCards.add(orderedCards.remove(randomNum));
         }
         //Update the frame
-        choicePanel.add(new CardPane(randomizedCards, Math.min(GameIcons.BOARD_WIDTH, GameIcons.CARD_WIDTH * victim.getSumResourceCards())));
+        choicePanel.add(new CardPane(randomizedCards, GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT));
         buttonPanel.add(backButton);
         pack();
     }

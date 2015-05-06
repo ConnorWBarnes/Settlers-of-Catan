@@ -30,9 +30,9 @@ public class TradeInFrameTest {
 
     private class TestListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Resource discarded: " + GameController.RESOURCE_TYPES[tradeInFrame.getDiscardedResource()]);
+            System.out.println("Resource discarded: " + tradeInFrame.getDiscardedResource());
             System.out.println("Number of resource cards traded in: " + tradeInFrame.getNumDiscardedResources());
-            System.out.println("Resource desired: " + GameController.RESOURCE_TYPES[tradeInFrame.getDesiredResource()]);
+            System.out.println("Resource desired: " + tradeInFrame.getDesiredResource());
             System.exit(0);
         }
     }

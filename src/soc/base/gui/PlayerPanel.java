@@ -16,7 +16,18 @@ import java.awt.*;
  * @author Connor Barnes
  */
 public class PlayerPanel extends JPanel {
-	private static final int VIEW_CARDS_INDEX = 4;
+    public static final String BUILD_ROAD = "Build Road";
+    public static final String BUILD_SETTLEMENT = "Build Settlement";
+    public static final String BUILD_CITY = "Build City";
+    public static final String BUILD_DEV_CARD = "Build Development Card";
+    public static final String VIEW_CARDS = "View Cards";
+    public static final String OFFER_TRADE = "Offer Trade";
+    public static final String PLAY_DEV_CARD = "Play Development Card";
+    public static final String TRADE_IN_RESOURCE_CARDS = "Trade in Resource Cards";
+    public static final String END_TURN = "End Turn";
+    public static final String[] BUTTON_NAMES = {BUILD_ROAD, BUILD_SETTLEMENT, BUILD_CITY, BUILD_DEV_CARD, VIEW_CARDS,
+            OFFER_TRADE, PLAY_DEV_CARD, TRADE_IN_RESOURCE_CARDS, END_TURN};
+    private static final int VIEW_CARDS_INDEX = 4;
 
     private GameIcons icons;
     private JButton[] playerButtons;
@@ -36,6 +47,7 @@ public class PlayerPanel extends JPanel {
         super();
         icons = inIcons;
         setLayout(new FlowLayout());
+        //TODO: Shrink building costs cards
         add(buildCostsPanel());
         add(buildButtonPanel(buttonListener));
         add(buildTokensAndCardsPanel());
@@ -175,11 +187,10 @@ public class PlayerPanel extends JPanel {
     private JPanel buildCostsPanel() {
         playerColor = "Red"; //Red is default/placeholder
         costsLabel = new JLabel();
-        JPanel costsPanel = new JPanel();
         costsLabel.setIcon(icons.getScaledCostsCardIcon(playerColor));
         costsLabel.addMouseListener(new CostsCardListener());
-        costsPanel.setLayout(new BorderLayout());
-        costsPanel.add(costsLabel, BorderLayout.CENTER);
+        JPanel costsPanel = new JPanel();
+        costsPanel.add(costsLabel);
         return costsPanel;
     }
 
@@ -191,11 +202,9 @@ public class PlayerPanel extends JPanel {
      */
     private JPanel buildButtonPanel(ActionListener buttonListener) {
         //Create the buttons in the button panel
-        String[] buttonNames = {"Build Road", "Build Settlement", "Build City", "Build Development Card", "View Cards",
-                "Offer Trade", "Play Development Card", "Trade in Resource Cards", "End Turn"};
-        playerButtons = new JButton[buttonNames.length];
+        playerButtons = new JButton[BUTTON_NAMES.length];
         for (int i = 0; i < playerButtons.length; i++) {
-            playerButtons[i] = new JButton(buttonNames[i]);
+            playerButtons[i] = new JButton(BUTTON_NAMES[i]);
         }
         //Set the action command and add the buttonListener to all the buttons
         for (JButton button : playerButtons) {
@@ -272,8 +281,7 @@ public class PlayerPanel extends JPanel {
     private JPanel buildLongestRoadPanel() {
         longestRoadLabel = new JLabel();
         JPanel longestRoadPanel = new JPanel();
-        longestRoadPanel.setLayout(new BorderLayout());
-        longestRoadPanel.add(longestRoadLabel, BorderLayout.CENTER);
+        longestRoadPanel.add(longestRoadLabel);
         return longestRoadPanel;
     }
 
@@ -285,8 +293,7 @@ public class PlayerPanel extends JPanel {
     private JPanel buildLargestArmyPanel() {
         largestArmyLabel = new JLabel();
         JPanel largestArmyPanel = new JPanel();
-        largestArmyPanel.setLayout(new BorderLayout());
-        largestArmyPanel.add(longestRoadLabel, BorderLayout.CENTER);
+        largestArmyPanel.add(longestRoadLabel);
         return largestArmyPanel;
     }
 

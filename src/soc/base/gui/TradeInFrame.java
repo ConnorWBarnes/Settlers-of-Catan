@@ -34,7 +34,8 @@ public class TradeInFrame extends JFrame {
     private JButton confirmTradeInButton;
     //Information variables
     private Player player;
-    private int discardedResource, desiredResource, numDiscardedResources;
+    private String discardedResource, desiredResource;
+    private int numDiscardedResources;
 
     /**
      * Creates and displays a frame that allows the specified player to trade
@@ -81,7 +82,7 @@ public class TradeInFrame extends JFrame {
      * @return the index of the type of resource that the player chose to trade
      * in
      */
-    public int getDiscardedResource() {
+    public String getDiscardedResource() {
         return discardedResource;
     }
 
@@ -97,7 +98,7 @@ public class TradeInFrame extends JFrame {
      * Returns the index of the type of resource that the player chose to receive.
      * @return the index of the type of resource that the player chose to receive
      */
-    public int getDesiredResource() {
+    public String getDesiredResource() {
         return desiredResource;
     }
 
@@ -125,12 +126,12 @@ public class TradeInFrame extends JFrame {
         for (String resource : GameController.RESOURCE_TYPES) {
             for (int j = 0; j < player.getNumResourceCards(resource); j++) {
                 tempLabel = new JLabel(icons.getResourceIcon(resource));
-                tempLabel.setName(String.valueOf(resource));
+                tempLabel.setName(resource);
                 tempLabel.addMouseListener(new KeepListener());
                 cards.add(tempLabel);
             }
         }
-        keepPane = new CardPane(cards, GameIcons.BOARD_WIDTH);
+        keepPane = new CardPane(cards, GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
         JPanel cardPanel = new JPanel();
         cardPanel.add(keepPane);
         cardPanel.setBorder(BorderFactory.createTitledBorder("Your Resource Cards"));
@@ -199,8 +200,7 @@ public class TradeInFrame extends JFrame {
         @Override
         public void mouseReleased(MouseEvent e) {
             if (discardPane.getComponentCount() > 0) {
-                //If the resource that was clicked on is not the same type as the resource(s) already selected for discard,
-                //remove all the labels in discardLabels
+                //If the resource that was clicked on is not the same type as the resource(s) already selected for discard, remove all the labels in discardLabels
                 if (!e.getComponent().getName().equals(discardPane.getComponents()[0].getName())) {
                     discardPane.getComponents()[0].dispatchEvent(new MouseEvent(discardPane.getComponents()[0], MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), 0, 10, 10, 1, false));
                 } else { //If they are the same resource type, then don't do anything because the minimum amount of resource cards has already been added
@@ -217,9 +217,9 @@ public class TradeInFrame extends JFrame {
             JLabel tempLabel;
             int cardsRemoved = 0;
             while (cardsRemoved < min) {
-                tempLabel = keepPane.removeResourceCard(e.getComponent().getName());
+                tempLabel = keepPane.removeCard(e.getComponent().getName());
                 cardsRemoved++;
-                if (tempLabel == null) {
+                if (tempLabel == null) {//All cards of this type have been removed
                     break;
                 } else {
                     for (MouseListener listener : tempLabel.getMouseListeners()) {
@@ -248,7 +248,7 @@ public class TradeInFrame extends JFrame {
             //Move all the labels in discardLabels to keepLabels
             JLabel tempLabel;
             while (true) {
-                tempLabel = discardPane.removeResourceCard(e.getComponent().getName());
+                tempLabel = discardPane.removeCard(e.getComponent().getName());
                 if (tempLabel == null) {
                     break;
                 } else {
@@ -276,10 +276,10 @@ public class TradeInFrame extends JFrame {
             if (e.getActionCommand().equals("Cancel")) {
                 dispose();
             } else {
-                desiredResource = resourceComboBox.getSelectedIndex();
-                discardedResource = Integer.parseInt(discardPane.getComponents()[0].getName());
+                desiredResource = GameController.RESOURCE_TYPES[resourceComboBox.getSelectedIndex()];
+                discardedResource = discardPane.getComponents()[0].getName();
                 numDiscardedResources = discardPane.getComponentCount();
-                if (desiredResource == discardedResource) {
+                if (desiredResource.equals(discardedResource)) {
                     JLabel topWarning = new JLabel("You have selected to receive the same type of resource that you are discarding.");
                     topWarning.setHorizontalAlignment(JLabel.CENTER);
                     topWarning.setVerticalAlignment(JLabel.CENTER);

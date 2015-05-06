@@ -25,8 +25,9 @@ public class BoardPane extends JLayeredPane {
 
     private final Integer BACKGROUND_LAYER = 0; //Surrounding board (i.e. the ocean)
     private final Integer TILE_LAYER = 1;       //Terrain hexes (i.e. Mountain, Pasture, etc.)
-    private final Integer TOKEN_LAYER = 2;      //Number tokens, roads, settlements, and cities
-    private final Integer TOP_LAYER = 3;        //Stars, cancel button, and the robber
+    private final Integer ROBBER_STAR_LAYER = 2;//Stars for displaying where the robber can go
+    private final Integer TOKEN_LAYER = 3;      //Number tokens, roads, settlements, and cities
+    private final Integer TOP_LAYER = 4;        //Stars, cancel button, and the robber
 
 	private GameIcons icons;
 	private LocationConverter locConverter;
@@ -91,6 +92,7 @@ public class BoardPane extends JLayeredPane {
      * @param locType the type of locations in the specified list (see static variables)
      */
     public void showValidLocs(Collection<Integer> validLocs, ActionListener triggerListener, int locType, boolean cancelOption) {
+        //TODO: Don't cover number tokens when showing valid robber locs
         for (ActionListener listener : validLocTriggerButton.getActionListeners()) {
             validLocTriggerButton.removeActionListener(listener);
         }
@@ -121,7 +123,11 @@ public class BoardPane extends JLayeredPane {
             tempLabel.setSize(tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
             tempLabel.setName(String.valueOf(loc));
             tempLabel.addMouseListener(starListener);
-            add(tempLabel, TOP_LAYER);
+            if (locType == LOC_TYPE_ROBBER) {
+                add(tempLabel, ROBBER_STAR_LAYER);
+            } else {
+                add(tempLabel, TOP_LAYER);
+            }
             stars.add(tempLabel);
 		}
 		repaint();

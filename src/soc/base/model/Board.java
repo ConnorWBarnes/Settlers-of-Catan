@@ -184,7 +184,8 @@ public class Board {
 	//Create a list of the default set of tiles
 	private ArrayList<Tile> generateDefaultTiles() {
 		ArrayList<Tile> defaultTileList = new ArrayList<Tile>(tileMap.length);
-		for (String terrain : Tile.TERRAIN_TYPES) {
+		String[] nonDesertTerrains = {Tile.HILLS, Tile.FIELDS, Tile.FORREST, Tile.MOUNTAINS, Tile.PASTURE};
+		for (String terrain : nonDesertTerrains) {
 			for (int j = 0; j < 3; j++) {
 				defaultTileList.add(new Tile(terrain));
 			}
@@ -222,42 +223,42 @@ public class Board {
         }
         //Add number tokens to the outer tiles
         for (int i = startingOuterIndex; i < outerTiles.length; i++) {
-            if (tileMap[outerTiles[i]].getRobberStatus()) {
-                robberLoc = outerTiles[i];
-            } else {
+			if (tileMap[outerTiles[i]].hasRobber()) {
+				robberLoc = outerTiles[i];
+			} else {
                 tileMap[outerTiles[i]].setNumberToken(numberTokens.getFirst());
                 numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[outerTiles[i]]);
             }
         }
         for (int i = 0; i < startingOuterIndex; i++) {
-            if (tileMap[outerTiles[i]].getRobberStatus()) {
-                robberLoc = outerTiles[i];
-            } else {
+			if (tileMap[outerTiles[i]].hasRobber()) {
+				robberLoc = outerTiles[i];
+			} else {
                 tileMap[outerTiles[i]].setNumberToken(numberTokens.getFirst());
                 numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[outerTiles[i]]);
             }
         }
         //Add number tokens to the inner tiles
         for (int i = startingInnerIndex; i < innerTiles.length; i++) {
-            if (tileMap[innerTiles[i]].getRobberStatus()) {
-                robberLoc = innerTiles[i];
-            } else {
+			if (tileMap[innerTiles[i]].hasRobber()) {
+				robberLoc = innerTiles[i];
+			} else {
                 tileMap[innerTiles[i]].setNumberToken(numberTokens.getFirst());
                 numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[innerTiles[i]]);
             }
         }
         for (int i = 0; i < startingInnerIndex; i++) {
-            if (tileMap[innerTiles[i]].getRobberStatus()) {
-                robberLoc = innerTiles[i];
-            } else {
+			if (tileMap[innerTiles[i]].hasRobber()) {
+				robberLoc = innerTiles[i];
+			} else {
                 tileMap[innerTiles[i]].setNumberToken(numberTokens.getFirst());
                 numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[innerTiles[i]]);
             }
         }
         //Add a number token to the center tile
-        if (tileMap[CENTER_TILE_INDEX].getRobberStatus()) {
-            robberLoc = CENTER_TILE_INDEX;
-        } else {
+		if (tileMap[CENTER_TILE_INDEX].hasRobber()) {
+			robberLoc = CENTER_TILE_INDEX;
+		} else {
             tileMap[CENTER_TILE_INDEX].setNumberToken(numberTokens.getFirst());
             numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[CENTER_TILE_INDEX]);
         }

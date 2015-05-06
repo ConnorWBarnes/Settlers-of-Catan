@@ -114,7 +114,7 @@ public class DiscardFrame extends JFrame {
                 cards.add(tempLabel);
             }
         }
-        keepPane = new CardPane(cards, GameIcons.BOARD_WIDTH);
+        keepPane = new CardPane(cards, GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
         discardPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
     }
 
@@ -136,7 +136,7 @@ public class DiscardFrame extends JFrame {
      */
     private class KeepListener extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
-            JLabel labelClicked = keepPane.removeResourceCard(e.getComponent().getName());
+            JLabel labelClicked = keepPane.removeCard(e.getComponent().getName());
             //Replace the button's current action listener with a new DiscardListener
             for (MouseListener listener : labelClicked.getMouseListeners()) {
                 labelClicked.removeMouseListener(listener);
@@ -155,7 +155,7 @@ public class DiscardFrame extends JFrame {
      */
     private class DiscardListener extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
-            JLabel labelClicked = discardPane.removeResourceCard(e.getComponent().getName());
+            JLabel labelClicked = discardPane.removeCard(e.getComponent().getName());
             //Replace the button's current action listener with a new DiscardListener
             for (MouseListener listener : labelClicked.getMouseListeners()) {
                 labelClicked.removeMouseListener(listener);

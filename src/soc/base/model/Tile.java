@@ -24,8 +24,8 @@ public class Tile {
 
     private String terrain;//Dictates what resource this tile yields
     private NumberToken numberToken;
-    private boolean occupiedByRobber;//true if the robber is on this tile, false if not
-	private LinkedList<Integer> settlementLocs;//Corner locations of all the settlements that are touching the tile
+    private boolean hasRobber;//true if the robber is on this tile, false if not
+    private LinkedList<Integer> settlementLocs;//Corner locations of all the settlements that are touching the tile
 
     /**
      * Constructs a tile with the specified terrain. The number token for this
@@ -36,9 +36,9 @@ public class Tile {
         //TODO: Throw InvalidTerrainException?
         this.terrain = terrain;
         numberToken = null;
-		occupiedByRobber = false;
-		settlementLocs = new LinkedList<Integer>();
-	}
+        hasRobber = false;
+        settlementLocs = new LinkedList<Integer>();
+    }
 
     /**
      * Constructs a tile with the specified terrain and is occupied by the
@@ -52,9 +52,9 @@ public class Tile {
         //TODO: Throw InvalidTerrainException?
         this.terrain = terrain;
         numberToken = null;
-		occupiedByRobber = robberStatus;
-		settlementLocs = new LinkedList<Integer>();
-	}
+        hasRobber = robberStatus;
+        settlementLocs = new LinkedList<Integer>();
+    }
 
     /**
      * Constructs a deep copy of the specified tile.
@@ -63,9 +63,9 @@ public class Tile {
 	public Tile(Tile inTile) {
 		terrain = inTile.terrain;
 		numberToken = inTile.numberToken;
-		occupiedByRobber = inTile.occupiedByRobber;
-		settlementLocs = new LinkedList<Integer>(inTile.settlementLocs);
-	}
+        hasRobber = inTile.hasRobber;
+        settlementLocs = new LinkedList<Integer>(inTile.settlementLocs);
+    }
 
     /**
      * Returns this tile's terrain.
@@ -73,6 +73,26 @@ public class Tile {
      */
     public String getTerrain() {
         return terrain;
+    }
+
+    /**
+     * Returns the type of resource that this tile produces. Returns null if this tile is the desert tile.
+     * @return the type of resource produced by this tile
+     */
+    public String getResourceProduced() {
+        if (terrain.equals(HILLS)) {
+            return GameController.BRICK;
+        } else if (terrain.equals(FIELDS)) {
+            return GameController.GRAIN;
+        } else if (terrain.equals(FORREST)) {
+            return GameController.LUMBER;
+        } else if (terrain.equals(MOUNTAINS)) {
+            return GameController.ORE;
+        } else if (terrain.equals(PASTURE)) {
+            return GameController.WOOL;
+        } else { //terrain.equals(DESERT)
+            return null;
+        }
     }
 
     /**
@@ -104,15 +124,15 @@ public class Tile {
      * @param robberStatus whether or not the robber is occupying this tile
      */
 	public void setRobberStatus(boolean robberStatus) {
-		occupiedByRobber = robberStatus;
-	}
+        hasRobber = robberStatus;
+    }
 
     /**
      * Returns true if the robber is currently occupying this tile; false otherwise.
      * @return true if the robber is currently occupying this tile; false otherwise
      */
-    public boolean getRobberStatus() {
-        return occupiedByRobber;
+    public boolean hasRobber() {
+        return hasRobber;
     }
 
     /**

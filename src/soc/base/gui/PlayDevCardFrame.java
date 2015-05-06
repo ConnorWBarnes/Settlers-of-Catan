@@ -48,7 +48,7 @@ public class PlayDevCardFrame extends JFrame {
             JOptionPane.showMessageDialog(null, "You do not have any playable development cards", this.getTitle(), JOptionPane.INFORMATION_MESSAGE);
             dispose();
         } else {
-            CardPane cardPane = new CardPane(devCardLabels, GameIcons.BOARD_WIDTH);
+            CardPane cardPane = new CardPane(devCardLabels, GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
             cardPane.setPreferredSize(new Dimension(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT));
             JPanel cardPanel = new JPanel();
             cardPanel.setBorder(BorderFactory.createTitledBorder("Select a Development Card to play"));

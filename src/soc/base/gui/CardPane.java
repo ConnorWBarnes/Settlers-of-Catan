@@ -10,31 +10,34 @@ import java.util.Collection;
  * Assumes that the icon in each JLabel is the same size.
  */
 public class CardPane extends JLayeredPane {
+    private int maxWidth, height;
     private ArrayList<JLabel> labels;
 
     /**
-     * Constructs an empty pane with the specified width.
-     * @param width the width of the pane
+     * Constructs an empty pane with the specified maxWidth.
+     * @param maxWidth the maxWidth of the pane
      */
-    public CardPane(int width, int height) {
+    public CardPane(int maxWidth, int height) {
         super();
         labels = new ArrayList<JLabel>();
-        setPreferredSize(new Dimension(width, height));
+        this.maxWidth = maxWidth;
+        this.height = height;
     }
 
     /**
-     * Constructs a pane with the specified width that is filled with the
+     * Constructs a pane with the specified maxWidth that is filled with the
      * specified JLabels.
-     * @param inLabels the JLabels to display
-     * @param width the width of the pane
+     * @param labels the JLabels to display
+     * @param maxWidth the maxWidth of the pane
      */
-    public CardPane(Collection<JLabel> inLabels, int width) {
+    public CardPane(Collection<JLabel> labels, int maxWidth, int height) {
         super();
-        labels = new ArrayList<JLabel>(inLabels);
+        this.labels = new ArrayList<JLabel>(labels);
         for (JLabel label : labels) {
             label.setSize(label.getIcon().getIconWidth(), label.getIcon().getIconHeight());
         }
-        setPreferredSize(new Dimension(width, labels.get(0).getIcon().getIconHeight()));
+        this.maxWidth = maxWidth;
+        this.height = height;
         update();
     }
 
@@ -66,7 +69,7 @@ public class CardPane extends JLayeredPane {
      * @return the removed JLabel (or null if none of the names of the JLabels
      * in this pane match the specified name)
      */
-    public JLabel removeResourceCard(String target) {
+    public JLabel removeCard(String target) {
         for (int i = 0; i < labels.size(); i++) {
             if (labels.get(i).getName().equals(target)) {
                 JLabel label = labels.remove(i);
@@ -77,20 +80,22 @@ public class CardPane extends JLayeredPane {
         return null;
     }
 
-    /* Updates the LayeredPane to display the contents of the cards array */
+    /**
+     * Updates the LayeredPane to display the contents of the cards array
+     */
     private void update() {
         removeAll();
         if (!labels.isEmpty()) {
-            int offset, margin;
-            if (labels.size() * labels.get(0).getWidth() > this.getPreferredSize().getWidth()) {
-                offset = labels.get(0).getWidth() - (int) ((labels.size() * labels.get(0).getWidth() - this.getPreferredSize().getWidth()) / (labels.size() - 1));
-                margin = 0;
+            int offset;
+            if (labels.size() * labels.get(0).getWidth() > maxWidth) {
+                offset = labels.get(0).getWidth() - ((labels.size() * labels.get(0).getWidth() - maxWidth) / (labels.size() - 1));
+                setPreferredSize(new Dimension(maxWidth, height));
             } else {
                 offset = labels.get(0).getWidth();
-                margin = (int) (this.getPreferredSize().getWidth() - (labels.size() * labels.get(0).getWidth())) / 2;
+                setPreferredSize(new Dimension(labels.size() * labels.get(0).getWidth(), height));
             }
             for (int i = 0; i < labels.size(); i++) {
-                labels.get(i).setLocation(offset * i + margin, 0);
+                labels.get(i).setLocation(offset * i, 0);
                 add(labels.get(i), new Integer(i));
             }
         }
