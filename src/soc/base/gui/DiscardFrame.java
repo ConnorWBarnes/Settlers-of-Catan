@@ -106,16 +106,17 @@ public class DiscardFrame extends JFrame {
     private void buildResourcePanels() {
         ArrayList<JLabel> cards = new ArrayList<JLabel>(player.getSumResourceCards());
         JLabel tempLabel;
-        for (String resource : GameController.RESOURCE_TYPES) {
-            for (int j = 0; j < player.getNumResourceCards(resource); j++) {
-                tempLabel = new JLabel(icons.getResourceIcon(resource));
-                tempLabel.setName(resource);
+        for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
+            for (int j = 0; j < player.getNumResourceCards(GameController.RESOURCE_TYPES[i]); j++) {
+                tempLabel = new JLabel(icons.getResourceIcon(GameController.RESOURCE_TYPES[i]));
+                tempLabel.setName(String.valueOf(i));
                 tempLabel.addMouseListener(new KeepListener());
                 cards.add(tempLabel);
             }
         }
         keepPane = new CardPane(cards, GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
         discardPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
+        discardPane.setPreferredSize(keepPane.getPreferredSize());
     }
 
     /**

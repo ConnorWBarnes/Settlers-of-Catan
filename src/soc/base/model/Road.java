@@ -1,6 +1,7 @@
 package soc.base.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Represents a road location on a Settlers of Catan board (i.e. a side of a
@@ -25,22 +26,20 @@ public class Road {
 
     /**
      * Constructs a deep copy of the specified road.
-     * @param inRoad the Road to copy
+     * @param road the Road to copy
      */
-    public Road(Road inRoad) {
-        color = inRoad.color;
-        adjacentRoadLocs = new ArrayList<Integer>(inRoad.adjacentRoadLocs);
-        adjacentCornerLocs = new int[2];
-        adjacentCornerLocs[0] = inRoad.adjacentCornerLocs[0];
-        adjacentCornerLocs[1] = inRoad.adjacentCornerLocs[1];
+    public Road(Road road) {
+        color = road.color;
+        adjacentRoadLocs = new ArrayList<Integer>(road.adjacentRoadLocs);
+        adjacentCornerLocs = Arrays.copyOf(road.adjacentCornerLocs, road.adjacentCornerLocs.length);
     }
 
     /**
      * Sets the color of this road to the specified color.
-     * @param inColor the color of the road
+     * @param color the color of the road
      */
-    public void setColor(String inColor) {
-        color = inColor;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     /**
@@ -71,8 +70,7 @@ public class Road {
      * road
      */
     public int[] getAdjacentCornerLocs() {
-        int[] temp = {adjacentCornerLocs[0], adjacentCornerLocs[1]};
-        return temp;
+        return Arrays.copyOf(adjacentCornerLocs, adjacentCornerLocs.length);
     }
 
     /**

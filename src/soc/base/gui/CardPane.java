@@ -34,7 +34,7 @@ public class CardPane extends JLayeredPane {
         super();
         this.labels = new ArrayList<JLabel>(labels);
         for (JLabel label : labels) {
-            label.setSize(label.getIcon().getIconWidth(), label.getIcon().getIconHeight());
+            label.setSize(label.getPreferredSize());
         }
         this.maxWidth = maxWidth;
         this.height = height;

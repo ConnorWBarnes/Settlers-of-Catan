@@ -2,9 +2,7 @@ package soc.base.model;
 
 import soc.base.GameController;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Represents a player in a game of Settlers of Catan.
@@ -16,7 +14,7 @@ public class Player {
     private int[] resourceCards;
     private ArrayList<DevelopmentCard> devCards;
     private LinkedList<Integer> settlementLocs;//Locations of settlements and cities owned by this player
-    private LinkedList<Integer> roadLocs;//Locations of the roads owned by this player
+    private HashMap<Integer, LinkedList<Integer>> roadMap;//Locations of the roads owned by this player
     private HashSet<String> harbors;//All types of harbors that this player can access
     private int sumResourceCards, victoryPoints, longestRoadLength, numKnightCardsPlayed;
     private boolean longestRoad, largestArmy;//Whether or not this player has Longest Road or Largest Army, respectively
@@ -37,7 +35,7 @@ public class Player {
         numRemainingRoads = 15;
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
-        roadLocs = new LinkedList<Integer>();
+        roadMap = new HashMap<Integer, LinkedList<Integer>>();
         harbors = new HashSet<String>();
         victoryPoints = 0;
         longestRoadLength = 0;
@@ -48,10 +46,10 @@ public class Player {
 
     /**
      * Constructs a player with the specified color with the name "John Doe".
-     * @param inColor the color of the player's tokens
+     * @param color the color of the player's tokens
      */
-    public Player(String inColor) {
-        color = inColor;
+    public Player(String color) {
+        this.color = color;
         name = "John Doe";
         resourceCards = new int[GameController.RESOURCE_TYPES.length];
         for (int i = 0; i < resourceCards.length; i++) {
@@ -63,7 +61,7 @@ public class Player {
         numRemainingRoads = 15;
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
-        roadLocs = new LinkedList<Integer>();
+        roadMap = new HashMap<Integer, LinkedList<Integer>>();
         harbors = new HashSet<String>();
         victoryPoints = 0;
         longestRoadLength = 0;
@@ -74,12 +72,12 @@ public class Player {
 
     /**
      * Constructs a player with the specified color and with the specified name.
-     * @param inColor the color of the player's tokens
-     * @param inName the name of the player
+     * @param color the color of the player's tokens
+     * @param name the name of the player
      */
-    public Player(String inColor, String inName) {
-        color = inColor;
-        name = inName;
+    public Player(String color, String name) {
+        this.color = color;
+        this.name = name;
         resourceCards = new int[GameController.RESOURCE_TYPES.length];
         for (int i = 0; i < resourceCards.length; i++) {
             resourceCards[i] = 0;
@@ -90,7 +88,7 @@ public class Player {
         numRemainingRoads = 15;
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
-        roadLocs = new LinkedList<Integer>();
+        roadMap = new HashMap<Integer, LinkedList<Integer>>();
         harbors = new HashSet<String>();
         victoryPoints = 0;
         longestRoadLength = 0;
@@ -116,7 +114,7 @@ public class Player {
         numRemainingRoads = player.numRemainingRoads;
         devCards = new ArrayList<DevelopmentCard>(player.devCards);
         settlementLocs = new LinkedList<Integer>(player.settlementLocs);
-        roadLocs = new LinkedList<Integer>(player.roadLocs);
+        roadMap = new HashMap<Integer, LinkedList<Integer>>(player.roadMap);
         harbors = new HashSet<String>(player.harbors);
         victoryPoints = player.victoryPoints;
         longestRoadLength = player.longestRoadLength;
@@ -246,9 +244,53 @@ public class Player {
      * the board.
      * @param roadLoc the location of the new road
      */
-    public void addRoad(int roadLoc) {
-        roadLocs.add(roadLoc);
+    public void addRoad(Road road, int roadLoc) {
+        roadMap.put(roadLoc, new LinkedList<Integer>());
         numRemainingRoads--;
+        //Update the edges in roadMap
+        for (int adjacentRoadLoc : road.getAdjacentRoadLocs()) {
+            if (roadMap.containsKey(adjacentRoadLoc)) {
+                roadMap.get(roadLoc).add(adjacentRoadLoc);
+                roadMap.get(adjacentRoadLoc).add(roadLoc);
+            }
+        }
+        //Re-calculate longestRoadLength
+        //TODO: Test
+        ArrayList<Integer> visited;
+        int tempLength;
+        for (int start : roadMap.keySet()) {
+            visited = new ArrayList<Integer>(roadMap.size());
+            visited.add(start);
+            tempLength = calcLongestRoadLength(start, visited);
+            if (tempLength > longestRoadLength) {
+                longestRoadLength = tempLength;
+            }
+            visited.remove(new Integer(start));
+        }
+    }
+
+    /**
+     * Recursive method that explores every possible path starting from the
+     * specified location that does not include any locations in the specified
+     * list of locations that have already been visited.
+     * @param start   the starting location
+     * @param visited the locations that have already been visited
+     * @return the length of the longest path
+     */
+    private int calcLongestRoadLength(int start, Collection<Integer> visited) {
+        int currentLength = 0;
+        int tempLength;
+        for (int adjacentRoadLoc : roadMap.get(start)) {
+            if (!visited.contains(adjacentRoadLoc)) {
+                visited.add(adjacentRoadLoc);
+                tempLength = calcLongestRoadLength(start, visited);
+                if (tempLength > currentLength) {
+                    currentLength = tempLength;
+                }
+                visited.remove(adjacentRoadLoc);
+            }
+        }
+        return currentLength + 1;
     }
 
     /**
@@ -258,14 +300,6 @@ public class Player {
     public void addHarbor(String type) {
         //TODO: Throw exception if type > GameController.HARBOR_TYPE_ANY?
         harbors.add(type);
-    }
-
-    /**
-     * Sets the length of this player's longest road to the specifed value.
-     * @param length the length of this player's longest continuous road
-     */
-    public void setLongestRoadLength(int length) {
-        longestRoadLength = length;
     }
 
     /**
@@ -379,8 +413,8 @@ public class Player {
      * Returns a list of the locations of this player's roads.
      * @return a list of the locations of this player's roads
      */
-    public LinkedList<Integer> getRoadLocs() {
-        return new LinkedList<Integer>(roadLocs);
+    public Set<Integer> getRoadLocs() {
+        return new HashSet<Integer>(roadMap.keySet());
     }
 
     /**

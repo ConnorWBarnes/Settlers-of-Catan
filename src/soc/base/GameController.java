@@ -7,6 +7,7 @@ import soc.base.model.Player;
 import soc.base.model.Tile;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -287,10 +288,13 @@ public class GameController {
             message = new JPanel(new BorderLayout());
             message.add(question, BorderLayout.NORTH);
             message.add(tempPane, BorderLayout.CENTER);
-            if (JOptionPane.YES_OPTION == JOptionPane.showOptionDialog(null, message, "Choose Board", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(), options, options[0])) {
+            int response = JOptionPane.showOptionDialog(null, message, "Choose Board", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(), options, options[0]);
+            if (response == JOptionPane.YES_OPTION) {
                 gameBoard = tempBoard;
                 boardPane = tempPane;
                 return;
+            } else if (response == JOptionPane.CLOSED_OPTION) {
+                System.exit(0);
             }
         }
     }
@@ -373,14 +377,18 @@ public class GameController {
                         }
                         tempLabel = new JLabel(icons.getResourceIcon(tile.getResourceProduced()));
                         tempLabel.setName(tile.getResourceProduced());
-                        paneMap.get(gameBoard.getCorner(settlementLoc).getSettlementColor()).add(tempLabel);
+                        paneMap.get(gameBoard.getCorner(settlementLoc).getSettlementColor()).addCard(tempLabel);
                     }
                 }
             }
             //Show the resources that each player received
             dicePanel = new JPanel(new GridLayout(paneMap.size(), 2, -1, -1));
             if (paneMap.isEmpty()) {//No one received any resources
-                dicePanel.add(new JLabel("No players received any resources"));
+                tempLabel = new JLabel("None");
+                tempLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+                tempLabel.setHorizontalAlignment(JLabel.CENTER);
+                tempLabel.setVerticalAlignment(JLabel.CENTER);
+                dicePanel.add(tempLabel);
             } else {
                 JPanel resourcesPanel;
                 for (Player player : players) {//Displays players in order
@@ -397,7 +405,7 @@ public class GameController {
                     }
                 }
             }
-            tempLabel = new JLabel("Resources Received");
+            tempLabel = new JLabel("Resources Received:");
             tempLabel.setHorizontalAlignment(JLabel.CENTER);
             tempLabel.setVerticalAlignment(JLabel.CENTER);
             message = new JPanel(new BorderLayout());
@@ -522,7 +530,7 @@ public class GameController {
             int roadLoc = Integer.parseInt(actionEvent.getActionCommand());
             //Add the road to the board
             gameBoard.addRoad(roadLoc, currentPlayer.getColor());
-            currentPlayer.addRoad(roadLoc);
+            currentPlayer.addRoad(gameBoard.getRoad(roadLoc), roadLoc);
             boardPane.addRoad(roadLoc, currentPlayer.getColor());
             playerPanel.setNumRoads(currentPlayer.getNumRemainingRoads());
             //Let the next player take their turn
@@ -665,9 +673,12 @@ public class GameController {
                 currentPlayer.giveResource(stealCardFrame.getSelectedCard(), 1);
                 //Show the current player what they stole
                 JPanel message = new JPanel(new BorderLayout());
-                message.add(new JLabel("You stole:"));
-                message.add(new JLabel(icons.getResourceIcon(stealCardFrame.getSelectedCard())));
-                JOptionPane.showMessageDialog(null, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+                JLabel tempLabel = new JLabel("You stole:");
+                tempLabel.setHorizontalAlignment(JLabel.CENTER);
+                tempLabel.setVerticalAlignment(JLabel.CENTER);
+                message.add(tempLabel, BorderLayout.NORTH);
+                message.add(new JLabel(icons.getResourceIcon(stealCardFrame.getSelectedCard())), BorderLayout.CENTER);
+                JOptionPane.showMessageDialog(null, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
                 stealCardFrame.dispose();
                 playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
                 playerPanel.setButtonsEnabled(true);

@@ -95,7 +95,7 @@ public class LocationConverter {
      * @return the position of the icon of the road at the specified location
      */
     public Point getRoadPoint(int roadLoc) {
-        return roadPoints.get(Integer.valueOf(roadLoc));
+        return new Point(roadPoints.get(roadLoc));
     }
 
     /**
@@ -106,7 +106,7 @@ public class LocationConverter {
      * location
      */
     public Point getSettlementPoint(int settlementLoc) {
-        return settlementPoints.get(settlementLoc);
+        return new Point(settlementPoints.get(settlementLoc));
     }
 
     /**
@@ -115,7 +115,7 @@ public class LocationConverter {
      * @return the position of the icon of the city at the specified location
      */
     public Point getCityPoint(int cityLoc) {
-        return settlementPoints.get(cityLoc);
+        return new Point(settlementPoints.get(cityLoc));
     }
 
     /**
@@ -124,7 +124,7 @@ public class LocationConverter {
      * @return the position of the icon of the tile at the specified location
      */
     public Point getTilePoint(int tileLoc) {
-        return tilePoints.get(tileLoc);
+        return new Point(tilePoints.get(tileLoc));
     }
 
     /**
@@ -135,7 +135,7 @@ public class LocationConverter {
      * location
      */
     public Point getNumberTokenPoint(int tileLoc) {
-        return numberTokenPoints.get(tileLoc);
+        return new Point(numberTokenPoints.get(tileLoc));
     }
 
     /**
@@ -144,7 +144,7 @@ public class LocationConverter {
      * @return the position of the icon of the robber at the specified location
      */
     public Point getRobberPoint(int tileLoc) {
-        return numberTokenPoints.get(tileLoc);
+        return new Point(numberTokenPoints.get(tileLoc));
     }
 
     private void populateRoadPoints() {

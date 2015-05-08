@@ -118,7 +118,10 @@ public class BoardPane extends JLayeredPane {
                 tempLabel.setLocation(locConverter.getSettlementPoint(loc));
             } else { //locType == LOC_TYPE_ROBBER
                 tempLabel = new JLabel(icons.getStarIcon(GameIcons.ROBBER_STAR));
-                tempLabel.setLocation(locConverter.getRobberPoint(loc));
+                Point tempPoint = locConverter.getRobberPoint(loc);
+                tempPoint.translate((GameIcons.NUMBER_TOKEN_WIDTH - tempLabel.getIcon().getIconWidth()) / 2,
+                        (GameIcons.NUMBER_TOKEN_WIDTH - tempLabel.getIcon().getIconWidth()) / 2 - 3);
+                tempLabel.setLocation(tempPoint);
             }
             tempLabel.setSize(tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
             tempLabel.setName(String.valueOf(loc));

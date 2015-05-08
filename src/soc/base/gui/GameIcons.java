@@ -17,6 +17,7 @@ public class GameIcons {
     public static final int BOARD_WIDTH = 632;
     public static final int CARD_WIDTH = 90;
     public static final int CARD_HEIGHT = 135;
+    public static final int NUMBER_TOKEN_WIDTH = 40;
     public static final boolean PLAYER_TOKEN_STAR = true;
     public static final boolean ROBBER_STAR = false;
 
