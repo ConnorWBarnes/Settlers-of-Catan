@@ -305,7 +305,6 @@ public class GameController {
      * move the robber.
      */
     private void startNextTurn() {
-        //TODO: Disable buttons in playerPanel?
         //Close any frames (other than mainFrame) that may be open
         if (cardsFrame != null) {
             cardsFrame.dispose();
@@ -382,14 +381,11 @@ public class GameController {
                 }
             }
             //Show the resources that each player received
-            dicePanel = new JPanel(new GridLayout(paneMap.size(), 2, -1, -1));
             if (paneMap.isEmpty()) {//No one received any resources
-                tempLabel = new JLabel("None");
-                tempLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-                tempLabel.setHorizontalAlignment(JLabel.CENTER);
-                tempLabel.setVerticalAlignment(JLabel.CENTER);
-                dicePanel.add(tempLabel);
+                dicePanel = new JPanel();
+                dicePanel.add(new JLabel("None"));
             } else {
+                dicePanel = new JPanel(new GridLayout(paneMap.size(), 2, -1, -1));
                 JPanel resourcesPanel;
                 for (Player player : players) {//Displays players in order
                     if (paneMap.keySet().contains(player.getColor())) {

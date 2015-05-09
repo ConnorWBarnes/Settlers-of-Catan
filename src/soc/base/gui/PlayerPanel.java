@@ -47,13 +47,11 @@ public class PlayerPanel extends JPanel {
         super();
         icons = inIcons;
         setLayout(new FlowLayout());
-        //TODO: Shrink building costs cards
         add(buildCostsPanel());
         add(buildButtonPanel(buttonListener));
         add(buildTokensAndCardsPanel());
         add(buildLongestRoadPanel());
         add(buildLargestArmyPanel());
-        setButtonsEnabled(false);
     }
 
     /**

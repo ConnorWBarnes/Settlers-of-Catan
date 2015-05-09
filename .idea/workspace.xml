@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Decided to only use graphs in Player class for calculating longest road length. The methods that calculate the longest road length need larger scale testing (i.e. more than two roads).&#10;LocationConverter now returns copies of its private members instead of the private members themselves.&#10;DiscardFrame will no longer automatically resize itself.&#10;Moved stars showing valid robber locations under the number tokens and enlarged these stars in order to keep them visible.&#10;CardPane now sets the size of it labels using the label's preferred size instead of the label's icon (since it may not have one).&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/Images/Building Costs Cards/Scaled/Blue Building Costs Card.png" afterPath="$PROJECT_DIR$/resources/Images/Building Costs Cards/Scaled/Blue Building Costs Card.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/Images/Building Costs Cards/Scaled/Orange Building Costs Card.png" afterPath="$PROJECT_DIR$/resources/Images/Building Costs Cards/Scaled/Orange Building Costs Card.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/Images/Building Costs Cards/Scaled/Red Building Costs Card.png" afterPath="$PROJECT_DIR$/resources/Images/Building Costs Cards/Scaled/Red Building Costs Card.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/Images/Star (Robber).png" afterPath="$PROJECT_DIR$/resources/Images/Star (Robber).png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/Images/Building Costs Cards/Scaled/White Building Costs Card.png" afterPath="$PROJECT_DIR$/resources/Images/Building Costs Cards/Scaled/White Building Costs Card.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/BoardPane.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/BoardPane.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/CardPane.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/CardPane.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java" />
+    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Consolidated construction methods in Board class.&#10;Set the constructGameBoard() method to exit the program when the user closes the frame (instead of just constructing a new board).">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/model/Board.java" afterPath="$PROJECT_DIR$/src/soc/base/model/Board.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/GameController.java" afterPath="$PROJECT_DIR$/src/soc/base/GameController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/model/Player.java" afterPath="$PROJECT_DIR$/src/soc/base/model/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/model/Road.java" afterPath="$PROJECT_DIR$/src/soc/base/model/Road.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Settlers of Catan.iws" />
@@ -41,88 +31,51 @@
         <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="296" column="29" selection-start-line="296" selection-start-column="29" selection-end-line="296" selection-end-column="29" />
+              <caret line="383" column="33" selection-start-line="383" selection-start-column="33" selection-end-line="383" selection-end-column="33" />
               <folding>
+                <element signature="method#GameController#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#generateShuffledDevCards#0;class#GameController#0" expanded="false" />
+                <element signature="method#generateShuffledDevCards#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#constructPlayers#0;class#GameController#0" expanded="false" />
+                <element signature="method#constructPlayers#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
+                <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
                 <element signature="method#actionPerformed#0;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BoardPane.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/BoardPane.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35376343">
-              <caret line="122" column="99" selection-start-line="122" selection-start-column="99" selection-end-line="122" selection-end-column="99" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameIcons.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/GameIcons.java">
+      <file leaf-file-name="Board.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/model/Board.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="52" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DiscardFrame.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="118" column="64" selection-start-line="118" selection-start-column="64" selection-end-line="118" selection-end-column="64" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CardsFrame.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/CardsFrame.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="146" column="8" selection-start-line="146" selection-start-column="8" selection-end-line="146" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CardPane.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/CardPane.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="36" column="50" selection-start-line="36" selection-start-column="50" selection-end-line="36" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/model/Player.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="263" column="62" selection-start-line="263" selection-start-column="62" selection-end-line="263" selection-end-column="62" />
+              <caret line="20" column="102" selection-start-line="20" selection-start-column="102" selection-end-line="20" selection-end-column="102" />
               <folding>
-                <element signature="docComment;method#Player#2;class#Player#0" expanded="false" />
-                <element signature="e#4998#4999#0" expanded="true" />
-                <element signature="e#5029#5030#0" expanded="true" />
-                <element signature="e#5350#5351#0" expanded="true" />
-                <element signature="e#5377#5378#0" expanded="true" />
+                <element signature="e#1175#1176#0" expanded="true" />
+                <element signature="e#1224#1225#0" expanded="true" />
+                <element signature="e#2117#2118#0" expanded="true" />
+                <element signature="e#2154#2155#0" expanded="true" />
+                <element signature="e#2317#2318#0" expanded="true" />
+                <element signature="e#2356#2357#0" expanded="true" />
+                <element signature="e#2833#2834#0" expanded="true" />
+                <element signature="e#2882#2883#0" expanded="true" />
+                <element signature="e#3082#3083#0" expanded="true" />
+                <element signature="e#3114#3115#0" expanded="true" />
+                <element signature="e#5109#5115#0" expanded="true" />
+                <element signature="e#6423#6436#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Road.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/model/Road.java">
+      <file leaf-file-name="PlayerPanel.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="33" column="100" selection-start-line="33" selection-start-column="100" selection-end-line="33" selection-end-column="100" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.60077024">
+              <caret line="53" column="37" selection-start-line="53" selection-start-column="37" selection-end-line="53" selection-end-column="37" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -181,7 +134,6 @@
         <option value="$PROJECT_DIR$/tests/DiscardFrameTest.java" />
         <option value="$PROJECT_DIR$/tests/StealResourceCardFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Tile.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" />
         <option value="$PROJECT_DIR$/tests/TradeInFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/DevelopmentCard.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/TradeInFrame.java" />
@@ -193,7 +145,6 @@
         <option value="$PROJECT_DIR$/tests/CardsFrameTest.java" />
         <option value="$PROJECT_DIR$/tests/PlayDevCardFrameTest.java" />
         <option value="$PROJECT_DIR$/tests/BoardTest.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/model/Board.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Corner.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Player.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/CardPane.java" />
@@ -204,6 +155,8 @@
         <option value="$PROJECT_DIR$/tests/BoardPaneTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Road.java" />
         <option value="$PROJECT_DIR$/src/soc/base/GameController.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/model/Board.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" />
       </list>
     </option>
   </component>
@@ -769,7 +722,13 @@
       <option name="project" value="LOCAL" />
       <updated>1430892395014</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Decided to only use graphs in Player class for calculating longest road length. The methods that calculate the longest road length need larger scale testing (i.e. more than two roads).&#10;LocationConverter now returns copies of its private members instead of the private members themselves.&#10;DiscardFrame will no longer automatically resize itself.&#10;Moved stars showing valid robber locations under the number tokens and enlarged these stars in order to keep them visible.&#10;CardPane now sets the size of it labels using the label's preferred size instead of the label's icon (since it may not have one).&#10;">
+      <created>1431125106234</created>
+      <option name="number" value="00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1431125106234</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -801,7 +760,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17738095" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15778475" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15778475" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -846,7 +805,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="18" />
+      <option name="time" value="19" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1068,13 +1027,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="43" selection-start-line="49" selection-start-column="43" selection-end-line="49" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/TradeInFrameTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1139,14 +1091,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/model/Board.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="166" column="45" selection-start-line="166" selection-start-column="45" selection-end-line="166" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1222,20 +1166,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/BoardPane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="122" column="99" selection-start-line="122" selection-start-column="99" selection-end-line="122" selection-end-column="99" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/model/Board.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="102" selection-start-line="20" selection-start-column="102" selection-end-line="20" selection-end-column="102" />
+          <folding>
+            <element signature="e#1175#1176#0" expanded="true" />
+            <element signature="e#1224#1225#0" expanded="true" />
+            <element signature="e#2117#2118#0" expanded="true" />
+            <element signature="e#2154#2155#0" expanded="true" />
+            <element signature="e#2317#2318#0" expanded="true" />
+            <element signature="e#2356#2357#0" expanded="true" />
+            <element signature="e#2833#2834#0" expanded="true" />
+            <element signature="e#2882#2883#0" expanded="true" />
+            <element signature="e#3082#3083#0" expanded="true" />
+            <element signature="e#3114#3115#0" expanded="true" />
+            <element signature="e#5109#5115#0" expanded="true" />
+            <element signature="e#6423#6436#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="296" column="29" selection-start-line="296" selection-start-column="29" selection-end-line="296" selection-end-column="29" />
+          <caret line="383" column="33" selection-start-line="383" selection-start-column="33" selection-end-line="383" selection-end-column="33" />
           <folding>
+            <element signature="method#GameController#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#generateShuffledDevCards#0;class#GameController#0" expanded="false" />
+            <element signature="method#generateShuffledDevCards#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#constructPlayers#0;class#GameController#0" expanded="false" />
+            <element signature="method#constructPlayers#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
             <element signature="method#actionPerformed#0;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/BoardPane.java">
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35376343">
-          <caret line="122" column="99" selection-start-line="122" selection-start-column="99" selection-end-line="122" selection-end-column="99" />
+        <state vertical-scroll-proportion="0.60077024">
+          <caret line="53" column="37" selection-start-line="53" selection-start-column="37" selection-end-line="53" selection-end-column="37" />
           <folding />
         </state>
       </provider>
