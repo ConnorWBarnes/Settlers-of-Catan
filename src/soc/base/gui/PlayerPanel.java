@@ -62,6 +62,7 @@ public class PlayerPanel extends JPanel {
     public void updatePlayer(Player nextPlayer) {
         if (costsFrame != null) {
             costsFrame.dispose();
+            costsFrame = null;
         }
         playerColor = nextPlayer.getColor();
         //Change the color of the costs panel and the player's tokens

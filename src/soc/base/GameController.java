@@ -514,7 +514,42 @@ public class GameController {
                     }
                 }
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.BUILD_SETTLEMENT)) {
-                //TODO: Check to see if new settlement reduces another player's longest road length?
+                //TODO: Check to see if new settlement reduces another player's longest road length
+                if (currentPlayer.getNumRemainingSettlements() < 1) {
+                    JOptionPane.showMessageDialog(mainFrame, "You do not have any remaining settlement tokens", mainFrame.getTitle(), JOptionPane.ERROR_MESSAGE);
+                } else if (currentPlayer.getNumResourceCards(BRICK) < 1
+                        || currentPlayer.getNumResourceCards(GRAIN) < 1
+                        || currentPlayer.getNumResourceCards(LUMBER) < 1
+                        || currentPlayer.getNumResourceCards(WOOL) < 1) {
+                    JOptionPane.showMessageDialog(mainFrame, "You do not have the resources required to build a settlement", mainFrame.getTitle(), JOptionPane.ERROR_MESSAGE);
+                } else {
+                    //Construct a list of all the valid locations at which the current player can place a settlement
+                    ArrayList<Integer> validCornerLocs = new ArrayList<Integer>();
+                    boolean locIsValid;
+                    for (int roadLoc : currentPlayer.getRoadLocs()) {
+                        for (int cornerLoc : gameBoard.getRoad(roadLoc).getAdjacentCornerLocs()) {
+                            if (!gameBoard.getCorner(cornerLoc).hasSettlement()) {
+                                locIsValid = true;
+                                for (int adjacentCornerLoc : gameBoard.getCorner(cornerLoc).getAdjacentCornerLocs()) {
+                                    if (gameBoard.getCorner(adjacentCornerLoc).hasSettlement()) {
+                                        locIsValid = false;
+                                        break;
+                                    }
+                                }
+                                if (locIsValid) {
+                                    validCornerLocs.add(cornerLoc);
+                                }
+                            }
+                        }
+                    }
+                    if (validCornerLocs.isEmpty()) {
+                        JOptionPane.showMessageDialog(mainFrame, "There are no locations at which you can build a settlement", mainFrame.getTitle(), JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        playerPanel.setButtonsEnabled(false);
+                        boardPane.showValidLocs(validCornerLocs, new SettlementListener(), BoardPane.LOC_TYPE_SETTLEMENT, true);
+                        JOptionPane.showMessageDialog(mainFrame, "Please select the location at which to place the new settlement", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.BUILD_CITY)) {
 
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.BUILD_DEV_CARD)) {
@@ -781,9 +816,7 @@ public class GameController {
                 currentPlayer.takeResource(BRICK, 1);
                 currentPlayer.takeResource(LUMBER, 1);
                 gameBoard.addRoad(roadLoc, currentPlayer.getColor());
-                System.out.println(currentPlayer.getName() + "'s longest road length before: " + currentPlayer.getLongestRoadLength());
                 currentPlayer.addRoad(gameBoard.getRoad(roadLoc), roadLoc);
-                System.out.println(currentPlayer.getName() + "'s longest road length after: " + currentPlayer.getLongestRoadLength());
                 //Update the view
                 boardPane.addRoad(roadLoc, currentPlayer.getColor());
                 playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
@@ -800,6 +833,40 @@ public class GameController {
         }
     }
 
+    /**
+     * Takes the resources required to build a settlement from the current
+     * player and places a settlement of their color at the location they
+     * selected (unless they chose to cancel, in which case nothing happens).
+     */
+    private class SettlementListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            try {
+                int cornerLoc = Integer.parseInt(actionEvent.getActionCommand());
+                //Update the model
+                currentPlayer.takeResource(BRICK, 1);
+                currentPlayer.takeResource(GRAIN, 1);
+                currentPlayer.takeResource(LUMBER, 1);
+                currentPlayer.takeResource(WOOL, 1);
+                gameBoard.addSettlement(cornerLoc, currentPlayer.getColor());
+                currentPlayer.addSettlement(cornerLoc);
+                //Update the view
+                boardPane.addSettlement(cornerLoc, currentPlayer.getColor());
+                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                playerPanel.setNumSettlements(currentPlayer.getNumRemainingSettlements());
+                if (cardsFrame != null) {
+                    cardsFrame.removeResourceCard(BRICK);
+                    cardsFrame.removeResourceCard(GRAIN);
+                    cardsFrame.removeResourceCard(LUMBER);
+                    cardsFrame.removeResourceCard(WOOL);
+                }
+                checkVictoryPoints();
+            } catch (NumberFormatException e) {
+                //Cancel was clicked, so do nothing
+            }
+            playerPanel.setButtonsEnabled(true);
+        }
+    }
 
     private class PlayDevCardListener implements ActionListener {
         @Override
