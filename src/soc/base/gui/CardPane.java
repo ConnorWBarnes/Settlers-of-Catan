@@ -88,7 +88,7 @@ public class CardPane extends JLayeredPane {
         if (!labels.isEmpty()) {
             int offset;
             if (labels.size() * labels.get(0).getWidth() > maxWidth) {
-                offset = labels.get(0).getWidth() - ((labels.size() * labels.get(0).getWidth() - maxWidth) / (labels.size() - 1));
+                offset = (maxWidth - labels.get(0).getWidth()) / (labels.size() - 1);
                 setPreferredSize(new Dimension(maxWidth, height));
             } else {
                 offset = labels.get(0).getWidth();

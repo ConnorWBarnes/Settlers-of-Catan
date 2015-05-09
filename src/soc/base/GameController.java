@@ -551,7 +551,24 @@ public class GameController {
                     }
                 }
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.BUILD_CITY)) {
-
+                if (currentPlayer.getNumRemainingCities() < 1) {
+                    JOptionPane.showMessageDialog(mainFrame, "You do not have any remaining city tokens", mainFrame.getTitle(), JOptionPane.ERROR_MESSAGE);
+                } else if (currentPlayer.getNumResourceCards(GRAIN) < 2 || currentPlayer.getNumResourceCards(ORE) < 3) {
+                    JOptionPane.showMessageDialog(mainFrame, "You do not have the resources to build a city", mainFrame.getTitle(), JOptionPane.ERROR_MESSAGE);
+                } else if (currentPlayer.getNumRemainingSettlements() == 5) {
+                    JOptionPane.showMessageDialog(mainFrame, "You do not have any upgradable settlements on the board", mainFrame.getTitle(), JOptionPane.ERROR_MESSAGE);
+                } else {
+                    //Construct a list of the locations at which the current player has an upgradable settlement
+                    ArrayList<Integer> validCityLocs = new ArrayList<Integer>();
+                    for (int cornerLoc : currentPlayer.getSettlementLocs()) {
+                        if (!gameBoard.getCorner(cornerLoc).hasCity()) {
+                            validCityLocs.add(cornerLoc);
+                        }
+                    }
+                    playerPanel.setButtonsEnabled(false);
+                    boardPane.showValidLocs(validCityLocs, new CityListener(), BoardPane.LOC_TYPE_SETTLEMENT, true);
+                    JOptionPane.showMessageDialog(mainFrame, "Please select the location at which to place the new city", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+                }
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.BUILD_DEV_CARD)) {
                 if (devCardDeck.isEmpty()) {
                     JOptionPane.showMessageDialog(mainFrame, "There are no more development cards in the deck", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
@@ -798,7 +815,7 @@ public class GameController {
                 cardsFrame.addResourceCard(tradeInFrame.getDesiredResource());
             }
             playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
-            JOptionPane.showMessageDialog(mainFrame, new JLabel("Trade completed", JLabel.CENTER));
+            JOptionPane.showMessageDialog(mainFrame, "Trade completed");
         }
     }
 
@@ -842,16 +859,16 @@ public class GameController {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             try {
-                int cornerLoc = Integer.parseInt(actionEvent.getActionCommand());
+                int settlementLoc = Integer.parseInt(actionEvent.getActionCommand());
                 //Update the model
                 currentPlayer.takeResource(BRICK, 1);
                 currentPlayer.takeResource(GRAIN, 1);
                 currentPlayer.takeResource(LUMBER, 1);
                 currentPlayer.takeResource(WOOL, 1);
-                gameBoard.addSettlement(cornerLoc, currentPlayer.getColor());
-                currentPlayer.addSettlement(cornerLoc);
+                gameBoard.addSettlement(settlementLoc, currentPlayer.getColor());
+                currentPlayer.addSettlement(settlementLoc);
                 //Update the view
-                boardPane.addSettlement(cornerLoc, currentPlayer.getColor());
+                boardPane.addSettlement(settlementLoc, currentPlayer.getColor());
                 playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
                 playerPanel.setNumSettlements(currentPlayer.getNumRemainingSettlements());
                 if (cardsFrame != null) {
@@ -859,6 +876,41 @@ public class GameController {
                     cardsFrame.removeResourceCard(GRAIN);
                     cardsFrame.removeResourceCard(LUMBER);
                     cardsFrame.removeResourceCard(WOOL);
+                }
+                checkVictoryPoints();
+            } catch (NumberFormatException e) {
+                //Cancel was clicked, so do nothing
+            }
+            playerPanel.setButtonsEnabled(true);
+        }
+    }
+
+    /**
+     * Takes the resources required to build a city from the current player and
+     * places a city of their color at the location they selected (unless they
+     * chose to cancel, in which case nothing happens).
+     */
+    private class CityListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            try {
+                int cornerLoc = Integer.parseInt(actionEvent.getActionCommand());
+                //Update the model
+                currentPlayer.takeResource(GRAIN, 2);
+                currentPlayer.takeResource(ORE, 3);
+                gameBoard.upgradeSettlement(cornerLoc);
+                currentPlayer.addSettlement(cornerLoc);
+                //Update the view
+                boardPane.addCity(cornerLoc);
+                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                playerPanel.setNumCities(currentPlayer.getNumRemainingCities());
+                playerPanel.setNumSettlements(currentPlayer.getNumRemainingSettlements());
+                if (cardsFrame != null) {
+                    cardsFrame.removeResourceCard(GRAIN);
+                    cardsFrame.removeResourceCard(GRAIN);
+                    cardsFrame.removeResourceCard(ORE);
+                    cardsFrame.removeResourceCard(ORE);
+                    cardsFrame.removeResourceCard(ORE);
                 }
                 checkVictoryPoints();
             } catch (NumberFormatException e) {
