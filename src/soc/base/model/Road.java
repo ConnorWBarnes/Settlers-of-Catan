@@ -53,6 +53,14 @@ public class Road {
     }
 
     /**
+     * Returns true if a player has placed a road token on this road, otherwise false.
+     * @return true if a player has placed a road token on this road, otherwise false
+     */
+    public boolean isEmpty() {
+        return color == null;
+    }
+
+    /**
      * Adds the specified corner locations to the list of adjacent corner
      * locations.
      * @param locA the location of an adjacent corner

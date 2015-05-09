@@ -7,11 +7,12 @@ import soc.base.model.Player;
 import soc.base.model.Tile;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
@@ -29,14 +30,16 @@ public class GameController {
     public static final String WOOL = "Wool";
     public static final String[] RESOURCE_TYPES = {BRICK, GRAIN, LUMBER, ORE, WOOL};
     public static final String HARBOR_TYPE_ANY = "Any";
+    public static final int WIN_LIMIT = 10;
 
     //Model variables
     private Player[] players;
     private HashMap<String, Player> playerColorMap;
     private Iterator<Player> turnIterator;
-    private Player currentPlayer;
+    private Player currentPlayer, longestRoadPlayer, largestArmyPlayer;
     private Board gameBoard;
     private Deque<DevelopmentCard> devCardDeck = new ArrayDeque<DevelopmentCard>();
+    private ArrayList<DevelopmentCard> devCardsBuiltThisTurn;
     //GUI variables
     private GameIcons icons;
     private JFrame mainFrame;
@@ -45,6 +48,8 @@ public class GameController {
     private CardsFrame cardsFrame;
     private PlayDevCardFrame devCardFrame;
     private TradeInFrame tradeInFrame;
+    //TODO: Uncomment once TradeFrame is finished
+    //private TradeFrame tradeFrame;
     //Setup variables
     private ArrayList<Integer> validSetupSettlementLocs;
     private int[] secondSettlementLocs;
@@ -57,6 +62,7 @@ public class GameController {
     public GameController() {
         icons = new GameIcons();
         devCardDeck = generateShuffledDevCards();
+        devCardsBuiltThisTurn = new ArrayList<DevelopmentCard>();
         //Construct players and gameBoard
         String[] playerColors = {"Blue", "Orange", "Red", "White"};//TODO: Change in order to support 5-6 player expansion
         players = constructPlayers(playerColors);
@@ -278,15 +284,12 @@ public class GameController {
         Board tempBoard;
         BoardPane tempPane;
         JPanel message;
-        JLabel question = new JLabel("Would you like to use this board?");
-        question.setHorizontalAlignment(JLabel.CENTER);
-        question.setVerticalAlignment(JLabel.CENTER);
         Object[] options = {"Use this board", "Use a different board"};
         while (true) {
             tempBoard = new Board();
             tempPane = new BoardPane(icons, tempBoard.getTiles());
             message = new JPanel(new BorderLayout());
-            message.add(question, BorderLayout.NORTH);
+            message.add(new JLabel("Would you like to use this board?", JLabel.CENTER), BorderLayout.NORTH);
             message.add(tempPane, BorderLayout.CENTER);
             int response = JOptionPane.showOptionDialog(null, message, "Choose Board", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(), options, options[0]);
             if (response == JOptionPane.YES_OPTION) {
@@ -335,11 +338,8 @@ public class GameController {
         JPanel dicePanel = new JPanel();
         dicePanel.add(new JLabel(icons.getRedDieIcon(redDie)));
         dicePanel.add(new JLabel(icons.getYellowDieIcon(yellowDie)));
-        JLabel tempLabel = new JLabel("You rolled:");
-        tempLabel.setHorizontalAlignment(JLabel.CENTER);
-        tempLabel.setVerticalAlignment(JLabel.CENTER);
         JPanel message = new JPanel(new BorderLayout());
-        message.add(tempLabel, BorderLayout.NORTH);
+        message.add(new JLabel("You rolled:", JLabel.CENTER), BorderLayout.NORTH);
         message.add(dicePanel, BorderLayout.CENTER);
         JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
         int numRolled = redDie + yellowDie;
@@ -358,6 +358,7 @@ public class GameController {
             //Distribute the appropriate resources
             int giveAmount;
             HashMap<String, CardPane> paneMap = new HashMap<String, CardPane>();//Key is player color, value is CardPane of their resources
+            JLabel tempLabel;
             for (Tile tile : gameBoard.getNumberTokenTiles(numRolled)) {
                 if (!tile.hasRobber()) {
                     for (int settlementLoc : tile.getSettlementLocs()) {
@@ -401,11 +402,8 @@ public class GameController {
                     }
                 }
             }
-            tempLabel = new JLabel("Resources Received:");
-            tempLabel.setHorizontalAlignment(JLabel.CENTER);
-            tempLabel.setVerticalAlignment(JLabel.CENTER);
             message = new JPanel(new BorderLayout());
-            message.add(tempLabel, BorderLayout.NORTH);
+            message.add(new JLabel("Resources Received:", JLabel.CENTER), BorderLayout.NORTH);
             message.add(dicePanel, BorderLayout.CENTER);
             JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
             playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
@@ -427,6 +425,33 @@ public class GameController {
     }
 
     /**
+     * Checks to see if the current player has enough victory points to win.
+     */
+    private void checkVictoryPoints() {
+        if (currentPlayer.getNumVictoryPoints() >= WIN_LIMIT) {
+            JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + " wins!", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }
+
+    /**
+     * Checks to see if the current player's longest road is at least 5 segments
+     * long and that it is longer than that of the player who currently holds
+     * longest road (if another player has already earned it).
+     */
+    private void checkLongestRoad() {
+        if (currentPlayer.getLongestRoadLength() >= 5) {
+            if (longestRoadPlayer == null || currentPlayer.getLongestRoadLength() > longestRoadPlayer.getLongestRoadLength()) {
+                longestRoadPlayer = currentPlayer;
+                currentPlayer.setLongestRoadStatus(true);
+                playerPanel.setLongestRoad(true);
+                JOptionPane.showMessageDialog(mainFrame, "You earned Longest Road!", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+                checkVictoryPoints();
+            }
+        }
+    }
+
+    /**
      * ActionListener that is added to every button in the PlayerPanel.
      */
     private class PlayerPanelListener implements ActionListener {
@@ -437,51 +462,84 @@ public class GameController {
                 if (cardsFrame == null) {
                     cardsFrame = new CardsFrame(icons, currentPlayer);
                 } else {
+                    cardsFrame.setVisible(true);
                     cardsFrame.toFront();
                     cardsFrame.requestFocus();
                 }
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.END_TURN)) {
+                playerPanel.setButtonsEnabled(false);
+                if (!devCardsBuiltThisTurn.isEmpty()) {
+                    for (DevelopmentCard devCard : devCardsBuiltThisTurn) {
+                        currentPlayer.giveDevCard(devCard);
+                    }
+                    devCardsBuiltThisTurn = new ArrayList<DevelopmentCard>();
+                }
                 startNextTurn();
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.OFFER_TRADE)) {
                 //TODO: Implement once TradeFrame is complete
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.TRADE_IN_RESOURCE_CARDS)) {
-                if (tradeInFrame == null) {
-                    tradeInFrame = new TradeInFrame(icons, new TradeInListener(), currentPlayer);
-                } else {
-                    tradeInFrame.toFront();
-                    tradeInFrame.requestFocus();
-                }
+                playerPanel.setButtonsEnabled(false);
+                tradeInFrame = new TradeInFrame(icons, new TradeInListener(), currentPlayer);
+                tradeInFrame.addWindowListener(new ButtonEnabler());
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.BUILD_ROAD)) {
-
+                //Make sure the current player has the required resource cards and at least one road token
+                if (currentPlayer.getNumRemainingRoads() < 1) {//Probably the least common case, but I don't want someone to save up for a road only to find that they can't build one
+                    JOptionPane.showMessageDialog(mainFrame, "You do not have any remaining road tokens", "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (currentPlayer.getNumResourceCards(BRICK) < 1 || currentPlayer.getNumResourceCards(LUMBER) < 1) {
+                    JOptionPane.showMessageDialog(mainFrame, "You do not have the resources to build a road", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    //Construct a list of all the locations at which the current player can place a road
+                    HashSet<Integer> validRoadLocs = new HashSet<Integer>();
+                    for (int playerRoadLoc : currentPlayer.getRoadLocs()) {
+                        for (int adjacentRoadLoc : gameBoard.getRoad(playerRoadLoc).getAdjacentRoadLocs()) {
+                            if (gameBoard.getRoad(adjacentRoadLoc).isEmpty()) {
+                                //Make sure that there is not another player's settlement between this location and the current player's road
+                                for (int cornerLoc : gameBoard.getRoad(playerRoadLoc).getAdjacentCornerLocs()) {
+                                    if (gameBoard.getCorner(cornerLoc).getAdjacentRoadLocs().contains(adjacentRoadLoc)) {//cornerLoc is the location of the corner in between playerRoadLoc and adjacentRoadLoc
+                                        if (!gameBoard.getCorner(cornerLoc).hasSettlement() || gameBoard.getCorner(cornerLoc).getSettlementColor().equals(currentPlayer.getColor())) {
+                                            validRoadLocs.add(adjacentRoadLoc);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (validRoadLocs.isEmpty()) {
+                        JOptionPane.showMessageDialog(mainFrame, "There are no valid locations at which you can place a road", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        playerPanel.setButtonsEnabled(false);
+                        boardPane.showValidLocs(validRoadLocs, new RoadListener(), BoardPane.LOC_TYPE_ROAD, true);
+                        JOptionPane.showMessageDialog(mainFrame, "Please select the location at which to place the new road", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.BUILD_SETTLEMENT)) {
-
+                //TODO: Check to see if new settlement reduces another player's longest road length?
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.BUILD_CITY)) {
 
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.BUILD_DEV_CARD)) {
-                if (!devCardDeck.isEmpty()) {
-                    if (currentPlayer.getNumResourceCards(WOOL) > 0
-                            && currentPlayer.getNumResourceCards(GRAIN) > 0
-                            && currentPlayer.getNumResourceCards(ORE) > 0) {
-                        currentPlayer.takeResource(WOOL, 1);
-                        currentPlayer.takeResource(GRAIN, 1);
-                        currentPlayer.takeResource(ORE, 1);
-                        JPanel message = new JPanel(new BorderLayout());
-                        message.add(new JLabel("Your new Development Card:"), BorderLayout.NORTH);
-                        message.add(new JLabel(icons.getDevCardIcon(devCardDeck.peek().getTitle())), BorderLayout.CENTER);
-                        JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
-                        if (cardsFrame != null) {
-                            cardsFrame.addDevCard(devCardDeck.peek());
-                        }
-                        currentPlayer.giveDevCard(devCardDeck.pop());
-                        playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
-                        playerPanel.setNumDevCards(currentPlayer.getSumDevCards());
-                    }
+                if (devCardDeck.isEmpty()) {
+                    JOptionPane.showMessageDialog(mainFrame, "There are no more development cards in the deck", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+                } else if (currentPlayer.getNumResourceCards(WOOL) < 1
+                        || currentPlayer.getNumResourceCards(GRAIN) < 1
+                        || currentPlayer.getNumResourceCards(ORE) < 1) {
+                    JOptionPane.showMessageDialog(mainFrame, "You do not have the resources to build a development card", mainFrame.getTitle(), JOptionPane.ERROR_MESSAGE);
+                } else {
+                    currentPlayer.takeResource(WOOL, 1);
+                    currentPlayer.takeResource(GRAIN, 1);
+                    currentPlayer.takeResource(ORE, 1);
+                    JPanel message = new JPanel(new BorderLayout());
+                    message.add(new JLabel("Your new Development Card:", JLabel.CENTER), BorderLayout.NORTH);
+                    message.add(new JLabel(icons.getDevCardIcon(devCardDeck.peek().getTitle())), BorderLayout.CENTER);
+                    message.add(new JLabel("You will receive this card after your turn is over", JLabel.CENTER), BorderLayout.SOUTH);
+                    JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+                    devCardsBuiltThisTurn.add(devCardDeck.pop());
+                    playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
                 }
-            } else if (devCardFrame == null) {//actionEvent.getActionCommand().equals(PlayerPanel.PLAY_DEV_CARD)
-                //TODO: devCardFrame = new PlayDevCardFrame(icons, new PlayDevCardListener(), currentPlayer.getDevCards());
-            } else {
-                devCardFrame.toFront();
-                devCardFrame.requestFocus();
+            } else {//actionEvent.getActionCommand().equals(PlayerPanel.PLAY_DEV_CARD)
+                playerPanel.setButtonsEnabled(false);
+                devCardFrame = new PlayDevCardFrame(icons, new PlayDevCardListener(), currentPlayer.getDevCards());
+                devCardFrame.addWindowListener(new ButtonEnabler());
             }
         }
     }
@@ -549,10 +607,12 @@ public class GameController {
 
                     initialResources = new CardPane(GameIcons.CARD_WIDTH * 3, GameIcons.CARD_HEIGHT);
                     for (int tileLoc : gameBoard.getCorner(secondSettlementLocs[i]).getAdjacentTileLocs()) {
-                        players[i].giveResource(gameBoard.getTile(tileLoc).getResourceProduced(), 1);
-                        tempLabel = new JLabel(icons.getResourceIcon(gameBoard.getTile(tileLoc).getResourceProduced()));
-                        tempLabel.setName(gameBoard.getTile(tileLoc).getResourceProduced());
-                        initialResources.addCard(tempLabel);
+                        if (!gameBoard.getTile(tileLoc).getTerrain().equals(Tile.DESERT)) {
+                            players[i].giveResource(gameBoard.getTile(tileLoc).getResourceProduced(), 1);
+                            tempLabel = new JLabel(icons.getResourceIcon(gameBoard.getTile(tileLoc).getResourceProduced()));
+                            tempLabel.setName(gameBoard.getTile(tileLoc).getResourceProduced());
+                            initialResources.addCard(tempLabel);
+                        }
                     }
                     resourcePanel = new JPanel();
                     resourcePanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
@@ -560,9 +620,7 @@ public class GameController {
                     resourceTable.add(playerName);
                     resourceTable.add(resourcePanel);
                 }
-                playerName = new JLabel("Resources received from second settlement");
-                playerName.setHorizontalAlignment(JLabel.CENTER);
-                playerName.setVerticalAlignment(JLabel.CENTER);
+                playerName = new JLabel("Resources received from second settlement", JLabel.CENTER);
                 resourcePanel = new JPanel(new BorderLayout());
                 resourcePanel.add(playerName, BorderLayout.NORTH);
                 resourcePanel.add(resourceTable, BorderLayout.CENTER);
@@ -655,13 +713,21 @@ public class GameController {
                         victimsIterator.remove();
                     }
                 }
-                if (!victims.isEmpty()) {
+                if (victims.isEmpty()) {
+                    playerPanel.setButtonsEnabled(true);
+                } else {
                     //Let the current player steal from one of these players
                     //TODO: If none of the victims have any resource cards to steal, let the player know
-                    stealCardFrame = new StealResourceCardFrame(icons, this, victims.toArray(new Player[victims.size()]));
-                } else {
-                    //TODO: Let the player know that there are no players to steal from
-                    playerPanel.setButtonsEnabled(true);
+                    for (Player victim : victims) {
+                        if (victim.getSumResourceCards() > 0) {
+                            stealCardFrame = new StealResourceCardFrame(icons, this, victims.toArray(new Player[victims.size()]));
+                            break;
+                        }
+                    }
+                    if (stealCardFrame == null) {
+                        JOptionPane.showMessageDialog(mainFrame, "None of the players adjacent to this tile have any resource cards");
+                        playerPanel.setButtonsEnabled(true);
+                    }
                 }
             } catch (NumberFormatException e) {//actionEvent fired by stealCardFrame
                 //Take the chosen card from the victim and give it to the current player
@@ -669,13 +735,11 @@ public class GameController {
                 currentPlayer.giveResource(stealCardFrame.getSelectedCard(), 1);
                 //Show the current player what they stole
                 JPanel message = new JPanel(new BorderLayout());
-                JLabel tempLabel = new JLabel("You stole:");
-                tempLabel.setHorizontalAlignment(JLabel.CENTER);
-                tempLabel.setVerticalAlignment(JLabel.CENTER);
-                message.add(tempLabel, BorderLayout.NORTH);
+                message.add(new JLabel("You stole:", JLabel.CENTER), BorderLayout.NORTH);
                 message.add(new JLabel(icons.getResourceIcon(stealCardFrame.getSelectedCard())), BorderLayout.CENTER);
                 JOptionPane.showMessageDialog(null, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
                 stealCardFrame.dispose();
+                stealCardFrame = null;
                 playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
                 playerPanel.setButtonsEnabled(true);
             }
@@ -692,11 +756,68 @@ public class GameController {
             currentPlayer.takeResource(tradeInFrame.getDiscardedResource(), tradeInFrame.getNumDiscardedResources());
             currentPlayer.giveResource(tradeInFrame.getDesiredResource(), 1);
             tradeInFrame.dispose();
-            if (cardsFrame != null) {
-                cardsFrame.dispose();
-                cardsFrame = null;
+            if (cardsFrame != null) {//Update cardsFrame if necessary
+                for (int i = 0; i < tradeInFrame.getNumDiscardedResources(); i++) {
+                    cardsFrame.removeResourceCard(tradeInFrame.getDiscardedResource());
+                }
+                cardsFrame.addResourceCard(tradeInFrame.getDesiredResource());
             }
-            JOptionPane.showMessageDialog(mainFrame, "Trade completed");
+            playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+            JOptionPane.showMessageDialog(mainFrame, new JLabel("Trade completed", JLabel.CENTER));
+        }
+    }
+
+    /**
+     * Takes the resources required to build a road from the current player and
+     * places a road of their color at the location they selected (unless they
+     * chose to cancel, in which case nothing happens).
+     */
+    private class RoadListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            try {
+                int roadLoc = Integer.parseInt(actionEvent.getActionCommand());
+                //Update the model
+                currentPlayer.takeResource(BRICK, 1);
+                currentPlayer.takeResource(LUMBER, 1);
+                gameBoard.addRoad(roadLoc, currentPlayer.getColor());
+                System.out.println(currentPlayer.getName() + "'s longest road length before: " + currentPlayer.getLongestRoadLength());
+                currentPlayer.addRoad(gameBoard.getRoad(roadLoc), roadLoc);
+                System.out.println(currentPlayer.getName() + "'s longest road length after: " + currentPlayer.getLongestRoadLength());
+                //Update the view
+                boardPane.addRoad(roadLoc, currentPlayer.getColor());
+                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                playerPanel.setNumRoads(currentPlayer.getNumRemainingRoads());
+                if (cardsFrame != null) {
+                    cardsFrame.removeResourceCard(BRICK);
+                    cardsFrame.removeResourceCard(LUMBER);
+                }
+                checkLongestRoad();
+            } catch (NumberFormatException e) {
+                //Cancel was clicked, so do nothing
+            }
+            playerPanel.setButtonsEnabled(true);
+        }
+    }
+
+
+    private class PlayDevCardListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            //TODO
+        }
+    }
+
+    /**
+     * Enables the buttons in the player panel after the specified window is
+     * closed.
+     */
+    private class ButtonEnabler extends WindowAdapter {
+        @Override
+        public void windowClosed(WindowEvent e) {
+            playerPanel.setButtonsEnabled(true);
+            mainFrame.toFront();
+            mainFrame.requestFocus();
         }
     }
 }

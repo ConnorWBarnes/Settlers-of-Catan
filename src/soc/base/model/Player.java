@@ -278,6 +278,7 @@ public class Player {
      * @return the length of the longest path
      */
     private int calcLongestRoadLength(int start, Collection<Integer> visited) {
+        //TODO: Make sure there isn't another player's settlement between the road at start and the next road
         int currentLength = 0;
         int tempLength;
         for (int adjacentRoadLoc : roadMap.get(start)) {

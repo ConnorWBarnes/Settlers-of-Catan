@@ -47,7 +47,7 @@ public class CardPane extends JLayeredPane {
      * @param label the JLabel to add
      */
     public void addCard(JLabel label) {
-        label.setSize(label.getIcon().getIconWidth(), label.getIcon().getIconHeight());
+        label.setSize(label.getPreferredSize());
         boolean cardAdded = false;
         for (int i = labels.size() - 1; i >= 0; i--) {
             if (labels.get(i).getName().compareTo(label.getName()) <= 0) {

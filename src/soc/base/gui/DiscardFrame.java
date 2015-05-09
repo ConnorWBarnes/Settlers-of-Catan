@@ -64,7 +64,7 @@ public class DiscardFrame extends JFrame {
         //Add the contents to the frame
         setLayout(new BorderLayout());
         JPanel tempPanel = new JPanel();
-        tempPanel.add(new JLabel(player.getName() + ", please discard half of your resource cards"));
+        tempPanel.add(new JLabel(player.getName() + ", please discard half (" + (player.getSumResourceCards() / 2) + ") of your resource cards"));
         add(tempPanel, BorderLayout.NORTH);
         tempPanel = new JPanel(new BorderLayout());
         JPanel cardPanel = new JPanel();

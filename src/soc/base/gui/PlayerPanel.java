@@ -52,6 +52,7 @@ public class PlayerPanel extends JPanel {
         add(buildTokensAndCardsPanel());
         add(buildLongestRoadPanel());
         add(buildLargestArmyPanel());
+        setButtonsEnabled(false);
     }
 
     /**
