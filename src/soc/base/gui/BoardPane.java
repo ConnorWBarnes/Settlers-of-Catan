@@ -92,7 +92,6 @@ public class BoardPane extends JLayeredPane {
      * @param locType the type of locations in the specified list (see static variables)
      */
     public void showValidLocs(Collection<Integer> validLocs, ActionListener triggerListener, int locType, boolean cancelOption) {
-        //TODO: Don't cover number tokens when showing valid robber locs
         for (ActionListener listener : validLocTriggerButton.getActionListeners()) {
             validLocTriggerButton.removeActionListener(listener);
         }
@@ -102,9 +101,7 @@ public class BoardPane extends JLayeredPane {
             //Create and add the cancel option
             tempLabel.setName("Cancel");
             tempLabel.addMouseListener(starListener);
-            tempLabel.setBounds((int) getPreferredSize().getWidth() - tempLabel.getIcon().getIconWidth(),
-                    (int) getPreferredSize().getHeight() - tempLabel.getIcon().getIconHeight(),
-                    tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
+            tempLabel.setBounds(20, 20, (int) tempLabel.getPreferredSize().getWidth(), (int) tempLabel.getPreferredSize().getHeight());
             add(tempLabel, TOP_LAYER);
             stars.add(tempLabel);
         }

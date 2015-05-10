@@ -244,7 +244,7 @@ public class Player {
      * the board.
      * @param roadLoc the location of the new road
      */
-    public void addRoad(Road road, int roadLoc) {
+    public void addRoad(int roadLoc, Road road) {
         roadMap.put(roadLoc, new LinkedList<Integer>());
         numRemainingRoads--;
         //Update the edges in roadMap

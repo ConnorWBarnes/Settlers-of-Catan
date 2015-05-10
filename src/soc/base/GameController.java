@@ -50,6 +50,7 @@ public class GameController {
     private TradeInFrame tradeInFrame;
     //TODO: Uncomment once TradeFrame is finished
     //private TradeFrame tradeFrame;
+    private YearOfPlentyFrame yearOfPlentyFrame;
     //Setup variables
     private ArrayList<Integer> validSetupSettlementLocs;
     private int[] secondSettlementLocs;
@@ -73,7 +74,7 @@ public class GameController {
         for (Player player : players) {
             playerColorMap.put(player.getColor(), player);
         }
-        //rollForOrder();
+        //TODO: rollForOrder();
         constructGameBoard();
 
         //Construct the remaining contents of the frame and add the contents to the frame
@@ -202,6 +203,8 @@ public class GameController {
                                 constructedPlayers = new Player[names.size()];
                                 for (int i = 0; i < constructedPlayers.length; i++) {
                                     constructedPlayers[i] = new Player(colors.get(i), names.get(i));
+                                    //TODO: Remove the line below
+                                    constructedPlayers[i].giveDevCard(new DevelopmentCard(DevelopmentCard.YEAR_OF_PLENTY));
                                 }
                             }
                         }
@@ -442,6 +445,9 @@ public class GameController {
     private void checkLongestRoad() {
         if (currentPlayer.getLongestRoadLength() >= 5) {
             if (longestRoadPlayer == null || currentPlayer.getLongestRoadLength() > longestRoadPlayer.getLongestRoadLength()) {
+                if (longestRoadPlayer != null) {
+                    longestRoadPlayer.setLongestRoadStatus(false);
+                }
                 longestRoadPlayer = currentPlayer;
                 currentPlayer.setLongestRoadStatus(true);
                 playerPanel.setLongestRoad(true);
@@ -449,6 +455,30 @@ public class GameController {
                 checkVictoryPoints();
             }
         }
+    }
+
+    /**
+     * Constructs the set of locations at which the current player can place a new road.
+     * @return the locations at which the current player can place a new road
+     */
+    private HashSet<Integer> getValidRoadLocs() {
+        HashSet<Integer> validRoadLocs = new HashSet<Integer>();
+        for (int playerRoadLoc : currentPlayer.getRoadLocs()) {
+            for (int adjacentRoadLoc : gameBoard.getRoad(playerRoadLoc).getAdjacentRoadLocs()) {
+                if (gameBoard.getRoad(adjacentRoadLoc).isEmpty()) {
+                    //Make sure that there is not another player's settlement between this location and the current player's road
+                    for (int cornerLoc : gameBoard.getRoad(playerRoadLoc).getAdjacentCornerLocs()) {
+                        if (gameBoard.getCorner(cornerLoc).getAdjacentRoadLocs().contains(adjacentRoadLoc)) {//cornerLoc is the location of the corner in between playerRoadLoc and adjacentRoadLoc
+                            if (!gameBoard.getCorner(cornerLoc).hasSettlement() || gameBoard.getCorner(cornerLoc).getSettlementColor().equals(currentPlayer.getColor())) {
+                                validRoadLocs.add(adjacentRoadLoc);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return validRoadLocs;
     }
 
     /**
@@ -488,23 +518,7 @@ public class GameController {
                 } else if (currentPlayer.getNumResourceCards(BRICK) < 1 || currentPlayer.getNumResourceCards(LUMBER) < 1) {
                     JOptionPane.showMessageDialog(mainFrame, "You do not have the resources to build a road", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    //Construct a list of all the locations at which the current player can place a road
-                    HashSet<Integer> validRoadLocs = new HashSet<Integer>();
-                    for (int playerRoadLoc : currentPlayer.getRoadLocs()) {
-                        for (int adjacentRoadLoc : gameBoard.getRoad(playerRoadLoc).getAdjacentRoadLocs()) {
-                            if (gameBoard.getRoad(adjacentRoadLoc).isEmpty()) {
-                                //Make sure that there is not another player's settlement between this location and the current player's road
-                                for (int cornerLoc : gameBoard.getRoad(playerRoadLoc).getAdjacentCornerLocs()) {
-                                    if (gameBoard.getCorner(cornerLoc).getAdjacentRoadLocs().contains(adjacentRoadLoc)) {//cornerLoc is the location of the corner in between playerRoadLoc and adjacentRoadLoc
-                                        if (!gameBoard.getCorner(cornerLoc).hasSettlement() || gameBoard.getCorner(cornerLoc).getSettlementColor().equals(currentPlayer.getColor())) {
-                                            validRoadLocs.add(adjacentRoadLoc);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    HashSet<Integer> validRoadLocs = getValidRoadLocs();
                     if (validRoadLocs.isEmpty()) {
                         JOptionPane.showMessageDialog(mainFrame, "There are no valid locations at which you can place a road", "Error", JOptionPane.INFORMATION_MESSAGE);
                     } else {
@@ -577,21 +591,38 @@ public class GameController {
                         || currentPlayer.getNumResourceCards(ORE) < 1) {
                     JOptionPane.showMessageDialog(mainFrame, "You do not have the resources to build a development card", mainFrame.getTitle(), JOptionPane.ERROR_MESSAGE);
                 } else {
-                    currentPlayer.takeResource(WOOL, 1);
                     currentPlayer.takeResource(GRAIN, 1);
                     currentPlayer.takeResource(ORE, 1);
+                    currentPlayer.takeResource(WOOL, 1);
                     JPanel message = new JPanel(new BorderLayout());
                     message.add(new JLabel("Your new Development Card:", JLabel.CENTER), BorderLayout.NORTH);
-                    message.add(new JLabel(icons.getDevCardIcon(devCardDeck.peek().getTitle())), BorderLayout.CENTER);
+                    message.add(new JLabel(icons.getDevCardIcon(devCardDeck.peek().getTitle())), BorderLayout.CENTER);//TODO: Show larger version of development card
                     message.add(new JLabel("You will receive this card after your turn is over", JLabel.CENTER), BorderLayout.SOUTH);
                     JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
                     devCardsBuiltThisTurn.add(devCardDeck.pop());
+                    if (cardsFrame != null) {
+                        cardsFrame.removeResourceCard(GRAIN);
+                        cardsFrame.removeResourceCard(ORE);
+                        cardsFrame.removeResourceCard(WOOL);
+                    }
                     playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
                 }
             } else {//actionEvent.getActionCommand().equals(PlayerPanel.PLAY_DEV_CARD)
-                playerPanel.setButtonsEnabled(false);
-                devCardFrame = new PlayDevCardFrame(icons, new PlayDevCardListener(), currentPlayer.getDevCards());
-                devCardFrame.addWindowListener(new ButtonEnabler());
+                //Construct a list of the current player's development cards and remove any victory point cards
+                ArrayList<DevelopmentCard> playableDevCards = currentPlayer.getDevCards();
+                Iterator<DevelopmentCard> devCardsIterator = playableDevCards.iterator();
+                List<String> victoryPointCards = Arrays.asList(DevelopmentCard.VICTORY_POINT_CARDS);
+                while (devCardsIterator.hasNext()) {
+                    if (victoryPointCards.contains(devCardsIterator.next().getTitle())) {
+                        devCardsIterator.remove();
+                    }
+                }
+                if (playableDevCards.isEmpty()) {
+                    JOptionPane.showMessageDialog(mainFrame, "You do not have any playable development cards", mainFrame.getTitle(), JOptionPane.ERROR_MESSAGE);
+                } else {
+                    playerPanel.setButtonsEnabled(false);
+                    devCardFrame = new PlayDevCardFrame(icons, new PlayDevCardListener(), playableDevCards);
+                }
             }
         }
     }
@@ -636,7 +667,7 @@ public class GameController {
             int roadLoc = Integer.parseInt(actionEvent.getActionCommand());
             //Add the road to the board
             gameBoard.addRoad(roadLoc, currentPlayer.getColor());
-            currentPlayer.addRoad(gameBoard.getRoad(roadLoc), roadLoc);
+            currentPlayer.addRoad(roadLoc, gameBoard.getRoad(roadLoc));
             boardPane.addRoad(roadLoc, currentPlayer.getColor());
             playerPanel.setNumRoads(currentPlayer.getNumRemainingRoads());
             //Let the next player take their turn
@@ -781,7 +812,7 @@ public class GameController {
                         playerPanel.setButtonsEnabled(true);
                     }
                 }
-            } catch (NumberFormatException e) {//actionEvent fired by stealCardFrame
+            } catch (NumberFormatException formatException) {//actionEvent fired by stealCardFrame
                 //Take the chosen card from the victim and give it to the current player
                 playerColorMap.get(stealCardFrame.getVictim().getColor()).takeResource(stealCardFrame.getSelectedCard(), 1);
                 currentPlayer.giveResource(stealCardFrame.getSelectedCard(), 1);
@@ -792,6 +823,9 @@ public class GameController {
                 JOptionPane.showMessageDialog(null, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
                 stealCardFrame.dispose();
                 stealCardFrame = null;
+                if (cardsFrame != null) {
+                    cardsFrame.addResourceCard(stealCardFrame.getSelectedCard());
+                }
                 playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
                 playerPanel.setButtonsEnabled(true);
             }
@@ -833,7 +867,7 @@ public class GameController {
                 currentPlayer.takeResource(BRICK, 1);
                 currentPlayer.takeResource(LUMBER, 1);
                 gameBoard.addRoad(roadLoc, currentPlayer.getColor());
-                currentPlayer.addRoad(gameBoard.getRoad(roadLoc), roadLoc);
+                currentPlayer.addRoad(roadLoc, gameBoard.getRoad(roadLoc));
                 //Update the view
                 boardPane.addRoad(roadLoc, currentPlayer.getColor());
                 playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
@@ -843,7 +877,7 @@ public class GameController {
                     cardsFrame.removeResourceCard(LUMBER);
                 }
                 checkLongestRoad();
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException formatException) {
                 //Cancel was clicked, so do nothing
             }
             playerPanel.setButtonsEnabled(true);
@@ -878,7 +912,7 @@ public class GameController {
                     cardsFrame.removeResourceCard(WOOL);
                 }
                 checkVictoryPoints();
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException formatException) {
                 //Cancel was clicked, so do nothing
             }
             playerPanel.setButtonsEnabled(true);
@@ -913,17 +947,216 @@ public class GameController {
                     cardsFrame.removeResourceCard(ORE);
                 }
                 checkVictoryPoints();
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException formatException) {
                 //Cancel was clicked, so do nothing
             }
             playerPanel.setButtonsEnabled(true);
         }
     }
 
+    /**
+     * Allows the player to do what the development card they selected to play allows them to do.
+     */
     private class PlayDevCardListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            //TODO
+            devCardFrame.dispose();
+            devCardFrame = null;
+            if (!actionEvent.getActionCommand().equals(PlayDevCardFrame.CANCEL)) {
+                currentPlayer.playDevCard(actionEvent.getActionCommand());
+                if (cardsFrame != null) {
+                    cardsFrame.removeDevCard(actionEvent.getActionCommand());
+                }
+                playerPanel.setNumDevCards(currentPlayer.getSumDevCards());
+                playerPanel.setButtonsEnabled(true);
+                mainFrame.toFront();
+                mainFrame.requestFocus();
+                if (actionEvent.getActionCommand().equals(DevelopmentCard.KNIGHT)) {
+                    //Check to see if the current player just earned Largest Army
+                    if (currentPlayer.getNumKnightCardsPlayed() >= 3) {
+                        if (largestArmyPlayer == null || currentPlayer.getNumKnightCardsPlayed() > largestArmyPlayer.getNumKnightCardsPlayed()) {
+                            if (largestArmyPlayer != null) {
+                                largestArmyPlayer.setLargestArmyStatus(false);
+                            }
+                            largestArmyPlayer = currentPlayer;
+                            currentPlayer.setLargestArmyStatus(true);
+                            playerPanel.setLargestArmy(true);
+                            JOptionPane.showMessageDialog(mainFrame, "You earned Largest Army!", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+                            checkVictoryPoints();
+                        }
+                    }
+                    moveRobber();
+                } else if (actionEvent.getActionCommand().equals(DevelopmentCard.MONOPOLY)) {
+                    //Ask the current player to announce a resource type to steal from everyone
+                    ImageIcon[] resourceIcons = new ImageIcon[RESOURCE_TYPES.length];
+                    for (int i = 0; i < resourceIcons.length; i++) {
+                        resourceIcons[i] = icons.getResourceIcon(RESOURCE_TYPES[i]);
+                    }
+                    int index = JOptionPane.showOptionDialog(null, new JLabel("Select a resource type to announce", JLabel.CENTER), DevelopmentCard.MONOPOLY, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(), resourceIcons, resourceIcons[0]);
+                    //Take every resource card of the type announced from each player and give it to the current player
+                    HashMap<String, CardPane> paneMap = new HashMap<String, CardPane>();//Key is player color, value is CardPane of the resources stolen from them
+                    JLabel resourceCard;
+                    for (Player player : players) {
+                        if (!player.getColor().equals(currentPlayer.getColor()) && player.getNumResourceCards(RESOURCE_TYPES[index]) > 0) {
+                            paneMap.put(player.getColor(), new CardPane(GameIcons.CARD_WIDTH * 3, GameIcons.CARD_HEIGHT));
+                            for (int i = 0; i < player.getNumResourceCards(RESOURCE_TYPES[index]); i++) {
+                                resourceCard = new JLabel(icons.getResourceIcon(RESOURCE_TYPES[index]));
+                                resourceCard.setName(RESOURCE_TYPES[i]);
+                                paneMap.get(player.getColor()).addCard(resourceCard);
+                                if (cardsFrame != null) {
+                                    cardsFrame.addResourceCard(RESOURCE_TYPES[index]);
+                                }
+                            }
+                            currentPlayer.giveResource(RESOURCE_TYPES[index], player.getNumResourceCards(RESOURCE_TYPES[index]));
+                            player.takeResource(RESOURCE_TYPES[index], player.getNumResourceCards(RESOURCE_TYPES[index]));
+                        }
+                    }
+                    //Show what was stolen from each player
+                    JPanel cardPanel = new JPanel();
+                    if (paneMap.isEmpty()) {//No one had any resource cards of the type announced
+                        cardPanel.add(new JLabel("No resource cards were stolen", JLabel.CENTER));
+                    } else {
+                        cardPanel.setLayout(new GridLayout(paneMap.size(), 2, -1, -1));
+                        JPanel resourcesPanel;
+                        for (Player player : players) {//Displays players in order
+                            if (paneMap.keySet().contains(player.getColor())) {
+                                resourceCard = new JLabel(player.getName());
+                                resourceCard.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+                                resourceCard.setHorizontalAlignment(JLabel.CENTER);
+                                resourceCard.setVerticalAlignment(JLabel.CENTER);
+                                resourcesPanel = new JPanel();
+                                resourcesPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+                                resourcesPanel.add(paneMap.get(player.getColor()));
+                                cardPanel.add(resourceCard);
+                                cardPanel.add(resourcesPanel);
+                            }
+                        }
+                    }
+                    JPanel message = new JPanel(new BorderLayout());
+                    message.add(new JLabel("Resources Stolen:", JLabel.CENTER), BorderLayout.NORTH);
+                    message.add(cardPanel, BorderLayout.CENTER);
+                    JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
+                    playerPanel.setButtonsEnabled(true);
+                    mainFrame.toFront();
+                    mainFrame.requestFocus();
+                } else if (actionEvent.getActionCommand().equals(DevelopmentCard.ROAD_BUILDING)) {
+                    if (currentPlayer.getNumRemainingRoads() == 0) {
+                        JPanel message = new JPanel(new BorderLayout());
+                        message.add(new JLabel("You do not have any road tokens to place.", JLabel.CENTER), BorderLayout.NORTH);
+                        message.add(new JLabel("This card will now be removed from your hand."));
+                        playerPanel.setButtonsEnabled(true);
+                        mainFrame.toFront();
+                        mainFrame.requestFocus();
+                    } else {
+                        HashSet<Integer> validRoadLocs = getValidRoadLocs();
+                        if (validRoadLocs.isEmpty()) {
+                            JOptionPane.showMessageDialog(mainFrame, "There are no locations at which you can build a settlement", mainFrame.getTitle(), JOptionPane.ERROR_MESSAGE);
+                            currentPlayer.giveDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
+                            if (cardsFrame != null) {
+                                cardsFrame.addDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
+                            }
+                            playerPanel.setButtonsEnabled(true);
+                            mainFrame.toFront();
+                            mainFrame.requestFocus();
+                        } else {
+                            //playerPanel.setButtonsEnabled(false);
+                            boardPane.showValidLocs(validRoadLocs, new RoadBuildingListener(), BoardPane.LOC_TYPE_ROAD, true);
+                            JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + ", please place your two roads", DevelopmentCard.ROAD_BUILDING, JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                } else {//actionEvent.getActionCommand().equals(DevelopmentCard.YEAR_OF_PLENTY)
+                    yearOfPlentyFrame = new YearOfPlentyFrame(icons, new YearOfPlentyListener());
+                    yearOfPlentyFrame.addWindowListener(new ButtonEnabler());
+                }
+            }
+        }
+    }
+
+    /**
+     * Allows the current player to place two roads without spending any resource cards. Returns the Road Building card
+     * to the player if they decide to cancel before placing the first road, but the player forfeits their second road
+     * if they decide to cancel after placing the first road.
+     */
+    private class RoadBuildingListener implements ActionListener {
+        private boolean first = true;
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            try {
+                int roadLoc = Integer.parseInt(actionEvent.getActionCommand());
+                //Update the model
+                gameBoard.addRoad(roadLoc, currentPlayer.getColor());
+                currentPlayer.addRoad(roadLoc, gameBoard.getRoad(roadLoc));
+                //Update the view
+                boardPane.addRoad(roadLoc, currentPlayer.getColor());
+                playerPanel.setNumRoads(currentPlayer.getNumRemainingRoads());
+                if (first) {//First road was just placed
+                    first = false;
+                    HashSet<Integer> validRoadLocs = getValidRoadLocs();
+                    if (validRoadLocs.isEmpty()) {
+                        JOptionPane.showMessageDialog(mainFrame, "There are no more locations at which you can place a road", DevelopmentCard.ROAD_BUILDING, JOptionPane.ERROR_MESSAGE);
+                        playerPanel.setButtonsEnabled(true);
+                    } else {
+                        boardPane.showValidLocs(validRoadLocs, this, BoardPane.LOC_TYPE_ROAD, true);
+                    }
+                } else {//Second road was just placed
+                    playerPanel.setButtonsEnabled(true);
+                }
+            } catch (NumberFormatException formatException) {//Cancel was clicked
+                if (first) {
+                    currentPlayer.giveDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
+                    if (cardsFrame != null) {
+                        cardsFrame.addDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
+                    }
+                    playerPanel.setNumDevCards(currentPlayer.getSumDevCards());
+                    JOptionPane.showMessageDialog(mainFrame, "The Road Building card has been returned to your hand");
+                    playerPanel.setButtonsEnabled(true);
+                } else {
+                    JPanel message = new JPanel(new BorderLayout());
+                    message.add(new JLabel("You are about to forfeit your second road.", JLabel.CENTER), BorderLayout.NORTH);
+                    message.add(new JLabel("Are you sure you want to do this?", JLabel.CENTER), BorderLayout.CENTER);
+                    if (JOptionPane.showConfirmDialog(mainFrame, message, "Warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+                        playerPanel.setButtonsEnabled(true);
+                    } else {
+                        boardPane.showValidLocs(getValidRoadLocs(), this, BoardPane.LOC_TYPE_ROAD, true);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Gives the resources that the player selected to receive in the YearOfPlentyFrame, or give the Year of Plenty
+     * development card back to the player if they decide to cancel.
+     */
+    private class YearOfPlentyListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            String[] selectedResources = yearOfPlentyFrame.getSelectedResources();
+            yearOfPlentyFrame.dispose();
+            yearOfPlentyFrame = null;
+            JPanel message = new JPanel(new BorderLayout());
+            if (selectedResources == null) {//Current player decided to cancel
+                currentPlayer.giveDevCard(new DevelopmentCard(DevelopmentCard.YEAR_OF_PLENTY));
+                if (cardsFrame != null) {
+                    cardsFrame.addDevCard(new DevelopmentCard(DevelopmentCard.YEAR_OF_PLENTY));
+                }
+                playerPanel.setNumDevCards(currentPlayer.getSumDevCards());
+                message.add(new JLabel("The Year of Plenty card has been returned to your hand", JLabel.CENTER), BorderLayout.CENTER);
+            } else {
+                JPanel resourcePanel = new JPanel();
+                for (String resource : selectedResources) {
+                    currentPlayer.giveResource(resource, 1);
+                    resourcePanel.add(new JLabel(icons.getResourceIcon(resource)));
+                    if (cardsFrame != null) {
+                        cardsFrame.addResourceCard(resource);
+                    }
+                }
+                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                message.add(new JLabel("You received:", JLabel.CENTER), BorderLayout.NORTH);
+                message.add(resourcePanel, BorderLayout.CENTER);
+            }
+            JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

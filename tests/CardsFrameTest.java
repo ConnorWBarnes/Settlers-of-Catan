@@ -41,6 +41,6 @@ public class CardsFrameTest {
         cardsFrame.addDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
         System.out.print("Press enter to remove a development card");
         keyboard.nextLine();
-        cardsFrame.removeDevCard(new DevelopmentCard(DevelopmentCard.KNIGHT));
+        cardsFrame.removeDevCard(DevelopmentCard.KNIGHT);
     }
 }

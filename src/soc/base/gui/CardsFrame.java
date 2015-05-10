@@ -22,6 +22,7 @@ public class CardsFrame extends JFrame {
     private Player player;
     private CardPane resourceCardsPane;
     private DevelopmentCard[] devCards;
+    private JPanel devCardsPanel;
 
     /**
      * Constructs a new CardsFrame that shows what the specified player has.
@@ -34,9 +35,10 @@ public class CardsFrame extends JFrame {
         this.icons = icons;
         this.player = player;
         devCards = this.player.getDevCards().toArray(new DevelopmentCard[player.getSumDevCards()]);
+        buildDevCardsPanel();
         setLayout(new BorderLayout());
         add(buildResourceCardsPanel(), BorderLayout.NORTH);
-        add(buildDevCardsPanel(), BorderLayout.CENTER);
+        add(devCardsPanel, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -76,7 +78,9 @@ public class CardsFrame extends JFrame {
     public void addDevCard(DevelopmentCard devCard) {
         devCards = Arrays.copyOf(devCards, devCards.length + 1);
         devCards[devCards.length - 1] = devCard;
-        add(buildDevCardsPanel(), BorderLayout.CENTER);
+        remove(devCardsPanel);
+        buildDevCardsPanel();
+        add(devCardsPanel, BorderLayout.CENTER);
         pack();
     }
 
@@ -85,14 +89,16 @@ public class CardsFrame extends JFrame {
      * (if one exists).
      * @param devCard the development card to remove
      */
-    public void removeDevCard(DevelopmentCard devCard) {
+    public void removeDevCard(String devCard) {
         for (int i = 0; i < devCards.length; i++) {
-            if (devCards[i].getTitle().equals(devCard.getTitle())) {
+            if (devCards[i].getTitle().equals(devCard)) {
                 DevelopmentCard[] temp = new DevelopmentCard[devCards.length - 1];
                 System.arraycopy(devCards, 0, temp, 0, i);
                 System.arraycopy(devCards, i + 1, temp, i, devCards.length - i - 1);
                 devCards = temp;
-                add(buildDevCardsPanel(), BorderLayout.CENTER);
+                remove(devCardsPanel);
+                buildDevCardsPanel();
+                add(devCardsPanel, BorderLayout.CENTER);
                 pack();
             }
         }
@@ -127,11 +133,10 @@ public class CardsFrame extends JFrame {
     }
 
     /**
-     * Constructs and returns a JPanel containing a CardPane of the player's
+     * Constructs the JPanel containing a CardPane of the player's
      * development cards.
-     * @return a JPanel containing a CardPane of the player's development cards
      */
-    private JPanel buildDevCardsPanel() {
+    private void buildDevCardsPanel() {
         //Display the development cards in order
         Arrays.sort(devCards, new DevCardComparator());
         ArrayList<JLabel> devCardLabels = new ArrayList<JLabel>(devCards.length);
@@ -142,10 +147,9 @@ public class CardsFrame extends JFrame {
                 devCardLabels.add(new JLabel(icons.getDevCardIcon(card.getTitle())));
             }
         }
-        JPanel devCardsPanel = new JPanel();
+        devCardsPanel = new JPanel();
         devCardsPanel.setBorder(BorderFactory.createTitledBorder("Development Cards"));
         devCardsPanel.add(new CardPane(devCardLabels, GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT));
-        return devCardsPanel;
     }
 
     private class DevCardComparator implements Comparator<DevelopmentCard> {

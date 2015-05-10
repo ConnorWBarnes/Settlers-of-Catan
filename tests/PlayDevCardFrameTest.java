@@ -29,29 +29,23 @@ public class PlayDevCardFrameTest {
     private class TestListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Title of selected development card: " + frame.getSelectedCard());
+            System.out.println("Title of selected development card: " + e.getActionCommand());
             System.exit(0);
         }
     }
 
     /**
-     * Creates a new instance of the PlayDevCardFrameTest class with or without
-     * a player, depending on user input.
+     * Constructs a new instance of the PlayDevCardFrameTest class with a player
+     * who has a few development cards.
      * @param args command line arguments
      */
     public static void main(String[] args) {
-        if (JOptionPane.showConfirmDialog(null, "Should the player have playable development cards? (y/n): ",
-                "PlayDevCardFrameTest", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
-            new PlayDevCardFrameTest(new Player());
-        } else {
-            Player player = new Player();
-            player.giveDevCard(new DevelopmentCard("Knight"));
-            player.giveDevCard(new DevelopmentCard("Year of Plenty"));
-            player.giveDevCard(new DevelopmentCard("Monopoly"));
-            player.giveDevCard(new DevelopmentCard("Chapel"));
-            player.giveDevCard(new DevelopmentCard("Road Building"));
-            player.giveDevCard(new DevelopmentCard("Knight"));
-            new PlayDevCardFrameTest(player);
-        }
+        Player player = new Player();
+        player.giveDevCard(new DevelopmentCard(DevelopmentCard.KNIGHT));
+        player.giveDevCard(new DevelopmentCard(DevelopmentCard.MONOPOLY));
+        player.giveDevCard(new DevelopmentCard(DevelopmentCard.YEAR_OF_PLENTY));
+        player.giveDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
+        player.giveDevCard(new DevelopmentCard(DevelopmentCard.KNIGHT));
+        new PlayDevCardFrameTest(player);
     }
 }
