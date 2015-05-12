@@ -21,7 +21,7 @@ public class YearOfPlentyFrame extends JFrame {
     public YearOfPlentyFrame(GameIcons icons, ActionListener triggerListener) {
         super(DevelopmentCard.YEAR_OF_PLENTY);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WarningListener());
+        addWindowListener(new ClosingListener());
         this.icons = icons;
         //Construct the contents of the frame
         JPanel resourcePanel = new JPanel(new BorderLayout());
@@ -145,7 +145,7 @@ public class YearOfPlentyFrame extends JFrame {
     /**
      * Clicks the cancel button to let the controller know that the frame was closed.
      */
-    private class WarningListener extends WindowAdapter {
+    private class ClosingListener extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent e) {
             triggerButton.doClick();

@@ -48,8 +48,7 @@ public class GameController {
     private CardsFrame cardsFrame;
     private PlayDevCardFrame devCardFrame;
     private TradeInFrame tradeInFrame;
-    //TODO: Uncomment once TradeFrame is finished
-    //private TradeFrame tradeFrame;
+    private TradeFrame tradeFrame;
     private YearOfPlentyFrame yearOfPlentyFrame;
     //Setup variables
     private ArrayList<Integer> validSetupSettlementLocs;
@@ -165,7 +164,7 @@ public class GameController {
 
                 optionPane.addPropertyChangeListener(new PropertyChangeListener() {
                     public void propertyChange(PropertyChangeEvent e) {
-                        if (optionPane.isVisible() && (e.getSource() == optionPane) && (e.getPropertyName().equals(JOptionPane.VALUE_PROPERTY))) {
+                        if (optionPane.isVisible() && (e.getSource() == optionPane) && (e.getPropertyName().equals(JOptionPane.VALUE_PROPERTY)) && !optionPane.getValue().equals(JOptionPane.UNINITIALIZED_VALUE)) {
                             ArrayList<String> names = constructPlayersPanel.getNames();
                             ArrayList<String> colors = constructPlayersPanel.getColors();
                             //Make sure information was entered
@@ -186,16 +185,11 @@ public class GameController {
                                     }
                                 }
                                 if (names.size() < 3) {
-                                    JLabel topWarning = new JLabel("Settlers of Catan is best played with 3 or more people.");
-                                    topWarning.setHorizontalAlignment(JLabel.CENTER);
-                                    topWarning.setVerticalAlignment(JLabel.CENTER);
-                                    JLabel bottomWarning = new JLabel("Are you sure you want to continue?");
-                                    bottomWarning.setHorizontalAlignment(JLabel.CENTER);
-                                    bottomWarning.setVerticalAlignment(JLabel.CENTER);
                                     JPanel warning = new JPanel(new BorderLayout());
-                                    warning.add(topWarning, BorderLayout.NORTH);
-                                    warning.add(bottomWarning, BorderLayout.CENTER);
+                                    warning.add(new JLabel("Settlers of Catan is best played with 3 or more people.", JLabel.CENTER), BorderLayout.NORTH);
+                                    warning.add(new JLabel("Are you sure you want to continue?", JLabel.CENTER), BorderLayout.CENTER);
                                     if (JOptionPane.showConfirmDialog(null, warning, "Warning!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) {
+                                        optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
                                         return;
                                     }
                                 }
@@ -203,8 +197,6 @@ public class GameController {
                                 constructedPlayers = new Player[names.size()];
                                 for (int i = 0; i < constructedPlayers.length; i++) {
                                     constructedPlayers[i] = new Player(colors.get(i), names.get(i));
-                                    //TODO: Remove the line below
-                                    constructedPlayers[i].giveDevCard(new DevelopmentCard(DevelopmentCard.YEAR_OF_PLENTY));
                                 }
                             }
                         }
@@ -320,10 +312,10 @@ public class GameController {
             devCardFrame.dispose();
             devCardFrame = null;
         }
-        //TODO: Uncomment once TradeFrame is finished
-        /*if (tradeFrame != null) {
+        if (tradeFrame != null) {
             tradeFrame.dispose();
-        }*/
+            tradeFrame = null;
+        }
         if (tradeInFrame != null) {
             tradeInFrame.dispose();
             tradeInFrame = null;
@@ -506,7 +498,8 @@ public class GameController {
                 }
                 startNextTurn();
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.OFFER_TRADE)) {
-                //TODO: Implement once TradeFrame is complete
+                playerPanel.setButtonsEnabled(false);
+                tradeFrame = new TradeFrame(icons, new TradeListener(), currentPlayer);
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.TRADE_IN_RESOURCE_CARDS)) {
                 playerPanel.setButtonsEnabled(false);
                 tradeInFrame = new TradeInFrame(icons, new TradeInListener(), currentPlayer);
@@ -827,6 +820,90 @@ public class GameController {
                     cardsFrame.addResourceCard(stealCardFrame.getSelectedCard());
                 }
                 playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                playerPanel.setButtonsEnabled(true);
+            }
+        }
+    }
+
+    /**
+     * Reads in the trade (if one was constructed) and asks the player to whom
+     * they want to offer this trade. The trade is completed with the first
+     * player to accept the offer.
+     */
+    private class TradeListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            int[] giveCards = tradeFrame.getGiveCards();
+            int[] takeCards = tradeFrame.getTakeCards();
+            tradeFrame.dispose();
+            tradeFrame = null;
+            if (giveCards != null && takeCards != null) {
+                ArrayList<Checkbox> recipients = new ArrayList<Checkbox>(players.length - 1);
+                JPanel checkBoxPanel = new JPanel(new GridLayout(1, players.length - 1));
+                for (Player player : players) {
+                    if (!player.getColor().equals(currentPlayer.getColor())) {
+                        recipients.add(new Checkbox(player.getName(), true));
+                        recipients.get(recipients.size() - 1).setName(player.getColor());
+                        checkBoxPanel.add(recipients.get(recipients.size() - 1));
+                    }
+                }
+                JPanel message = new JPanel(new BorderLayout());
+                message.add(new JLabel("To whom do you want to offer this trade?", JLabel.CENTER), BorderLayout.NORTH);
+                message.add(checkBoxPanel, BorderLayout.CENTER);
+                JOptionPane.showMessageDialog(mainFrame, message, "Offer Trade", JOptionPane.QUESTION_MESSAGE, new ImageIcon());
+                JPanel tradeOffer, tempPanel;
+                CardPane tempPane;
+                for (Checkbox checkbox : recipients) {
+                    if (checkbox.getState()) {
+                        //Show the offer to the recipient
+                        tradeOffer = new JPanel(new BorderLayout());
+                        tradeOffer.add(new JLabel(checkbox.getLabel() + ", do you accept the following trade from " + currentPlayer.getName() + "?", JLabel.CENTER), BorderLayout.NORTH);
+                        tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
+                        for (int i = 0; i < giveCards.length; i++) {
+                            for (int j = 0; j < giveCards[i]; j++) {
+                                tempPane.addCard(new JLabel(icons.getResourceIcon(RESOURCE_TYPES[i])));
+                            }
+                        }
+                        tempPanel = new JPanel();
+                        tempPanel.setBorder(BorderFactory.createTitledBorder("Receive"));
+                        tempPanel.add(tempPane);
+                        tradeOffer.add(tempPanel, BorderLayout.CENTER);
+                        tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
+                        for (int i = 0; i < giveCards.length; i++) {
+                            for (int j = 0; j < giveCards[i]; j++) {
+                                tempPane.addCard(new JLabel(icons.getResourceIcon(RESOURCE_TYPES[i])));
+                            }
+                        }
+                        tempPanel = new JPanel();
+                        tempPanel.setBorder(BorderFactory.createTitledBorder("Give"));
+                        tempPanel.add(tempPane);
+                        tradeOffer.add(tempPanel, BorderLayout.SOUTH);
+                        //Ask the recipient if they would like to accept the offer
+                        if (JOptionPane.showConfirmDialog(mainFrame, tradeOffer, "Trade Offer", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon()) == JOptionPane.YES_OPTION) {
+                            for (int i = 0; i < giveCards.length; i++) {
+                                currentPlayer.takeResource(RESOURCE_TYPES[i], giveCards[i]);
+                                playerColorMap.get(checkbox.getName()).giveResource(RESOURCE_TYPES[i], giveCards[i]);
+                                if (cardsFrame != null) {
+                                    for (int j = 0; j < giveCards[i]; j++) {
+                                        cardsFrame.removeResourceCard(RESOURCE_TYPES[i]);
+                                    }
+                                }
+                            }
+                            for (int i = 0; i < takeCards.length; i++) {
+                                currentPlayer.giveResource(RESOURCE_TYPES[i], takeCards[i]);
+                                playerColorMap.get(checkbox.getName()).takeResource(RESOURCE_TYPES[i], takeCards[i]);
+                                if (cardsFrame != null) {
+                                    for (int j = 0; j < takeCards[i]; j++) {
+                                        cardsFrame.addResourceCard(RESOURCE_TYPES[i]);
+                                    }
+                                }
+                            }
+                            playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                            JOptionPane.showMessageDialog(mainFrame, "Trade Completed");
+                            break;
+                        }
+                    }
+                }
                 playerPanel.setButtonsEnabled(true);
             }
         }

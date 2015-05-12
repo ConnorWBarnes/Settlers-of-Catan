@@ -182,17 +182,11 @@ public class DiscardFrame extends JFrame {
                         + " resource cards", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 JPanel confirmMessage = new JPanel(new BorderLayout());
-                confirmMessage.add(new JLabel("Are you sure you want to discard these cards?"), BorderLayout.CENTER);
                 if ((discardLabels.length > (player.getSumResourceCards() / 2)) ) {
-                    JLabel topWarning = new JLabel("You are about to discard more resource cards than you need to.");
-                    topWarning.setHorizontalAlignment(JLabel.CENTER);
-                    topWarning.setVerticalAlignment(JLabel.CENTER);
-                    JLabel bottomWarning = new JLabel("Are you sure you want to do this?");
-                    bottomWarning.setHorizontalAlignment(JLabel.CENTER);
-                    bottomWarning.setVerticalAlignment(JLabel.CENTER);
-                    confirmMessage.removeAll();
-                    confirmMessage.add(topWarning, BorderLayout.NORTH);
-                    confirmMessage.add(bottomWarning, BorderLayout.CENTER);
+                    confirmMessage.add(new JLabel("You are about to discard more resource cards than you need to.", JLabel.CENTER), BorderLayout.NORTH);
+                    confirmMessage.add(new JLabel("Are you sure you want to do this?", JLabel.CENTER), BorderLayout.CENTER);
+                } else {
+                    confirmMessage.add(new JLabel("Are you sure you want to discard these cards?"), BorderLayout.CENTER);
                 }
                 if (JOptionPane.showConfirmDialog(null, confirmMessage, "Warning!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
                     for (Component label : discardLabels) {
