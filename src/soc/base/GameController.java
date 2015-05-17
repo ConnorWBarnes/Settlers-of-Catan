@@ -20,7 +20,8 @@ import java.util.List;
 
 /**
  * Represents the controller for Settlers of Catan. Enables the players to play
- * the game without breaking any of the rules.
+ * the game without breaking any of the rules (hopefully).
+ * @author Connor Barnes
  */
 public class GameController {
     public static final String BRICK = "Brick";
@@ -77,6 +78,7 @@ public class GameController {
         constructGameBoard();
 
         //Construct the remaining contents of the frame and add the contents to the frame
+        //TODO: Add menu bar
         playerPanel = new PlayerPanel(icons, new PlayerPanelListener());
         JPanel boardPanel = new JPanel();
         boardPanel.add(boardPane);
@@ -490,6 +492,7 @@ public class GameController {
                 }
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.END_TURN)) {
                 playerPanel.setButtonsEnabled(false);
+                //Give the current player all the development cards that they built this turn
                 if (!devCardsBuiltThisTurn.isEmpty()) {
                     for (DevelopmentCard devCard : devCardsBuiltThisTurn) {
                         currentPlayer.giveDevCard(devCard);
@@ -601,7 +604,7 @@ public class GameController {
                     playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
                 }
             } else {//actionEvent.getActionCommand().equals(PlayerPanel.PLAY_DEV_CARD)
-                //Construct a list of the current player's development cards and remove any victory point cards
+                //Construct a list of the current player's playable development cards (remove any victory point cards)
                 ArrayList<DevelopmentCard> playableDevCards = currentPlayer.getDevCards();
                 Iterator<DevelopmentCard> devCardsIterator = playableDevCards.iterator();
                 List<String> victoryPointCards = Arrays.asList(DevelopmentCard.VICTORY_POINT_CARDS);
@@ -793,7 +796,6 @@ public class GameController {
                     playerPanel.setButtonsEnabled(true);
                 } else {
                     //Let the current player steal from one of these players
-                    //TODO: If none of the victims have any resource cards to steal, let the player know
                     for (Player victim : victims) {
                         if (victim.getSumResourceCards() > 0) {
                             stealCardFrame = new StealResourceCardFrame(icons, this, victims.toArray(new Player[victims.size()]));

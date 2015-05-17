@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Added methods to handle playing a development card.&#10;Also added the new class YearOfPlentyFrame for when the Year of Plenty development card is played.&#10;Also added new class YearOfPlentyFrameTest for testing.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/soc/base/gui/TradeFrame.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/TradeFrameTest.java" />
+    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Added new class TradeFrame and added support for offering and accepting trades. Also added new class TradeFrameTest for testing the TradeFrame class.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/GameController.java" afterPath="$PROJECT_DIR$/src/soc/base/GameController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/PlayDevCardFrame.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/PlayDevCardFrame.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/StealResourceCardFrame.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/StealResourceCardFrame.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/TradeFrame.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/TradeFrame.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/TradeInFrame.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/TradeInFrame.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/YearOfPlentyFrame.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/YearOfPlentyFrame.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -30,76 +33,42 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GameController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.50574714">
-              <caret line="198" column="100" selection-start-line="198" selection-start-column="100" selection-end-line="198" selection-end-column="100" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="59" column="8" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="8" />
               <folding>
+                <element signature="e#2080#2081#0" expanded="true" />
+                <element signature="e#2116#2117#0" expanded="true" />
                 <element signature="docComment;method#generateShuffledDevCards#0;class#GameController#0" expanded="false" />
+                <element signature="method#generateShuffledDevCards#0;class#GameController#0" expanded="false" />
                 <element signature="docComment;method#constructPlayers#0;class#GameController#0" expanded="false" />
+                <element signature="method#constructPlayers#0;class#GameController#0" expanded="false" />
                 <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
                 <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
                 <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
                 <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />
-                <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
-                <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
-                <element signature="class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
-                <element signature="docComment;class#DiscardListener#0;class#GameController#0" expanded="false" />
-                <element signature="class#DiscardListener#0;class#GameController#0" expanded="false" />
-                <element signature="docComment;class#MoveRobberListener#0;class#GameController#0" expanded="false" />
-                <element signature="class#MoveRobberListener#0;class#GameController#0" expanded="false" />
-                <element signature="class#TradeInListener#0;class#GameController#0" expanded="false" />
-                <element signature="docComment;class#RoadListener#0;class#GameController#0" expanded="false" />
-                <element signature="class#RoadListener#0;class#GameController#0" expanded="false" />
-                <element signature="docComment;class#SettlementListener#0;class#GameController#0" expanded="false" />
-                <element signature="class#SettlementListener#0;class#GameController#0" expanded="false" />
-                <element signature="docComment;class#CityListener#0;class#GameController#0" expanded="false" />
-                <element signature="class#CityListener#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
+                <element signature="method#moveRobber#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+                <element signature="method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+                <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+                <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
                 <element signature="class#RoadBuildingListener#0;class#GameController#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameIcons.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/GameIcons.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="52" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DiscardFrame.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DiscardFrame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="44" column="61" selection-start-line="44" selection-start-column="61" selection-end-line="44" selection-end-column="61" />
+            <state vertical-scroll-proportion="0.3483871">
+              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="48" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StealResourceCardFrame.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCardFrame.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="148" column="98" selection-start-line="148" selection-start-column="98" selection-end-line="148" selection-end-column="98" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="YearOfPlentyFrame.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/YearOfPlentyFrame.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="152" column="5" selection-start-line="144" selection-start-column="4" selection-end-line="152" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -130,7 +99,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/CardsFrame.java" />
         <option value="$PROJECT_DIR$/src/GameIcons.java" />
         <option value="$PROJECT_DIR$/src/Test.java" />
         <option value="$PROJECT_DIR$/test/TradeInResourceTest.java" />
@@ -156,30 +124,31 @@
         <option value="$PROJECT_DIR$/src/soc/base/model/Tile.java" />
         <option value="$PROJECT_DIR$/tests/TradeInFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/DevelopmentCard.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/StealResourceCardFrame.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Graph.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/GraphNode.java" />
         <option value="$PROJECT_DIR$/tests/BoardTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Corner.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
         <option value="$PROJECT_DIR$/tests/BoardPaneTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Board.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Road.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/TradeInFrame.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/CardPane.java" />
         <option value="$PROJECT_DIR$/tests/PlayDevCardFrameTest.java" />
         <option value="$PROJECT_DIR$/tests/CardsFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Player.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/BoardPane.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/PlayDevCardFrame.java" />
         <option value="$PROJECT_DIR$/tests/YearOfPlentyFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/CardsFrame.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/YearOfPlentyFrame.java" />
         <option value="$PROJECT_DIR$/tests/TradeFrameTest.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/PlayDevCardFrame.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/StealResourceCardFrame.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/TradeFrame.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/TradeInFrame.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/YearOfPlentyFrame.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/GameSetup.java" />
         <option value="$PROJECT_DIR$/src/soc/base/GameController.java" />
       </list>
     </option>
@@ -196,8 +165,8 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-1" />
-    <option name="width" value="1368" />
-    <option name="height" value="743" />
+    <option name="width" value="1682" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -260,7 +229,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -357,6 +325,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -377,7 +346,7 @@
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="FullScreen" value="false" />
     <property name="dynamic.classpath" value="false" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
@@ -782,7 +751,13 @@
       <option name="project" value="LOCAL" />
       <updated>1431286040326</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Added new class TradeFrame and added support for offering and accepting trades. Also added new class TradeFrameTest for testing the TradeFrame class.">
+      <created>1431393430260</created>
+      <option name="number" value="00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1431393430260</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -795,33 +770,33 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="0" width="1368" height="743" extended-state="6" />
+    <frame x="-1" y="0" width="1682" height="1050" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39692307" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.50238097" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32288402" sideWeight="0.49761903" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17715959" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15538462" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17678571" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.50238097" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32615384" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39692307" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32288402" sideWeight="0.49761903" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15538462" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -859,7 +834,8 @@
     <MESSAGE value="Added methods for building a new settlement." />
     <MESSAGE value="Added methods for building a new city.&#10;Also reduced the size of the scaled building costs card icons and the settlement icons, and increased the size of the the city icons." />
     <MESSAGE value="Added methods to handle playing a development card.&#10;Also added the new class YearOfPlentyFrame for when the Year of Plenty development card is played.&#10;Also added new class YearOfPlentyFrameTest for testing." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added methods to handle playing a development card.&#10;Also added the new class YearOfPlentyFrame for when the Year of Plenty development card is played.&#10;Also added new class YearOfPlentyFrameTest for testing." />
+    <MESSAGE value="Added new class TradeFrame and added support for offering and accepting trades. Also added new class TradeFrameTest for testing the TradeFrame class." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added new class TradeFrame and added support for offering and accepting trades. Also added new class TradeFrameTest for testing the TradeFrame class." />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -872,7 +848,7 @@
           <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="24" />
+      <option name="time" value="25" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -881,13 +857,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/soc/base/model/Tile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/model/Board.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1052,13 +1021,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="108" column="61" selection-start-line="108" selection-start-column="61" selection-end-line="108" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/BoardPaneTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.81514764">
@@ -1112,13 +1074,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/model/Board.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.0834403">
-          <caret line="20" column="102" selection-start-line="20" selection-start-column="102" selection-end-line="20" selection-end-column="102" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/BoardPane.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1133,24 +1088,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/TradeInFrame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="75" column="25" selection-start-line="75" selection-start-column="25" selection-end-line="75" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/CardPane.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="90" column="85" selection-start-line="90" selection-start-column="85" selection-end-line="90" selection-end-column="85" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/YearOfPlentyFrameTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="14" selection-start-line="29" selection-start-column="14" selection-end-line="29" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -1162,25 +1103,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayDevCardFrame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/CardsFrame.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="135" column="21" selection-start-line="135" selection-start-column="21" selection-end-line="135" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/GameIcons.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="52" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1198,85 +1124,110 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java">
+    <entry file="file://$PROJECT_DIR$/tests/TradeFrameTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="44" column="61" selection-start-line="44" selection-start-column="61" selection-end-line="44" selection-end-column="61" />
-          <folding />
+          <caret line="43" column="17" selection-start-line="43" selection-start-column="17" selection-end-line="43" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCardFrame.java">
+    <entry file="file://$PROJECT_DIR$/tests/YearOfPlentyFrameTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.86206895">
+          <caret line="29" column="14" selection-start-line="29" selection-start-column="14" selection-end-line="29" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/model/Board.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="148" column="98" selection-start-line="148" selection-start-column="98" selection-end-line="148" selection-end-column="98" />
+          <caret line="20" column="102" selection-start-line="20" selection-start-column="102" selection-end-line="20" selection-end-column="102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="108" column="61" selection-start-line="108" selection-start-column="61" selection-end-line="108" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/GameIcons.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="41" column="54" selection-start-line="41" selection-start-column="54" selection-end-line="41" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/YearOfPlentyFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="152" column="5" selection-start-line="144" selection-start-column="4" selection-end-line="152" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.26003212">
+          <caret line="14" column="48" selection-start-line="14" selection-start-column="48" selection-end-line="14" selection-end-column="48" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/TradeFrameTest.java">
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/TradeInFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="43" column="17" selection-start-line="43" selection-start-column="17" selection-end-line="43" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1766#1767#0" expanded="true" />
-            <element signature="e#1802#1803#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.60674155">
+          <caret line="27" column="48" selection-start-line="27" selection-start-column="48" selection-end-line="27" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/TradeFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="108" column="48" selection-start-line="108" selection-start-column="48" selection-end-line="108" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1787#1788#0" expanded="true" />
-            <element signature="e#1819#1820#0" expanded="true" />
-            <element signature="e#2333#2334#0" expanded="true" />
-            <element signature="e#2365#2366#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.26003212">
+          <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCardFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37560192">
+          <caret line="22" column="48" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayDevCardFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26003212">
+          <caret line="20" column="48" selection-start-line="20" selection-start-column="48" selection-end-line="20" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.50574714">
-          <caret line="198" column="100" selection-start-line="198" selection-start-column="100" selection-end-line="198" selection-end-column="100" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="59" column="8" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="8" />
           <folding>
+            <element signature="e#2080#2081#0" expanded="true" />
+            <element signature="e#2116#2117#0" expanded="true" />
             <element signature="docComment;method#generateShuffledDevCards#0;class#GameController#0" expanded="false" />
+            <element signature="method#generateShuffledDevCards#0;class#GameController#0" expanded="false" />
             <element signature="docComment;method#constructPlayers#0;class#GameController#0" expanded="false" />
+            <element signature="method#constructPlayers#0;class#GameController#0" expanded="false" />
             <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
             <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
             <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
             <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
-            <element signature="class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;class#DiscardListener#0;class#GameController#0" expanded="false" />
-            <element signature="class#DiscardListener#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;class#MoveRobberListener#0;class#GameController#0" expanded="false" />
-            <element signature="class#MoveRobberListener#0;class#GameController#0" expanded="false" />
-            <element signature="class#TradeInListener#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;class#RoadListener#0;class#GameController#0" expanded="false" />
-            <element signature="class#RoadListener#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;class#SettlementListener#0;class#GameController#0" expanded="false" />
-            <element signature="class#SettlementListener#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;class#CityListener#0;class#GameController#0" expanded="false" />
-            <element signature="class#CityListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
             <element signature="class#RoadBuildingListener#0;class#GameController#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3483871">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>

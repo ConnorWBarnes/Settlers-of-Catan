@@ -22,6 +22,7 @@ import java.util.ArrayList;
  * are discarded.
  * @author Connor Barnes
  */
+//TODO: Convert to JPanel and use in JOptionPane
 public class DiscardFrame extends JFrame {
     //GUI variables
     private GameIcons icons;

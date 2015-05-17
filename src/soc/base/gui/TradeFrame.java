@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * can then be offered to any other player.
  * @author Connor Barnes
  */
+//TODO: Convert to JPanel and use in JOptionPane
 public class TradeFrame extends JFrame {
     private GameIcons icons;
     private JButton triggerButton;

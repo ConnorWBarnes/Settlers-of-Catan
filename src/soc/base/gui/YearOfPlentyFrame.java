@@ -12,6 +12,7 @@ import java.awt.event.*;
  * "Year of Plenty" development card.
  * @author Connor Barnes
  */
+//TODO: Convert to JPanel and use in JOptionPane
 public class YearOfPlentyFrame extends JFrame {
     private GameIcons icons;
     private JButton triggerButton;

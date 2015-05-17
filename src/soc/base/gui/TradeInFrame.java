@@ -25,6 +25,7 @@ import java.util.ArrayList;
  * that are on a harbor, each harbor is displayed above the top panel.
  * @author Connor Barnes
  */
+//TODO: Convert to JPanel and use in JOptionPane
 public class TradeInFrame extends JFrame {
     //GUI variables
     private GameIcons icons;
