@@ -26,7 +26,6 @@ public class Board {
      * rulebook for details).
      */
     public Board() {
-        //TODO: Improve the build methods?
         buildTileMap();
         buildCornerMap();
         buildRoadMap();

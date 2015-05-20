@@ -66,7 +66,7 @@ public class GameController {
         devCardsBuiltThisTurn = new ArrayList<DevelopmentCard>();
         //Construct players and gameBoard
         String[] playerColors = {"Blue", "Orange", "Red", "White"};//TODO: Change in order to support 5-6 player expansion
-        players = constructPlayers(playerColors);
+        players = PlayerConstructor.constructPlayers(playerColors);
         if (players == null) {//The dialog created by constructPlayers() was closed
             System.exit(0);
         }
@@ -142,75 +142,6 @@ public class GameController {
             shuffledDevCards.add(defaultDevCards.remove(randomNum));
         }
         return shuffledDevCards;
-    }
-
-    /**
-     * Asks the user for each player's information, constructs a Player object
-     * for each player, and returns an array of the Player objects. Player
-     * information is obtained via a dialog window that allows the user to enter
-     * each player's name and color. Does not allow the user to continue if two
-     * players have the same color.
-     * @return An array containing the Player objects constructed with the
-     * user's input
-     */
-    public static Player[] constructPlayers(final String[] playerColors) {
-        class ConstructPlayersDialog {
-            Player[] constructedPlayers;
-
-            ConstructPlayersDialog() {
-                final ConstructPlayersPanel constructPlayersPanel = new ConstructPlayersPanel(playerColors);
-                final JOptionPane optionPane = new JOptionPane(constructPlayersPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null);
-                final JDialog dialog = new JDialog((JDialog) null, "Player Information", true);
-                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                dialog.setContentPane(optionPane);
-
-                optionPane.addPropertyChangeListener(new PropertyChangeListener() {
-                    public void propertyChange(PropertyChangeEvent e) {
-                        if (optionPane.isVisible() && (e.getSource() == optionPane) && (e.getPropertyName().equals(JOptionPane.VALUE_PROPERTY)) && !optionPane.getValue().equals(JOptionPane.UNINITIALIZED_VALUE)) {
-                            ArrayList<String> names = constructPlayersPanel.getNames();
-                            ArrayList<String> colors = constructPlayersPanel.getColors();
-                            //Make sure information was entered
-                            if (names.size() == 0) {
-                                constructPlayersPanel.addErrorMessage("Player information is required in order to start the game");
-                                dialog.pack();
-                                optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
-                            } else {
-                                //Make sure each player has a different color
-                                for (int i = 0; i < colors.size(); i++) {
-                                    for (int j = i + 1; j < colors.size(); j++) {
-                                        if (colors.get(i).equals(colors.get(j))) {
-                                            constructPlayersPanel.addErrorMessage("Every player must have a unique color");
-                                            dialog.pack();
-                                            optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
-                                            return;
-                                        }
-                                    }
-                                }
-                                if (names.size() < 3) {
-                                    JPanel warning = new JPanel(new BorderLayout());
-                                    warning.add(new JLabel("Settlers of Catan is best played with 3 or more people.", JLabel.CENTER), BorderLayout.NORTH);
-                                    warning.add(new JLabel("Are you sure you want to continue?", JLabel.CENTER), BorderLayout.CENTER);
-                                    if (JOptionPane.showConfirmDialog(null, warning, "Warning!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) {
-                                        optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
-                                        return;
-                                    }
-                                }
-                                dialog.dispose();
-                                constructedPlayers = new Player[names.size()];
-                                for (int i = 0; i < constructedPlayers.length; i++) {
-                                    constructedPlayers[i] = new Player(colors.get(i), names.get(i));
-                                }
-                            }
-                        }
-                    }
-                });
-                dialog.pack();
-                dialog.setLocationRelativeTo(null);
-                dialog.setVisible(true);
-            }
-        }
-        ConstructPlayersDialog playersDialog = new ConstructPlayersDialog();
-        return playersDialog.constructedPlayers;
     }
 
     /**
