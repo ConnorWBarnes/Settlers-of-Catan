@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Added miscellaneous &quot;To Do&quot; items">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/ConstructPlayersPanelTest.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/soc/base/gui/ConstructPlayersPanel.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/tests/ConstructPlayersTest.java" afterPath="$PROJECT_DIR$/tests/PlayerConstructorTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/model/Board.java" afterPath="$PROJECT_DIR$/src/soc/base/model/Board.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/GameController.java" afterPath="$PROJECT_DIR$/src/soc/base/GameController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
+    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Moved constructPlayers() method from GameController to ConstructPlayersPanel and renamed ConstructPlayersPanel to PlayerConstructor">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Settlers of Catan.iws" />
@@ -43,8 +38,8 @@
       <file leaf-file-name="PlayerConstructor.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2634271">
-              <caret line="123" column="51" selection-start-line="123" selection-start-column="51" selection-end-line="123" selection-end-column="51" />
+            <state vertical-scroll-proportion="0.5294118">
+              <caret line="95" column="87" selection-start-line="95" selection-start-column="87" selection-end-line="95" selection-end-column="87" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1632#4280#0" expanded="true" />
@@ -756,7 +751,13 @@
       <option name="project" value="LOCAL" />
       <updated>1431832624981</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Moved constructPlayers() method from GameController to ConstructPlayersPanel and renamed ConstructPlayersPanel to PlayerConstructor">
+      <created>1432086811585</created>
+      <option name="number" value="00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1432086811585</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -835,7 +836,8 @@
     <MESSAGE value="Added methods to handle playing a development card.&#10;Also added the new class YearOfPlentyFrame for when the Year of Plenty development card is played.&#10;Also added new class YearOfPlentyFrameTest for testing." />
     <MESSAGE value="Added new class TradeFrame and added support for offering and accepting trades. Also added new class TradeFrameTest for testing the TradeFrame class." />
     <MESSAGE value="Added miscellaneous &quot;To Do&quot; items" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added miscellaneous &quot;To Do&quot; items" />
+    <MESSAGE value="Moved constructPlayers() method from GameController to ConstructPlayersPanel and renamed ConstructPlayersPanel to PlayerConstructor" />
+    <option name="LAST_COMMIT_MESSAGE" value="Moved constructPlayers() method from GameController to ConstructPlayersPanel and renamed ConstructPlayersPanel to PlayerConstructor" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1178,8 +1180,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2634271">
-          <caret line="123" column="51" selection-start-line="123" selection-start-column="51" selection-end-line="123" selection-end-column="51" />
+        <state vertical-scroll-proportion="0.5294118">
+          <caret line="95" column="87" selection-start-line="95" selection-start-column="87" selection-end-line="95" selection-end-column="87" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1632#4280#0" expanded="true" />

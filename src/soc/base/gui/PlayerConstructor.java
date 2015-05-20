@@ -81,12 +81,21 @@ public class PlayerConstructor {
         dialog.setVisible(true);
     }
 
+    /**
+     * Represents the contents of the dialog window (excluding the "Ok"
+     * button).
+     */
     private class PlayerConstructorPanel extends JPanel {
         private String[] playerColors;
         private JLabel errorLabel;
         private JTextField[] nameFields;
         private JComboBox[] colorBoxes;
 
+        /**
+         * Constructs a new panel that allows the user to construct a player for each player color in the specified array.
+         * Assumes that there are no duplicates in the specified array.
+         * @param playerColors The different options for the color of a player's tokens
+         */
         public PlayerConstructorPanel(String[] playerColors) {
             super();
             this.playerColors = playerColors;
