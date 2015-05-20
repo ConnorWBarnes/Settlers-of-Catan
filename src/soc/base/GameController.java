@@ -13,8 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.*;
 import java.util.List;
 
@@ -273,15 +271,17 @@ public class GameController {
         int numRolled = redDie + yellowDie;
         //Move the robber (if appropriate)
         if (numRolled == 7) {
-            //Construct a list of all the players who have more than 7 resource cards
-            ArrayList<Player> discardingPlayers = new ArrayList<Player>(players.length);
             for (Player player : players) {
+                int[] discardedResources;
                 if (player.getSumResourceCards() > 7) {
-                    discardingPlayers.add(player);
+                    discardedResources = ResourceDiscard.discardResources(icons, player);
+                    //Discard the cards specified by the player
+                    for (int i = 0; i < RESOURCE_TYPES.length; i++) {
+                        player.takeResource(RESOURCE_TYPES[i], discardedResources[i]);
+                    }
                 }
             }
-            //Force these players to discard half of their resource cards
-            new DiscardListener(discardingPlayers);
+            moveRobber();
         } else {
             //Distribute the appropriate resources
             int giveAmount;
@@ -640,54 +640,6 @@ public class GameController {
                 validSetupSettlementLocs = null;
                 secondSettlementLocs = null;
                 startNextTurn();
-            }
-        }
-    }
-
-    /**
-     * Forces all of the players in the specified list to discard half of their
-     * resource cards. After each player has discarded, the current player is
-     * allowed to move the robber to the tile of their choice.
-     */
-    private class DiscardListener implements ActionListener {
-        private List<Player> discardingPlayers;
-        private ListIterator<Player> playerIterator;
-        private DiscardFrame discardFrame;
-
-        /**
-         * Constructs a new DiscardListener with the specified collection of
-         * players.
-         * @param discardingPlayers the players who need to discard
-         */
-        public DiscardListener(List<Player> discardingPlayers) {
-            this.discardingPlayers = discardingPlayers;
-            playerIterator = this.discardingPlayers.listIterator();
-            if (playerIterator.hasNext()) {
-                discardFrame = new DiscardFrame(icons, this, playerIterator.next());
-            } else {
-                moveRobber();
-            }
-        }
-
-        /**
-         * Discards the cards specified by the player and forces the next player
-         * in the list to discard half of their cards. If all players have
-         * discarded, the current player gets to move the robber.
-         * @param actionEvent the event fired by DiscardFrame signaling that the
-         *                    player has selected the cards to discard
-         */
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            int[] discardedResources = discardFrame.getDiscardedResources();
-            discardFrame.dispose();
-            //Discard the cards specified by the player
-            for (int i = 0; i < RESOURCE_TYPES.length; i++) {
-                discardingPlayers.get(playerIterator.previousIndex()).takeResource(RESOURCE_TYPES[i], discardedResources[i]);
-            }
-            if (playerIterator.hasNext()) {//Force the next player to discard
-                discardFrame = new DiscardFrame(icons, this, playerIterator.next());
-            } else {//Let the current player move the robber
-                moveRobber();
             }
         }
     }

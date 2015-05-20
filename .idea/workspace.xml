@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Moved constructPlayers() method from GameController to ConstructPlayersPanel and renamed ConstructPlayersPanel to PlayerConstructor">
+    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Added missing Javadoc comments to PlayerConstructor">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/soc/base/gui/ResourceDiscard.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/ResourceDiscardTest.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/DiscardFrameTest.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/GameController.java" afterPath="$PROJECT_DIR$/src/soc/base/GameController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -29,31 +34,63 @@
         <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="68" column="53" selection-start-line="68" selection-start-column="53" selection-end-line="68" selection-end-column="53" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerConstructor.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5294118">
-              <caret line="95" column="87" selection-start-line="95" selection-start-column="87" selection-end-line="95" selection-end-column="87" />
+              <caret line="644" column="5" selection-start-line="644" selection-start-column="5" selection-end-line="644" selection-end-column="5" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1632#4280#0" expanded="true" />
-                <element signature="e#4279#4280#0" expanded="true" />
+                <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
+                <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
+                <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
+                <element signature="method#moveRobber#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+                <element signature="method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+                <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+                <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+                <element signature="class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+                <element signature="class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+                <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+                <element signature="class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlayerConstructorTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/PlayerConstructorTest.java">
+      <file leaf-file-name="PlayerConstructor.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#7675#7683#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ResourceDiscard.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/ResourceDiscard.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="116" column="76" selection-start-line="116" selection-start-column="76" selection-end-line="116" selection-end-column="76" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2974#3254#0" expanded="true" />
+                <element signature="e#3253#3254#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ResourceDiscardTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tests/ResourceDiscardTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.13810742">
+              <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -87,9 +124,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/test/BoardPaneTest.java" />
-        <option value="$PROJECT_DIR$/test/CardsFrameTest.java" />
-        <option value="$PROJECT_DIR$/test/DiscardFrameTest.java" />
         <option value="$PROJECT_DIR$/test/TradeInFrameTest.java" />
         <option value="$PROJECT_DIR$/test/PlayerPanelTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/ResourceLabel.java" />
@@ -100,7 +134,6 @@
         <option value="$PROJECT_DIR$/src/soc/base/gui/CreatePlayersFrame.java" />
         <option value="$PROJECT_DIR$/tests/ConstructPlayersFrameTest.java" />
         <option value="$PROJECT_DIR$/tests/PlayerPanelTest.java" />
-        <option value="$PROJECT_DIR$/tests/DiscardFrameTest.java" />
         <option value="$PROJECT_DIR$/tests/StealResourceCardFrameTest.java" />
         <option value="$PROJECT_DIR$/tests/TradeInFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/DevelopmentCard.java" />
@@ -119,7 +152,6 @@
         <option value="$PROJECT_DIR$/src/soc/base/gui/CardsFrame.java" />
         <option value="$PROJECT_DIR$/tests/TradeFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/PlayDevCardFrame.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/StealResourceCardFrame.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/TradeFrame.java" />
@@ -134,10 +166,15 @@
         <option value="$PROJECT_DIR$/src/soc/base/model/Board.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/ConstructPlayersPanel.java" />
         <option value="$PROJECT_DIR$/tests/ConstructPlayersPanelTest.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/GameController.java" />
         <option value="$PROJECT_DIR$/tests/ConstructPlayersTest.java" />
         <option value="$PROJECT_DIR$/tests/PlayerConstructorTest.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/DiscardFrame.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/ResourceDiscarder.java" />
+        <option value="$PROJECT_DIR$/tests/DiscardFrameTest.java" />
+        <option value="$PROJECT_DIR$/tests/ResourceDiscardTest.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/GameController.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/ResourceDiscard.java" />
       </list>
     </option>
   </component>
@@ -334,7 +371,7 @@
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="FullScreen" value="false" />
     <property name="dynamic.classpath" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
@@ -349,7 +386,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.PlayerConstructorTest">
+  <component name="RunManager" selected="Application.ResourceDiscardTest">
     <configuration default="false" name="GameController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -358,21 +395,6 @@
         </pattern>
       </extension>
       <option name="MAIN_CLASS_NAME" value="soc.base.GameController" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="Settlers of Catan" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="false" name="YearOfPlentyFrameTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="YearOfPlentyFrameTest" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -418,6 +440,21 @@
     <configuration default="false" name="PlayerConstructorTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="PlayerConstructorTest" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="Settlers of Catan" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="ResourceDiscardTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="ResourceDiscardTest" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -581,18 +618,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Application.GameController" />
-      <item index="1" class="java.lang.String" itemvalue="Application.YearOfPlentyFrameTest" />
-      <item index="2" class="java.lang.String" itemvalue="Application.TradeFrameTest" />
-      <item index="3" class="java.lang.String" itemvalue="Application.ConstructPlayersPanelTest" />
-      <item index="4" class="java.lang.String" itemvalue="Application.PlayerConstructorTest" />
+      <item index="1" class="java.lang.String" itemvalue="Application.TradeFrameTest" />
+      <item index="2" class="java.lang.String" itemvalue="Application.ConstructPlayersPanelTest" />
+      <item index="3" class="java.lang.String" itemvalue="Application.PlayerConstructorTest" />
+      <item index="4" class="java.lang.String" itemvalue="Application.ResourceDiscardTest" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.PlayerConstructorTest" />
-        <item index="1" class="java.lang.String" itemvalue="Application.ConstructPlayersPanelTest" />
-        <item index="2" class="java.lang.String" itemvalue="Application.GameController" />
-        <item index="3" class="java.lang.String" itemvalue="Application.TradeFrameTest" />
-        <item index="4" class="java.lang.String" itemvalue="Application.YearOfPlentyFrameTest" />
+        <item index="0" class="java.lang.String" itemvalue="Application.ResourceDiscardTest" />
+        <item index="1" class="java.lang.String" itemvalue="Application.PlayerConstructorTest" />
+        <item index="2" class="java.lang.String" itemvalue="Application.ConstructPlayersPanelTest" />
+        <item index="3" class="java.lang.String" itemvalue="Application.GameController" />
+        <item index="4" class="java.lang.String" itemvalue="Application.TradeFrameTest" />
       </list>
     </recent_temporary>
   </component>
@@ -757,7 +794,13 @@
       <option name="project" value="LOCAL" />
       <updated>1432086811585</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Added missing Javadoc comments to PlayerConstructor">
+      <created>1432087886941</created>
+      <option name="number" value="00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1432087886941</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -795,8 +838,8 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -812,7 +855,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Finished TradeInFrame and optimized DiscardFrame" />
     <MESSAGE value="Refactored project structure and added test classes" />
     <MESSAGE value="Re-added test classes" />
     <MESSAGE value="Scaled building costs cards and updated GameIcons and PlayerPanel accordingly.&#10;Also added a MouseListener to the building costs card icon in PlayerPanel that will show a larger version when clicked" />
@@ -837,7 +879,8 @@
     <MESSAGE value="Added new class TradeFrame and added support for offering and accepting trades. Also added new class TradeFrameTest for testing the TradeFrame class." />
     <MESSAGE value="Added miscellaneous &quot;To Do&quot; items" />
     <MESSAGE value="Moved constructPlayers() method from GameController to ConstructPlayersPanel and renamed ConstructPlayersPanel to PlayerConstructor" />
-    <option name="LAST_COMMIT_MESSAGE" value="Moved constructPlayers() method from GameController to ConstructPlayersPanel and renamed ConstructPlayersPanel to PlayerConstructor" />
+    <MESSAGE value="Added missing Javadoc comments to PlayerConstructor" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added missing Javadoc comments to PlayerConstructor" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -851,11 +894,41 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7675#7683#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="156" column="38" selection-start-line="156" selection-start-column="38" selection-end-line="156" selection-end-column="38" />
-          <folding />
+          <folding>
+            <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -871,7 +944,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -887,7 +979,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -902,7 +1013,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="55" selection-start-line="12" selection-start-column="55" selection-end-line="12" selection-end-column="55" />
-          <folding />
+          <folding>
+            <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -940,7 +1070,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="55" selection-start-line="12" selection-start-column="55" selection-end-line="12" selection-end-column="55" />
-          <folding />
+          <folding>
+            <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -978,7 +1127,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="55" selection-start-line="12" selection-start-column="55" selection-end-line="12" selection-end-column="55" />
-          <folding />
+          <folding>
+            <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1016,7 +1184,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="55" selection-start-line="12" selection-start-column="55" selection-end-line="12" selection-end-column="55" />
-          <folding />
+          <folding>
+            <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1137,10 +1324,64 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/model/Board.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5294118">
+          <caret line="27" column="20" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="644" column="5" selection-start-line="644" selection-start-column="5" selection-end-line="644" selection-end-column="5" />
+          <folding>
+            <element signature="docComment;method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="method#rollForOrder#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+            <element signature="class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/PlayerConstructorTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/BoardPane.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="48" column="16" selection-start-line="48" selection-start-column="16" selection-end-line="48" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/TradeFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.8081841">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1152,40 +1393,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/PlayerConstructorTest.java">
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCardFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="68" column="53" selection-start-line="68" selection-start-column="53" selection-end-line="68" selection-end-column="53" />
+        <state vertical-scroll-proportion="0.32225063">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/model/Board.java">
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayDevCardFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5294118">
-          <caret line="27" column="20" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5294118">
-          <caret line="95" column="87" selection-start-line="95" selection-start-column="87" selection-end-line="95" selection-end-column="87" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1632#4280#0" expanded="true" />
-            <element signature="e#4279#4280#0" expanded="true" />
+            <element signature="e#7675#7683#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/ResourceDiscard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="116" column="76" selection-start-line="116" selection-start-column="76" selection-end-line="116" selection-end-column="76" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2974#3254#0" expanded="true" />
+            <element signature="e#3253#3254#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/ResourceDiscardTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13810742">
+          <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

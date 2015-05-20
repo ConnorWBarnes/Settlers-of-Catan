@@ -14,6 +14,9 @@ import java.util.ArrayList;
  */
 public class PlayerConstructor {
     private Player[] constructedPlayers;
+    private JDialog dialog;
+    private JOptionPane optionPane;
+    private PlayerConstructorPanel playerConstructorPanel;
 
     /**
      * Asks the user for each player's information, constructs a Player object
@@ -21,6 +24,7 @@ public class PlayerConstructor {
      * information is obtained via a dialog window that allows the user to enter
      * each player's name and color. Does not allow the user to continue if two
      * players have the same color.
+     * @param playerColors The player token color options
      * @return An array containing the Player objects constructed with the
      * user's input
      */
@@ -29,56 +33,67 @@ public class PlayerConstructor {
         return playerConstructor.constructedPlayers;
     }
 
-    public PlayerConstructor(String[] playerColors) {
-        final PlayerConstructorPanel playerConstructorPanel = new PlayerConstructorPanel(playerColors);
-        final JOptionPane optionPane = new JOptionPane(playerConstructorPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null);
-        final JDialog dialog = new JDialog((JDialog) null, "Player Information", true);
+    /**
+     * Constructs and displays the dialog that collects the player information.
+     * @param playerColors The player token color options
+     */
+    private PlayerConstructor(String[] playerColors) {
+        playerConstructorPanel = new PlayerConstructorPanel(playerColors);
+        optionPane = new JOptionPane(playerConstructorPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null);
+        optionPane.addPropertyChangeListener(new ChangeListener());
+        dialog = new JDialog((JDialog) null, "Player Information", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setContentPane(optionPane);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }
 
-        optionPane.addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent e) {
-                if (optionPane.isVisible() && (e.getSource() == optionPane) && (e.getPropertyName().equals(JOptionPane.VALUE_PROPERTY)) && !optionPane.getValue().equals(JOptionPane.UNINITIALIZED_VALUE)) {
-                    ArrayList<String> names = playerConstructorPanel.getNames();
-                    ArrayList<String> colors = playerConstructorPanel.getColors();
-                    //Make sure information was entered
-                    if (names.size() == 0) {
-                        playerConstructorPanel.addErrorMessage("Player information is required in order to start the game");
-                        dialog.pack();
-                        optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
-                    } else {
-                        //Make sure each player has a different color
-                        for (int i = 0; i < colors.size(); i++) {
-                            for (int j = i + 1; j < colors.size(); j++) {
-                                if (colors.get(i).equals(colors.get(j))) {
-                                    playerConstructorPanel.addErrorMessage("Every player must have a unique color");
-                                    dialog.pack();
-                                    optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
-                                    return;
-                                }
-                            }
-                        }
-                        if (names.size() < 3) {
-                            JPanel warning = new JPanel(new BorderLayout());
-                            warning.add(new JLabel("Settlers of Catan is best played with 3 or more people.", JLabel.CENTER), BorderLayout.NORTH);
-                            warning.add(new JLabel("Are you sure you want to continue?", JLabel.CENTER), BorderLayout.CENTER);
-                            if (JOptionPane.showConfirmDialog(null, warning, "Warning!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) {
+    /**
+     * Ensures that the user entered information and that the information is
+     * valid.
+     */
+    private class ChangeListener implements PropertyChangeListener {
+        @Override
+        public void propertyChange(PropertyChangeEvent event) {
+            if (optionPane.isVisible() && (event.getSource() == optionPane) && (event.getPropertyName().equals(JOptionPane.VALUE_PROPERTY)) && !optionPane.getValue().equals(JOptionPane.UNINITIALIZED_VALUE)) {
+                ArrayList<String> names = playerConstructorPanel.getNames();
+                ArrayList<String> colors = playerConstructorPanel.getColors();
+                //Make sure information was entered
+                if (names.size() == 0) {
+                    playerConstructorPanel.addErrorMessage("Player information is required in order to start the game");
+                    dialog.pack();
+                    optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
+                } else {
+                    //Make sure each player has a different color
+                    for (int i = 0; i < colors.size(); i++) {
+                        for (int j = i + 1; j < colors.size(); j++) {
+                            if (colors.get(i).equals(colors.get(j))) {
+                                playerConstructorPanel.addErrorMessage("Every player must have a unique color");
+                                dialog.pack();
                                 optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
                                 return;
                             }
                         }
-                        dialog.dispose();
-                        constructedPlayers = new Player[names.size()];
-                        for (int i = 0; i < constructedPlayers.length; i++) {
-                            constructedPlayers[i] = new Player(colors.get(i), names.get(i));
+                    }
+                    //TODO: Make sure each player has a different name?
+                    if (names.size() < 3) {
+                        JPanel warning = new JPanel(new BorderLayout());
+                        warning.add(new JLabel("Settlers of Catan is best played with 3 or more people.", JLabel.CENTER), BorderLayout.NORTH);
+                        warning.add(new JLabel("Are you sure you want to continue?", JLabel.CENTER), BorderLayout.CENTER);
+                        if (JOptionPane.showConfirmDialog(null, warning, "Warning!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) {
+                            optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
+                            return;
                         }
+                    }
+                    dialog.dispose();
+                    constructedPlayers = new Player[names.size()];
+                    for (int i = 0; i < constructedPlayers.length; i++) {
+                        constructedPlayers[i] = new Player(colors.get(i), names.get(i));
                     }
                 }
             }
-        });
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
+        }
     }
 
     /**
@@ -96,7 +111,7 @@ public class PlayerConstructor {
          * Assumes that there are no duplicates in the specified array.
          * @param playerColors The different options for the color of a player's tokens
          */
-        public PlayerConstructorPanel(String[] playerColors) {
+        private PlayerConstructorPanel(String[] playerColors) {
             super();
             this.playerColors = playerColors;
             nameFields = new JTextField[playerColors.length];
@@ -142,7 +157,7 @@ public class PlayerConstructor {
          * Returns an ArrayList of the names of each player.
          * @return an ArrayList of the names of each player
          */
-        public ArrayList<String> getNames() {
+        private ArrayList<String> getNames() {
             ArrayList<String> names = new ArrayList<String>(nameFields.length);
             for (JTextField textField : nameFields) {
                 if (textField.getText().length() > 0) {
@@ -156,7 +171,7 @@ public class PlayerConstructor {
          * Returns an ArrayList of the colors of each player.
          * @return an ArrayList of the colors of each player
          */
-        public ArrayList<String> getColors() {
+        private ArrayList<String> getColors() {
             ArrayList<String> colors = new ArrayList<String>(colorBoxes.length);
             for (int i = 0; i < colorBoxes.length; i++) {
                 if (nameFields[i].getText().length() > 0) {
@@ -170,10 +185,8 @@ public class PlayerConstructor {
          * Adds the specified message to the top of the panel.
          * @param message the message to display
          */
-        public void addErrorMessage(String message) {
+        private void addErrorMessage(String message) {
             errorLabel.setText(errorLabel.getText() + message + "<br>");
         }
     }
-
-
 }
