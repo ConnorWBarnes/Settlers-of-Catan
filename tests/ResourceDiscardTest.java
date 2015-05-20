@@ -1,5 +1,5 @@
 import soc.base.GameController;
-import soc.base.gui.ResourceDiscard;
+import soc.base.gui.DiscardResources;
 import soc.base.gui.GameIcons;
 import soc.base.model.Player;
 
@@ -22,7 +22,7 @@ public class ResourceDiscardTest {
             player.giveResource(resource, 2);
         }
         player.takeResource(GameController.LUMBER, 1);
-        int[] discardedResources = ResourceDiscard.discardResources(icons, player);
+        int[] discardedResources = DiscardResources.discardResources(icons, player);
         for (int i = 0; i < discardedResources.length; i++) {
             System.out.println(GameController.RESOURCE_TYPES[i] + ": " + discardedResources[i]);
         }

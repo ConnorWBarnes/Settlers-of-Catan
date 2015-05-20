@@ -15,7 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 /**
- * DiscardFrame is a frame that allows the specified player to discard half of
+ * ResourceDiscard is a frame that allows the specified player to discard half of
  * their resource cards (rounding down). Each of the specified player's resource
  * cards is represented by an icon in the top half of the frame. The player
  * chooses the cards to discard by clicking on them. When one of these icons is
@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * are discarded.
  * @author Connor Barnes
  */
-public class ResourceDiscard extends JFrame {
+public class DiscardResources {
     //Information variables
     private Player player;
     private int[] discardedResources;
@@ -48,7 +48,7 @@ public class ResourceDiscard extends JFrame {
      * chose to discard.
      */
     public static int[] discardResources(GameIcons icons, Player player) {
-        ResourceDiscard discard = new ResourceDiscard(icons, player);
+        DiscardResources discard = new DiscardResources(icons, player);
         return discard.discardedResources;
     }
 
@@ -58,14 +58,14 @@ public class ResourceDiscard extends JFrame {
      * @param icons  The icons to use to display the resource cards
      * @param player The player who needs to discard
      */
-    private ResourceDiscard(GameIcons icons, Player player) {
+    private DiscardResources(GameIcons icons, Player player) {
         this.icons = icons;
         this.player = player;
         discardPanel = new DiscardPanel();
         String[] options = {"Discard"};
         optionPane = new JOptionPane(discardPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options);
         optionPane.addPropertyChangeListener(new DiscardListener());
-        dialog = new JDialog((JDialog) null, "Player Information", true);
+        dialog = new JDialog((JDialog) null, "Discard Resources", true);
         dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         dialog.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {

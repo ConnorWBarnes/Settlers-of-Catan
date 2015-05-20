@@ -274,7 +274,7 @@ public class GameController {
             for (Player player : players) {
                 int[] discardedResources;
                 if (player.getSumResourceCards() > 7) {
-                    discardedResources = ResourceDiscard.discardResources(icons, player);
+                    discardedResources = DiscardResources.discardResources(icons, player);
                     //Discard the cards specified by the player
                     for (int i = 0; i < RESOURCE_TYPES.length; i++) {
                         player.takeResource(RESOURCE_TYPES[i], discardedResources[i]);
@@ -650,25 +650,27 @@ public class GameController {
      * the specified tile.
      */
     private class MoveRobberListener implements ActionListener {
-        private StealResourceCardFrame stealCardFrame;
+        private StealResourceCard stealCardFrame;
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            try {//actionEvent fired by boardPane
-                int tileLoc = Integer.parseInt(actionEvent.getActionCommand());
-                //Move the robber to the specified location
-                gameBoard.moveRobber(tileLoc);
-                boardPane.moveRobber(tileLoc);
-                //Construct a list of players who have a settlement adjacent to the specified tile
-                HashSet<Player> victims = new HashSet<Player>();
-                for (int settlementLoc : gameBoard.getTile(tileLoc).getSettlementLocs()) {
-                    for (Player player : players) {
-                        if (player.getColor().equals(gameBoard.getCorner(settlementLoc).getSettlementColor())) {
-                            victims.add(player);
-                        }
+            int tileLoc = Integer.parseInt(actionEvent.getActionCommand());
+            //Move the robber to the specified location
+            gameBoard.moveRobber(tileLoc);
+            boardPane.moveRobber(tileLoc);
+            //Construct a list of players who have a settlement adjacent to the specified tile
+            HashSet<Player> victims = new HashSet<Player>();
+            for (int settlementLoc : gameBoard.getTile(tileLoc).getSettlementLocs()) {
+                for (Player player : players) {
+                    if (player.getColor().equals(gameBoard.getCorner(settlementLoc).getSettlementColor())) {
+                        victims.add(player);
                     }
                 }
-                victims.remove(currentPlayer);
+            }
+            victims.remove(currentPlayer);
+            if (victims.isEmpty()) {//No players have a settlement adjacent to the selected tile
+                playerPanel.setButtonsEnabled(true);
+            } else {
                 Iterator<Player> victimsIterator = victims.iterator();
                 while (victimsIterator.hasNext()) {
                     if (victimsIterator.next().getSumResourceCards() == 0) {
@@ -676,36 +678,24 @@ public class GameController {
                     }
                 }
                 if (victims.isEmpty()) {
+                    JOptionPane.showMessageDialog(mainFrame, "None of the players adjacent to this tile have any resource cards");
                     playerPanel.setButtonsEnabled(true);
                 } else {
                     //Let the current player steal from one of these players
-                    for (Player victim : victims) {
-                        if (victim.getSumResourceCards() > 0) {
-                            stealCardFrame = new StealResourceCardFrame(icons, this, victims.toArray(new Player[victims.size()]));
-                            break;
-                        }
+                    Object[] playerAndCard = StealResourceCard.stealResourceCard(icons, victims.toArray(new Player[victims.size()]));
+                    playerColorMap.get(((Player) playerAndCard[0]).getColor()).takeResource((String) playerAndCard[1], 1);
+                    currentPlayer.giveResource((String) playerAndCard[1], 1);
+                    //Show the current player what they stole
+                    JPanel message = new JPanel(new BorderLayout());
+                    message.add(new JLabel("You stole:", JLabel.CENTER), BorderLayout.NORTH);
+                    message.add(new JLabel(icons.getResourceIcon((String) playerAndCard[1])), BorderLayout.CENTER);
+                    JOptionPane.showMessageDialog(null, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
+                    if (cardsFrame != null) {
+                        cardsFrame.addResourceCard((String) playerAndCard[1]);
                     }
-                    if (stealCardFrame == null) {
-                        JOptionPane.showMessageDialog(mainFrame, "None of the players adjacent to this tile have any resource cards");
-                        playerPanel.setButtonsEnabled(true);
-                    }
+                    playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                    playerPanel.setButtonsEnabled(true);
                 }
-            } catch (NumberFormatException formatException) {//actionEvent fired by stealCardFrame
-                //Take the chosen card from the victim and give it to the current player
-                playerColorMap.get(stealCardFrame.getVictim().getColor()).takeResource(stealCardFrame.getSelectedCard(), 1);
-                currentPlayer.giveResource(stealCardFrame.getSelectedCard(), 1);
-                //Show the current player what they stole
-                JPanel message = new JPanel(new BorderLayout());
-                message.add(new JLabel("You stole:", JLabel.CENTER), BorderLayout.NORTH);
-                message.add(new JLabel(icons.getResourceIcon(stealCardFrame.getSelectedCard())), BorderLayout.CENTER);
-                JOptionPane.showMessageDialog(null, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
-                stealCardFrame.dispose();
-                stealCardFrame = null;
-                if (cardsFrame != null) {
-                    cardsFrame.addResourceCard(stealCardFrame.getSelectedCard());
-                }
-                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
-                playerPanel.setButtonsEnabled(true);
             }
         }
     }
