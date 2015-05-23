@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 
@@ -72,7 +73,8 @@ public class GameController {
         for (Player player : players) {
             playerColorMap.put(player.getColor(), player);
         }
-        //TODO: rollForOrder();
+        shufflePlayers(players);
+        //TODO: Let the players know what the turn order is
         constructGameBoard();
 
         //Construct the remaining contents of the frame and add the contents to the frame
@@ -143,61 +145,18 @@ public class GameController {
     }
 
     /**
-     * Allows each player to roll the dice in order to determine the order in
-     * which the players take turns. The player with the highest roll goes
-     * first, and the player with the lowest roll goes last. Assumes that all
-     * the players have already been constructed.
+     * Randomly shuffles the order of the players in the specified array.
+     * @param players The array of players to shuffle
      */
-    private void rollForOrder() { //TODO
-        ArrayList<Player> playerList = new ArrayList<Player>(players.length);
-        playerList.addAll(Arrays.asList(players));
-        ArrayList<Player> tempPLayers;
-        ArrayList<Integer> numbersRolled;
-        boolean rollAdded;
-        int redDie, yellowDie;
-        JPanel messagePanel, dicePanel;
-
-        while (playerList.size() > 1) {
-            tempPLayers = new ArrayList<Player>(players.length);
-            numbersRolled = new ArrayList<Integer>(players.length);
-            for (Player player : playerList) {
-                JOptionPane.showMessageDialog(null, player.getName() + ", roll to determine turn order", "Roll for Order", JOptionPane.PLAIN_MESSAGE, null);
-                redDie = (int) (6 * Math.random()) + 1;
-                yellowDie = (int) (6 * Math.random()) + 1;
-                rollAdded = false;
-                for (int i = 0; i < numbersRolled.size(); i++) {
-                    if (numbersRolled.get(i) < redDie + yellowDie) {
-                        numbersRolled.add(i, redDie + yellowDie);
-                        tempPLayers.add(i, player);
-                        rollAdded = true;
-                        break;
-                    }
-                }
-                if (!rollAdded) {
-                    numbersRolled.add(redDie + yellowDie);
-                    tempPLayers.add(player);
-                }
-                numbersRolled.add(redDie + yellowDie);
-                //Show what was rolled
-                messagePanel = new JPanel(new BorderLayout());
-                dicePanel = new JPanel(new GridLayout(1, 0));
-                dicePanel.add(new JLabel(icons.getRedDieIcon(redDie)));
-                dicePanel.add(new JLabel(icons.getRedDieIcon(yellowDie)));
-                messagePanel.add(new JLabel("You rolled:"), BorderLayout.NORTH);
-                messagePanel.add(dicePanel, BorderLayout.CENTER);
-                JOptionPane.showMessageDialog(null, messagePanel, "Roll for Order", JOptionPane.PLAIN_MESSAGE, null);
-            }
-            //Determine the order in which the players take their turns
-            //If more than one player rolled the highest number, all players who rolled this number must re-roll
-            for (int i = 1; i < numbersRolled.size(); i++) {
-                if (!numbersRolled.get(i - 1).equals(numbersRolled.get(i))) {
-                    while (i < tempPLayers.size()) {
-                        tempPLayers.remove(i);
-                    }
-                    break;
-                }
-            }
-            playerList = new ArrayList<Player>(tempPLayers);
+    public static void shufflePlayers(Player[] players) {
+        Random random = new Random();
+        int index;
+        Player temp;
+        for (int i = players.length - 1; i > 0; i--) {
+            index = random.nextInt(i + 1);
+            temp = players[index];
+            players[index] = players[i];
+            players[i] = temp;
         }
     }
 
