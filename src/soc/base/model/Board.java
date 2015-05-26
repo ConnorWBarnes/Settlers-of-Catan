@@ -3,6 +3,7 @@ package soc.base.model;
 import soc.base.GameController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -170,10 +171,9 @@ public class Board {
         defaultTileList.add(new Tile(Tile.PASTURE));
         defaultTileList.add(new Tile(Tile.DESERT, true));
         //Put each tile on the board in a random location
-        int randomNum;
+        Collections.shuffle(defaultTileList);
         for (int i = 0; i < tileMap.length; i++) {
-            randomNum = (int) (Math.random() * defaultTileList.size());
-            tileMap[i] = defaultTileList.remove(randomNum);
+            tileMap[i] = defaultTileList.remove(i);
         }
         //Construct the number token map
         numberTokenMap = new HashMap<Integer, LinkedList<Tile>>();

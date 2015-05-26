@@ -13,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class GameController {
     private Iterator<Player> turnIterator;
     private Player currentPlayer, longestRoadPlayer, largestArmyPlayer;
     private Board gameBoard;
-    private Deque<DevelopmentCard> devCardDeck = new ArrayDeque<DevelopmentCard>();
+    private Deque<DevelopmentCard> devCardDeck;
     private ArrayList<DevelopmentCard> devCardsBuiltThisTurn;
     //GUI variables
     private GameIcons icons;
@@ -73,7 +72,7 @@ public class GameController {
         for (Player player : players) {
             playerColorMap.put(player.getColor(), player);
         }
-        shufflePlayers(players);
+        determineTurnOrder(players);
         //TODO: Let the players know what the turn order is
         constructGameBoard();
 
@@ -122,33 +121,29 @@ public class GameController {
         final int NUM_KNIGHT_CARDS = 14;
         final int NUM_PROGRESS_CARDS = 2;
         //Construct all the development cards
-        ArrayList<DevelopmentCard> defaultDevCards = new ArrayList<DevelopmentCard>();
+        ArrayList<DevelopmentCard> devCards = new ArrayList<DevelopmentCard>();
         for (int i = 0; i < NUM_KNIGHT_CARDS; i++) {
-            defaultDevCards.add(new DevelopmentCard(DevelopmentCard.KNIGHT));
+            devCards.add(new DevelopmentCard(DevelopmentCard.KNIGHT));
         }
         for (int i = 0; i < NUM_PROGRESS_CARDS; i++) {
             for (String progressCard : DevelopmentCard.PROGRESS_CARDS) {
-                defaultDevCards.add(new DevelopmentCard(progressCard));
+                devCards.add(new DevelopmentCard(progressCard));
             }
         }
         for (String victoryPointCard : DevelopmentCard.VICTORY_POINT_CARDS) {
-            defaultDevCards.add(new DevelopmentCard(victoryPointCard));
+            devCards.add(new DevelopmentCard(victoryPointCard));
         }
         //Shuffle the cards
-        Deque<DevelopmentCard> shuffledDevCards = new ArrayDeque<DevelopmentCard>(defaultDevCards.size());
-        int randomNum;
-        while (!defaultDevCards.isEmpty()) {
-            randomNum = (int) (Math.random() * defaultDevCards.size());
-            shuffledDevCards.add(defaultDevCards.remove(randomNum));
-        }
-        return shuffledDevCards;
+        Collections.shuffle(devCards);
+        return new ArrayDeque<DevelopmentCard>(devCards);
     }
 
     /**
-     * Randomly shuffles the order of the players in the specified array.
-     * @param players The array of players to shuffle
+     * Determines the order in which the specified players take turns.
+     * @param players An array of the players whose turn order is to be determined
      */
-    public static void shufflePlayers(Player[] players) {
+    public void determineTurnOrder(Player[] players) {//The implementation for this method may change later on, which is why the current implementation is not in the constructor
+        //Shuffle the array using the Fisher-Yates shuffle
         Random random = new Random();
         int index;
         Player temp;
