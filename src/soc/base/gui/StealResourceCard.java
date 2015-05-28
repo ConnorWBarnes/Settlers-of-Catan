@@ -19,14 +19,12 @@ import java.util.ArrayList;
  * resource card to steal by clicking on it.
  * @author Connor Barnes
  */
-//TODO: Convert to JPanel and use in JOptionPane
 public class StealResourceCard {
     private GameIcons icons;
     private Player[] potentialVictims;
     private Player victim;
     private String selectedCard;
     private JDialog dialog;
-    private JOptionPane optionPane;
 
     /**
      * Allows the user to steal a resource card from a player selected from the
