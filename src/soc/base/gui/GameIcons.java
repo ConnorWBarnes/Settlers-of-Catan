@@ -122,7 +122,7 @@ public class GameIcons {
 
         //Last miscellaneous icons
         filePath = "Images/";
-        boardIcon = createImageIcon(filePath + "Game Board.png", "");
+        boardIcon = createImageIcon(filePath + "Board Frame.png", "");
         robberIcon = createImageIcon(filePath + "Robber.png", "Robber");
         longestRoadIcon = createImageIcon(filePath + "Longest Road.png", "Longest Road");
         largestArmyIcon = createImageIcon(filePath + "Largest Army.png", "Largest Army");

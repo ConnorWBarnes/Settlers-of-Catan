@@ -26,81 +26,72 @@ import java.util.ArrayList;
  * @author Connor Barnes
  */
 //TODO: Convert to JPanel and use in JOptionPane
-public class TradeInFrame extends JFrame {
+public class TradeInResourceCards {
     //GUI variables
     private GameIcons icons;
-    private JButton triggerButton;
     private CardPane keepPane, discardPane;
     private JComboBox<ImageIcon> resourceComboBox;
     private JButton confirmTradeInButton;
+    private JDialog dialog;
     //Information variables
     private Player player;
     private String discardedResource, desiredResource;
-    private int numDiscardedResources;
+
+    /**
+     * Creates and displays a dialog that allows the specified player to trade
+     * in some of their resource cards for a resource card of their choosing.
+     * Does not allow the specified player to make an illegal trade. Returns an
+     * array of two Strings where each String is a resource type, and the player
+     * chose to trade the first resource in for the second resource. Returns
+     * null if the dialog was closed.
+     * @param icons  The icons to use to display the resource cards
+     * @param player The player who wants to trade in some of their resource
+     *               cards
+     * @return An array of two Strings where the first String is the resource
+     * type that the player wants to discard, and the second String is the
+     * resource type that the player wants to receive
+     */
+    public static String[] tradeInResourceCards(GameIcons icons, Player player) {
+        TradeInResourceCards tradeInDialog = new TradeInResourceCards(icons, player);
+        if (tradeInDialog.discardedResource == null || tradeInDialog.desiredResource == null) {
+            return null;
+        } else {
+            return new String[]{tradeInDialog.discardedResource, tradeInDialog.desiredResource};
+        }
+    }
 
     /**
      * Creates and displays a frame that allows the specified player to trade
      * in some of their resource cards for a resource card of their choosing.
-     * @param inIcons the icons used to display each card and harbor
-     * @param triggerListener the ActionListener that will be triggered when
-     *                        the player is finished.
-     * @param inPlayer the player who wants to trade in some of their cards
+     * @param icons the icons used to display each card and harbor
+     * @param player the player who wants to trade in some of their cards
      */
-    public TradeInFrame(GameIcons inIcons, ActionListener triggerListener, Player inPlayer) {
-        super("Trade In Resource Cards");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        icons = inIcons;
-        player = inPlayer;
+    private TradeInResourceCards(GameIcons icons, Player player) {
+        this.icons = icons;
+        this.player = player;
 
-        //Create the trigger button and add the given ActionListener to it
-        triggerButton = new JButton();
-        triggerButton.addActionListener(triggerListener);
+        //Create the contents of the dialog
+        JPanel message = new JPanel(new BorderLayout());
+        message.add(buildHarborPanel(), BorderLayout.NORTH);
+        message.add(buildKeepPanel(), BorderLayout.CENTER);
+        message.add(buildDiscardPanel(), BorderLayout.SOUTH);
+        confirmTradeInButton = new JButton("Trade");
+        confirmTradeInButton.addActionListener(new ConfirmTradeListener());
+        confirmTradeInButton.setEnabled(false);
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dialog.dispose();
+            }
+        });
 
-        //Create the contents of the frame
-        JPanel harborPanel = buildHarborPanel();
-        JPanel cardPanel = buildKeepPanel();
-        JPanel discardPanel = buildDiscardPanel();
-        JPanel buttonPanel = buildButtonPanel();
-        JPanel tempPanel = new JPanel(new BorderLayout());
-        tempPanel.add(harborPanel, BorderLayout.NORTH);
-        tempPanel.add(cardPanel, BorderLayout.CENTER);
-
-        //Add the contents to the frame
-        setLayout(new BorderLayout());
-        add(tempPanel, BorderLayout.NORTH);
-        add(discardPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
-
-        //Display the frame
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
-    }
-
-    /**
-     * Returns the index of the type of resource that the player chose to trade
-     * in.
-     * @return the index of the type of resource that the player chose to trade
-     * in
-     */
-    public String getDiscardedResource() {
-        return discardedResource;
-    }
-
-    /**
-     * Returns the number of resource cards the player chose to trade in.
-     * @return the number of resource cards the player chose to trade in
-     */
-    public int getNumDiscardedResources() {
-        return numDiscardedResources;
-    }
-
-    /**
-     * Returns the index of the type of resource that the player chose to receive.
-     * @return the index of the type of resource that the player chose to receive
-     */
-    public String getDesiredResource() {
-        return desiredResource;
+        //Add the contents to the dialog and display it
+        dialog = new JDialog((JDialog) null, "Trade In Resource Cards", true);
+        dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{confirmTradeInButton, cancelButton}));
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }
 
     /**
@@ -171,27 +162,6 @@ public class TradeInFrame extends JFrame {
     }
 
     /**
-     * Constructs and returns a JPanel containing the "Cancel" and "Trade"
-     * buttons.
-     * @return a JPanel containing the "Cancel" and "Trade" buttons
-     */
-    private JPanel buildButtonPanel() {
-        //Create the buttons
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(new ConfirmTradeListener());
-        cancelButton.setActionCommand(cancelButton.getText());
-        confirmTradeInButton = new JButton("Trade");
-        confirmTradeInButton.addActionListener(new ConfirmTradeListener());
-        confirmTradeInButton.setActionCommand(confirmTradeInButton.getText());
-        confirmTradeInButton.setEnabled(false);
-        //Add the buttons to a panel and return it
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(cancelButton);
-        buttonPanel.add(confirmTradeInButton);
-        return buttonPanel;
-    }
-
-    /**
      * Moves the minimum amount of cards needed for the player to receive a
      * resource card of their choice. Only moves resource cards of the type
      * that was clicked by the player. This listener is added to every label in
@@ -199,10 +169,10 @@ public class TradeInFrame extends JFrame {
      */
     private class KeepListener extends MouseAdapter {
         @Override
-        public void mouseReleased(MouseEvent e) {
+        public void mouseReleased(MouseEvent event) {
             if (discardPane.getComponentCount() > 0) {
                 //If the resource that was clicked on is not the same type as the resource(s) already selected for discard, remove all the labels in discardLabels
-                if (!e.getComponent().getName().equals(discardPane.getComponents()[0].getName())) {
+                if (!event.getComponent().getName().equals(discardPane.getComponents()[0].getName())) {
                     discardPane.getComponents()[0].dispatchEvent(new MouseEvent(discardPane.getComponents()[0], MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), 0, 10, 10, 1, false));
                 } else { //If they are the same resource type, then don't do anything because the minimum amount of resource cards has already been added
                     return;
@@ -210,7 +180,7 @@ public class TradeInFrame extends JFrame {
             }
             //Move the minimum amount of labels of the same resource type as the card selected from keepLabels to discardLabels
             int min = 4;
-            if (player.getHarbors().contains(e.getComponent().getName())) {
+            if (player.getHarbors().contains(event.getComponent().getName())) {
                 min = 2;
             } else if (player.getHarbors().contains(GameController.HARBOR_TYPE_ANY)) {
                 min = 3;
@@ -218,7 +188,7 @@ public class TradeInFrame extends JFrame {
             JLabel tempLabel;
             int cardsRemoved = 0;
             while (cardsRemoved < min) {
-                tempLabel = keepPane.removeCard(e.getComponent().getName());
+                tempLabel = keepPane.removeCard(event.getComponent().getName());
                 cardsRemoved++;
                 if (tempLabel == null) {//All cards of this type have been removed
                     break;
@@ -235,8 +205,8 @@ public class TradeInFrame extends JFrame {
             } else {
                 confirmTradeInButton.setEnabled(true);
             }
-            revalidate();
-            repaint();
+            dialog.revalidate();
+            dialog.repaint();
         }
     }
 
@@ -261,8 +231,8 @@ public class TradeInFrame extends JFrame {
                 }
             }
             confirmTradeInButton.setEnabled(false);
-            revalidate();
-            repaint();
+            dialog.revalidate();
+            dialog.repaint();
         }
     }
 
@@ -274,28 +244,19 @@ public class TradeInFrame extends JFrame {
      */
     private class ConfirmTradeListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("Cancel")) {
-                dispose();
-            } else {
-                desiredResource = GameController.RESOURCE_TYPES[resourceComboBox.getSelectedIndex()];
-                discardedResource = discardPane.getComponents()[0].getName();
-                numDiscardedResources = discardPane.getComponentCount();
-                if (desiredResource.equals(discardedResource)) {
-                    JLabel topWarning = new JLabel("You have selected to receive the same type of resource that you are discarding.");
-                    topWarning.setHorizontalAlignment(JLabel.CENTER);
-                    topWarning.setVerticalAlignment(JLabel.CENTER);
-                    JLabel bottomWarning = new JLabel("Are you sure you want to make this trade?");
-                    bottomWarning.setHorizontalAlignment(JLabel.CENTER);
-                    bottomWarning.setVerticalAlignment(JLabel.CENTER);
-                    JPanel warning = new JPanel(new BorderLayout());
-                    warning.add(topWarning, BorderLayout.NORTH);
-                    warning.add(bottomWarning, BorderLayout.CENTER);
-                    if (JOptionPane.showConfirmDialog(null, warning, "Warning!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) {
-                        return;
-                    }
-                } //else
-                triggerButton.doClick();
+            desiredResource = GameController.RESOURCE_TYPES[resourceComboBox.getSelectedIndex()];
+            discardedResource = discardPane.getComponents()[0].getName();
+            if (desiredResource.equals(discardedResource)) {
+                JPanel warning = new JPanel(new BorderLayout());
+                warning.add(new JLabel("You have selected to receive the same type of resource that you are discarding.", JLabel.CENTER), BorderLayout.NORTH);
+                warning.add(new JLabel("Are you sure you want to make this trade?", JLabel.CENTER), BorderLayout.CENTER);
+                if (JOptionPane.showConfirmDialog(null, warning, "Warning!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) {
+                    desiredResource = null;
+                    discardedResource = null;
+                    return;
+                }
             }
+            dialog.dispose();
         }
     }
 

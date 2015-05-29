@@ -4,11 +4,11 @@
     <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Replaced usages of Math.random() with Fisher-Yates shuffle or Collections.shuffle() (depending on the situation)">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/Images/Board Frame.png" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/resources/Images/Game Board.png" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/soc/base/gui/PlayDevCardFrame.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/ChooseDevCard.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/tests/PlayDevCardFrameTest.java" afterPath="$PROJECT_DIR$/tests/ChooseDevCardTest.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/soc/base/gui/TradeInFrame.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/TradeInResourceCards.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/tests/TradeInFrameTest.java" afterPath="$PROJECT_DIR$/tests/TradeInResourceCardsTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/ChooseDevCardTest.java" afterPath="$PROJECT_DIR$/tests/ChooseDevCardTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/GameController.java" afterPath="$PROJECT_DIR$/src/soc/base/GameController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Settlers of Catan.iws" />
@@ -34,8 +34,8 @@
       <file leaf-file-name="GameController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3836317">
-              <caret line="497" column="24" selection-start-line="497" selection-start-column="24" selection-end-line="497" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.47058824">
+              <caret line="384" column="62" selection-start-line="384" selection-start-column="62" selection-end-line="384" selection-end-column="62" />
               <folding>
                 <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
                 <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />
@@ -57,52 +57,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ChooseDevCardTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/ChooseDevCardTest.java">
+      <file leaf-file-name="TradeInResourceCardsTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/TradeInResourceCardsTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="9" column="92" selection-start-line="9" selection-start-column="92" selection-end-line="9" selection-end-column="92" />
+              <caret line="16" column="39" selection-start-line="16" selection-start-column="39" selection-end-line="16" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlayerConstructor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java">
+      <file leaf-file-name="TradeInResourceCards.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/TradeInResourceCards.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="48" column="32" selection-start-line="46" selection-start-column="8" selection-end-line="48" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StealResourceCard.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="3" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DiscardResources.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="68" column="69" selection-start-line="67" selection-start-column="8" selection-end-line="68" selection-end-column="69" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChooseDevCard.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/ChooseDevCard.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="76" column="51" selection-start-line="76" selection-start-column="51" selection-end-line="76" selection-end-column="51" />
-              <folding />
+              <caret line="55" column="96" selection-start-line="55" selection-start-column="96" selection-end-line="55" selection-end-column="96" />
+              <folding>
+                <element signature="e#3910#4079#0" expanded="true" />
+                <element signature="e#4078#4079#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -133,13 +106,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/test/PlayDevCardFrameTest.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/model/InsufficientResourceCardsException.java" />
         <option value="$PROJECT_DIR$/tests/CreatePlayersFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/CreatePlayersFrame.java" />
         <option value="$PROJECT_DIR$/tests/ConstructPlayersFrameTest.java" />
         <option value="$PROJECT_DIR$/tests/PlayerPanelTest.java" />
-        <option value="$PROJECT_DIR$/tests/TradeInFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/DevelopmentCard.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Graph.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/GraphNode.java" />
@@ -155,7 +125,6 @@
         <option value="$PROJECT_DIR$/src/soc/base/gui/CardsFrame.java" />
         <option value="$PROJECT_DIR$/tests/TradeFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/TradeFrame.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/TradeInFrame.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/YearOfPlentyFrame.java" />
         <option value="$PROJECT_DIR$/src/soc/base/GameSetup.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/TileMap.java" />
@@ -181,9 +150,13 @@
         <option value="$PROJECT_DIR$/src/soc/base/gui/PlayDevCardFrame.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java" />
         <option value="$PROJECT_DIR$/tests/PlayDevCardFrameTest.java" />
-        <option value="$PROJECT_DIR$/tests/ChooseDevCardTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/ChooseDevCard.java" />
+        <option value="$PROJECT_DIR$/tests/ChooseDevCardTest.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/TradeInFrame.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/TradeInResourceCards.java" />
         <option value="$PROJECT_DIR$/src/soc/base/GameController.java" />
+        <option value="$PROJECT_DIR$/tests/TradeInFrameTest.java" />
+        <option value="$PROJECT_DIR$/tests/TradeInResourceCardsTest.java" />
       </list>
     </option>
   </component>
@@ -395,7 +368,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ChooseDevCardTest">
+  <component name="RunManager" selected="Application.TradeInResourceCardsTest">
     <configuration default="false" name="GameController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -404,21 +377,6 @@
         </pattern>
       </extension>
       <option name="MAIN_CLASS_NAME" value="soc.base.GameController" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="Settlers of Catan" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="false" name="ResourceDiscardTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="ResourceDiscardTest" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -464,6 +422,21 @@
     <configuration default="false" name="ChooseDevCardTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="ChooseDevCardTest" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="Settlers of Catan" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="TradeInResourceCardsTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="TradeInResourceCardsTest" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -627,18 +600,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Application.GameController" />
-      <item index="1" class="java.lang.String" itemvalue="Application.ResourceDiscardTest" />
-      <item index="2" class="java.lang.String" itemvalue="Application.StealResourceCardTest" />
-      <item index="3" class="java.lang.String" itemvalue="Application.BoardPaneTest" />
-      <item index="4" class="java.lang.String" itemvalue="Application.ChooseDevCardTest" />
+      <item index="1" class="java.lang.String" itemvalue="Application.StealResourceCardTest" />
+      <item index="2" class="java.lang.String" itemvalue="Application.BoardPaneTest" />
+      <item index="3" class="java.lang.String" itemvalue="Application.ChooseDevCardTest" />
+      <item index="4" class="java.lang.String" itemvalue="Application.TradeInResourceCardsTest" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.ChooseDevCardTest" />
-        <item index="1" class="java.lang.String" itemvalue="Application.BoardPaneTest" />
-        <item index="2" class="java.lang.String" itemvalue="Application.StealResourceCardTest" />
-        <item index="3" class="java.lang.String" itemvalue="Application.GameController" />
-        <item index="4" class="java.lang.String" itemvalue="Application.ResourceDiscardTest" />
+        <item index="0" class="java.lang.String" itemvalue="Application.TradeInResourceCardsTest" />
+        <item index="1" class="java.lang.String" itemvalue="Application.ChooseDevCardTest" />
+        <item index="2" class="java.lang.String" itemvalue="Application.BoardPaneTest" />
+        <item index="3" class="java.lang.String" itemvalue="Application.StealResourceCardTest" />
+        <item index="4" class="java.lang.String" itemvalue="Application.GameController" />
       </list>
     </recent_temporary>
   </component>
@@ -827,7 +800,13 @@
       <option name="project" value="LOCAL" />
       <updated>1432604535408</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Converted the PlayDevCardFrame class (which used a JFrame to ask the user to select a development card to play) into the ChooseDevCard class (which uses a JDialog instead).">
+      <created>1432855207306</created>
+      <option name="number" value="00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1432855207306</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -882,7 +861,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Created the CardPane class to replace code that was copied and pasted into CardsFrame, DiscardFrame, and TradeInPane." />
     <MESSAGE value="Finished the PlayDevCardFrame class and created a test for it.&#10;Refactored the CardPane class to just use JLabels and removed the ResourceLabel class.&#10;A player's harbors are now stored in a HashSet instead of an ArrayList." />
     <MESSAGE value="Added harbor icons" />
     <MESSAGE value="Added CreatePlayersFrame class and its test class" />
@@ -907,7 +885,8 @@
     <MESSAGE value="Converted DiscardFrame into a dialog window and renamed to ResourceDiscard.&#10;Restructured the PlayerConstructor to make it easier to read." />
     <MESSAGE value="Converted StealResourceCardFrame to a dialog window and renamed StealResourceCardFrame to StealResourceCard." />
     <MESSAGE value="Replaced usages of Math.random() with Fisher-Yates shuffle or Collections.shuffle() (depending on the situation)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Replaced usages of Math.random() with Fisher-Yates shuffle or Collections.shuffle() (depending on the situation)" />
+    <MESSAGE value="Converted the PlayDevCardFrame class (which used a JFrame to ask the user to select a development card to play) into the ChooseDevCard class (which uses a JDialog instead)." />
+    <option name="LAST_COMMIT_MESSAGE" value="Converted the PlayDevCardFrame class (which used a JFrame to ask the user to select a development card to play) into the ChooseDevCard class (which uses a JDialog instead)." />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -921,13 +900,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/YearOfPlentyFrame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1282,6 +1254,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="48" column="16" selection-start-line="48" selection-start-column="16" selection-end-line="48" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1289,6 +1262,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4948849">
           <caret line="192" column="39" selection-start-line="192" selection-start-column="35" selection-end-line="192" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1300,32 +1274,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/TradeInFrame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/YearOfPlentyFrame.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.23017903">
           <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/ChooseDevCardTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.06905371">
+          <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="3" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="68" column="69" selection-start-line="67" selection-start-column="8" selection-end-line="68" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="48" column="32" selection-start-line="46" selection-start-column="8" selection-end-line="48" selection-end-column="32" />
+          <caret line="29" column="3" selection-start-line="29" selection-start-column="3" selection-end-line="29" selection-end-column="3" />
           <folding />
         </state>
       </provider>
@@ -1338,22 +1316,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/ChooseDevCardTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="92" selection-start-line="9" selection-start-column="92" selection-end-line="9" selection-end-column="92" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="3" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/ChooseDevCard.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1362,10 +1324,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="147" column="42" selection-start-line="147" selection-start-column="38" selection-end-line="147" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/TradeInResourceCards.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="55" column="96" selection-start-line="55" selection-start-column="96" selection-end-line="55" selection-end-column="96" />
+          <folding>
+            <element signature="e#3910#4079#0" expanded="true" />
+            <element signature="e#4078#4079#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/TradeInResourceCardsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="39" selection-start-line="16" selection-start-column="39" selection-end-line="16" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3836317">
-          <caret line="497" column="24" selection-start-line="497" selection-start-column="24" selection-end-line="497" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.47058824">
+          <caret line="384" column="62" selection-start-line="384" selection-start-column="62" selection-end-line="384" selection-end-column="62" />
           <folding>
             <element signature="docComment;method#constructGameBoard#0;class#GameController#0" expanded="false" />
             <element signature="method#constructGameBoard#0;class#GameController#0" expanded="false" />

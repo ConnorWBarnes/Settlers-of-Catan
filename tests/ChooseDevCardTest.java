@@ -3,9 +3,6 @@ import soc.base.gui.ChooseDevCard;
 import soc.base.model.DevelopmentCard;
 import soc.base.model.Player;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 /**
  * Tests the ChooseDevCard class by creating a player, giving them a few development cards, and then uses the ChooseDevCard class
  * to ask the user to select a development card.

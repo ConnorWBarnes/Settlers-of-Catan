@@ -1,6 +1,6 @@
 import soc.base.GameController;
 import soc.base.gui.GameIcons;
-import soc.base.gui.TradeInFrame;
+import soc.base.gui.TradeInResourceCards;
 import soc.base.model.Player;
 
 import java.awt.event.ActionListener;
@@ -14,33 +14,24 @@ import java.awt.event.ActionEvent;
  * resource cards of the same type, no more, no less.
  * @author Connor Barnes
  */
-public class TradeInFrameTest {
-    TradeInFrame tradeInFrame;
-
-    public TradeInFrameTest() {
-        GameIcons icons = new GameIcons();
+public class TradeInResourceCardsTest {
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
         Player player = new Player("John Doe", "Red");
         player.giveResource(GameController.BRICK, 4);
         player.giveResource(GameController.GRAIN, 3);
         player.giveResource(GameController.LUMBER, 2);
         player.addHarbor(GameController.WOOL);
         player.addHarbor(GameController.HARBOR_TYPE_ANY);
-        tradeInFrame = new TradeInFrame(icons, new TestListener(), player);
-    }
 
-    private class TestListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("Resource discarded: " + tradeInFrame.getDiscardedResource());
-            System.out.println("Number of resource cards traded in: " + tradeInFrame.getNumDiscardedResources());
-            System.out.println("Resource desired: " + tradeInFrame.getDesiredResource());
-            System.exit(0);
+        String[] cardsTraded = TradeInResourceCards.tradeInResourceCards(new GameIcons(), player);
+        if (cardsTraded == null) {
+            System.out.println("No cards were traded in");
+        } else {
+            System.out.println("Resource discarded: " + cardsTraded[0]);
+            System.out.println("Resource desired: " + cardsTraded[1]);
         }
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        TradeInFrameTest mainTest = new TradeInFrameTest();
     }
 }

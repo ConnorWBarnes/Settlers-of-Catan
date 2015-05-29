@@ -45,7 +45,6 @@ public class GameController {
     private BoardPane boardPane;
     private PlayerPanel playerPanel;
     private CardsFrame cardsFrame;
-    private TradeInFrame tradeInFrame;
     private TradeFrame tradeFrame;
     private YearOfPlentyFrame yearOfPlentyFrame;
     //Setup variables
@@ -195,10 +194,6 @@ public class GameController {
         if (tradeFrame != null) {
             tradeFrame.dispose();
             tradeFrame = null;
-        }
-        if (tradeInFrame != null) {
-            tradeInFrame.dispose();
-            tradeInFrame = null;
         }
         if (!turnIterator.hasNext()) {
             turnIterator = Arrays.asList(players).iterator();
@@ -385,8 +380,30 @@ public class GameController {
                 tradeFrame = new TradeFrame(icons, new TradeListener(), currentPlayer);
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.TRADE_IN_RESOURCE_CARDS)) {
                 playerPanel.setButtonsEnabled(false);
-                tradeInFrame = new TradeInFrame(icons, new TradeInListener(), currentPlayer);
-                tradeInFrame.addWindowListener(new ButtonEnabler());
+                String[] cardsTraded = TradeInResourceCards.tradeInResourceCards(icons, currentPlayer);
+                if (cardsTraded != null) {
+                    //Determine the number of cards to discard
+                    int discardAmount = 4;
+                    if (currentPlayer.getHarbors().contains(cardsTraded[0])) {
+                        discardAmount = 2;
+                    } else if (currentPlayer.getHarbors().contains(HARBOR_TYPE_ANY)) {
+                        discardAmount = 3;
+                    }
+                    currentPlayer.takeResource(cardsTraded[0], discardAmount);
+                    currentPlayer.giveResource(cardsTraded[1], 1);
+                    if (cardsFrame != null) {//Update cardsFrame if necessary
+                        for (int i = 0; i < discardAmount; i++) {
+                            cardsFrame.removeResourceCard(cardsTraded[0]);
+                        }
+                        cardsFrame.addResourceCard(cardsTraded[1]);
+                    }
+                    playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                    JOptionPane.showMessageDialog(mainFrame, "Trade completed");
+                }
+                playerPanel.setButtonsEnabled(true);
+                mainFrame.toFront();
+                mainFrame.requestFocus();
+
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.BUILD_ROAD)) {
                 //Make sure the current player has the required resource cards and at least one road token
                 if (currentPlayer.getNumRemainingRoads() < 1) {//Probably the least common case, but I don't want someone to save up for a road only to find that they can't build one
@@ -840,27 +857,6 @@ public class GameController {
                 }
                 playerPanel.setButtonsEnabled(true);
             }
-        }
-    }
-
-    /**
-     * Takes the cards chosen by the player and gives them a resource card of
-     * their choosing.
-     */
-    private class TradeInListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            currentPlayer.takeResource(tradeInFrame.getDiscardedResource(), tradeInFrame.getNumDiscardedResources());
-            currentPlayer.giveResource(tradeInFrame.getDesiredResource(), 1);
-            tradeInFrame.dispose();
-            if (cardsFrame != null) {//Update cardsFrame if necessary
-                for (int i = 0; i < tradeInFrame.getNumDiscardedResources(); i++) {
-                    cardsFrame.removeResourceCard(tradeInFrame.getDiscardedResource());
-                }
-                cardsFrame.addResourceCard(tradeInFrame.getDesiredResource());
-            }
-            playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
-            JOptionPane.showMessageDialog(mainFrame, "Trade completed");
         }
     }
 
