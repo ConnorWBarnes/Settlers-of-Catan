@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * TradeInFrame is a frame that allows the specified player to trade in some of
+ * Contains a dialog window that allows the specified player to trade in some of
  * their resource cards in exchange for a resource card of their choosing. Each
  * of the specified player's resource cards is represented by an icon in the
  * top panel. The player chooses the cards to trade in by clicking on them.
@@ -25,7 +25,6 @@ import java.util.ArrayList;
  * that are on a harbor, each harbor is displayed above the top panel.
  * @author Connor Barnes
  */
-//TODO: Convert to JPanel and use in JOptionPane
 public class TradeInResourceCards {
     //GUI variables
     private GameIcons icons;
@@ -239,7 +238,7 @@ public class TradeInResourceCards {
     /**
      * Disposes the frame if the "Cancel" button was clicked. If the "Trade"
      * button was clicked, the relevant data is collected and stored and the
-     * trigger button is clicked. This listener is added to both the "Cancel"
+     * dialog is disposed. This listener is added to both the "Cancel"
      * and the "Trade" buttons
      */
     private class ConfirmTradeListener implements ActionListener {

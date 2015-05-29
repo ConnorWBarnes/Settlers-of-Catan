@@ -46,7 +46,6 @@ public class GameController {
     private PlayerPanel playerPanel;
     private CardsFrame cardsFrame;
     private TradeFrame tradeFrame;
-    private YearOfPlentyFrame yearOfPlentyFrame;
     //Setup variables
     private ArrayList<Integer> validSetupSettlementLocs;
     private int[] secondSettlementLocs;
@@ -621,8 +620,26 @@ public class GameController {
                                 }
                             }
                         } else {//chosenDevCard.getTitle().equals(DevelopmentCard.YEAR_OF_PLENTY)
-                            yearOfPlentyFrame = new YearOfPlentyFrame(icons, new YearOfPlentyListener());
-                            yearOfPlentyFrame.addWindowListener(new ButtonEnabler());
+                            String[] selectedResources = PlayYearOfPlenty.selectResources(icons);
+                            if (selectedResources == null) {
+                                currentPlayer.giveDevCard(chosenDevCard);
+                                if (cardsFrame != null) {
+                                    cardsFrame.addDevCard(new DevelopmentCard(DevelopmentCard.YEAR_OF_PLENTY));
+                                }
+                            } else {
+                                for (String resource : selectedResources) {
+                                    currentPlayer.giveResource(resource, 1);
+                                }
+                                if (cardsFrame != null) {
+                                    for (String resource : selectedResources) {
+                                        cardsFrame.addResourceCard(resource);
+                                    }
+                                }
+                                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                                playerPanel.setButtonsEnabled(true);
+                            }
+                            mainFrame.toFront();
+                            mainFrame.requestFocus();
                         }
                     }
                 }
@@ -726,8 +743,6 @@ public class GameController {
      * the specified tile.
      */
     private class MoveRobberListener implements ActionListener {
-        private StealResourceCard stealCardFrame;
-
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             int tileLoc = Integer.parseInt(actionEvent.getActionCommand());
@@ -1011,54 +1026,6 @@ public class GameController {
                     }
                 }
             }
-        }
-    }
-
-    /**
-     * Gives the resources that the player selected to receive in the YearOfPlentyFrame, or give the Year of Plenty
-     * development card back to the player if they decide to cancel.
-     */
-    private class YearOfPlentyListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            String[] selectedResources = yearOfPlentyFrame.getSelectedResources();
-            yearOfPlentyFrame.dispose();
-            yearOfPlentyFrame = null;
-            JPanel message = new JPanel(new BorderLayout());
-            if (selectedResources == null) {//Current player decided to cancel
-                currentPlayer.giveDevCard(new DevelopmentCard(DevelopmentCard.YEAR_OF_PLENTY));
-                if (cardsFrame != null) {
-                    cardsFrame.addDevCard(new DevelopmentCard(DevelopmentCard.YEAR_OF_PLENTY));
-                }
-                playerPanel.setNumDevCards(currentPlayer.getSumDevCards());
-                message.add(new JLabel("The Year of Plenty card has been returned to your hand", JLabel.CENTER), BorderLayout.CENTER);
-            } else {
-                JPanel resourcePanel = new JPanel();
-                for (String resource : selectedResources) {
-                    currentPlayer.giveResource(resource, 1);
-                    resourcePanel.add(new JLabel(icons.getResourceIcon(resource)));
-                    if (cardsFrame != null) {
-                        cardsFrame.addResourceCard(resource);
-                    }
-                }
-                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
-                message.add(new JLabel("You received:", JLabel.CENTER), BorderLayout.NORTH);
-                message.add(resourcePanel, BorderLayout.CENTER);
-            }
-            JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
-    /**
-     * Enables the buttons in the player panel after the specified window is
-     * closed.
-     */
-    private class ButtonEnabler extends WindowAdapter {
-        @Override
-        public void windowClosed(WindowEvent e) {
-            playerPanel.setButtonsEnabled(true);
-            mainFrame.toFront();
-            mainFrame.requestFocus();
         }
     }
 }
