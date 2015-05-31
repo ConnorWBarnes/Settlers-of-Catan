@@ -9,60 +9,69 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
- * Represents a frame that allows the specified player to construct a trade that
+ * Represents a dialog that allows the specified player to construct a trade that
  * can then be offered to any other player.
  * @author Connor Barnes
  */
-//TODO: Convert to JPanel and use in JOptionPane
-public class TradeFrame extends JFrame {
+public class OfferTrade {
+    //GUI variables
     private GameIcons icons;
-    private JButton triggerButton;
-    private Player currentPlayer;
     private CardPane keepPane, givePane, takePane;
+    private JDialog dialog;
+    //Information variables
+    private Player currentPlayer;
     private int[] giveCards, takeCards;
 
-    public TradeFrame(GameIcons icons, ActionListener triggerListener, Player currentPlayer) {
-        super("Offer Trade");
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        addWindowListener(new ClosingListener());
+    /**
+     * Allows the specified player to offer a trade of resource cards to any other player.
+     * Returns an array of ints where the first five are the cards that the specified player
+     * is willing to give, and the last five are the cards that the specified player wants
+     * to receive. Returns null if no trade was created.
+     * @param icons The icons to use to display the resource cards
+     * @param currentPlayer The player creating the offer
+     * @return An array of ints representing the cards that the specified player is willing
+     * to give for the cards that the specified player wants (or null if no trade was created)
+     */
+    public static int[] offerTrade(GameIcons icons, Player currentPlayer) {
+        OfferTrade offerTrade = new OfferTrade(icons, currentPlayer);
+        int[] trade = new int[GameController.RESOURCE_TYPES.length * 2];
+        if (offerTrade.giveCards != null && offerTrade.takeCards != null) {
+            System.arraycopy(offerTrade.giveCards, 0, trade, 0, offerTrade.giveCards.length);
+            System.arraycopy(offerTrade.takeCards, 0, trade, offerTrade.giveCards.length, offerTrade.takeCards.length);
+            return trade;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Creates a dialog that allows the specified player to create a trade of resource
+     * cards that can then be offered to any other player.
+     * @param icons The icons to use to display the resource cards
+     * @param currentPlayer The player creating the offer
+     */
+    private OfferTrade(GameIcons icons, Player currentPlayer) {
         this.icons = icons;
         this.currentPlayer = currentPlayer;
-        triggerButton = new JButton();
-        triggerButton.addActionListener(triggerListener);
-        setLayout(new BorderLayout());
-        add(buildCurrentPlayerPanel(), BorderLayout.NORTH);
-        add(buildRecipientPlayerPanel(), BorderLayout.CENTER);
-        add(buildButtonPanel(), BorderLayout.SOUTH);
-        //Display the frame
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
-    }
-
-    /**
-     * Returns an array of integers where the value at index i is the number of
-     * resource cards of type GameController.RESOURCE_TYPES[i] that the player
-     * is willing to give for the resource cards that they want, or null if no
-     * trade offer has been constructed.
-     * @return an array specifying the cards that the player is willing to give
-     * for the cards that they want (or null if no trade offer has been
-     * constructed)
-     */
-    public int[] getGiveCards() {
-        return giveCards;
-    }
-
-    /**
-     * Returns an array of integers where the value at index i is the number of
-     * resource cards of type GameController.RESOURCE_TYPES[i] that the player
-     * wants in exchange for the resource cards they are willing to give, or
-     * null if no trade offer has been constructed.
-     * @return an array specifying the cards that the current player wants in
-     * exchange for the cards they are willing to give (or null if no trade
-     * offer has been constructed)
-     */
-    public int[] getTakeCards() {
-        return takeCards;
+        //Create the contents of the dialog
+        JButton offerTradeButton = new JButton("Offer Trade");
+        offerTradeButton.addActionListener(new ButtonListener());
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dialog.dispose();
+            }
+        });
+        JPanel message = new JPanel(new BorderLayout());
+        message.add(buildCurrentPlayerPanel(), BorderLayout.NORTH);
+        message.add(buildRecipientPlayerPanel(), BorderLayout.CENTER);
+        //Add the contents to the dialog and display it
+        dialog = new JDialog((JDialog) null, "Offer Trade", true);
+        dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{offerTradeButton, cancelButton}));
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }
 
     /**
@@ -130,24 +139,6 @@ public class TradeFrame extends JFrame {
     }
 
     /**
-     * Constructs and returns a JPanel containing the "Offer Trade" button and
-     * the "Cancel" button.
-     * @return a JPanel containing the "Offer Trade" and "Cancel" buttons
-     */
-    private JPanel buildButtonPanel() {
-        JPanel buttonPanel = new JPanel();
-        JButton tempButton;
-        String[] buttonStrings = {"Offer Trade", "Cancel"};
-        for (String text : buttonStrings) {
-            tempButton = new JButton(text);
-            tempButton.setActionCommand(text);
-            tempButton.addActionListener(new ButtonListener());
-            buttonPanel.add(tempButton);
-        }
-        return buttonPanel;
-    }
-
-    /**
      * Removes the card that was clicked from keepPane and moves it into
      * givePane.
      */
@@ -162,8 +153,8 @@ public class TradeFrame extends JFrame {
             labelClicked.addMouseListener(new OfferListener());
             //Move the resource that was clicked from the keep pane to the offer pane
             givePane.addCard(labelClicked);
-            revalidate();
-            repaint();
+            dialog.revalidate();
+            dialog.repaint();
         }
     }
 
@@ -182,8 +173,8 @@ public class TradeFrame extends JFrame {
             labelClicked.addMouseListener(new KeepListener());
             //Move the resource that was clicked from the offer pane to the keep pane
             keepPane.addCard(labelClicked);
-            revalidate();
-            repaint();
+            dialog.revalidate();
+            dialog.repaint();
         }
     }
 
@@ -197,8 +188,8 @@ public class TradeFrame extends JFrame {
             resourceLabel.setName(e.getComponent().getName());
             resourceLabel.addMouseListener(new TakeListener());
             takePane.addCard(resourceLabel);
-            revalidate();
-            repaint();
+            dialog.revalidate();
+            dialog.repaint();
         }
     }
 
@@ -209,15 +200,14 @@ public class TradeFrame extends JFrame {
         @Override
         public void mouseReleased(MouseEvent e) {
             takePane.removeCard(e.getComponent().getName());
-            revalidate();
-            repaint();
+            dialog.revalidate();
+            dialog.repaint();
         }
     }
 
     /**
      * Constructs giveCards and takeCards such that they reflect the cards in
-     * givePane and takePane, respectfully, and then clicks the trigger button.
-     * Just clicks the trigger button if no cards are in either pane.
+     * givePane and takePane (respectfully), and then disposes the dialog window.
      */
     private class ButtonListener implements ActionListener {
         @Override
@@ -234,18 +224,7 @@ public class TradeFrame extends JFrame {
                     takeCards[Integer.parseInt(component.getName())]++;
                 }
             }
-            triggerButton.doClick();
-        }
-    }
-
-    /**
-     * Clicks the cancel button to let the controller know that the frame was
-     * closed.
-     */
-    private class ClosingListener extends WindowAdapter {
-        @Override
-        public void windowClosing(WindowEvent e) {
-            triggerButton.doClick();
+            dialog.dispose();
         }
     }
 }

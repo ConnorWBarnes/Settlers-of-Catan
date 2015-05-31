@@ -11,8 +11,6 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.*;
 import java.util.List;
 
@@ -45,7 +43,6 @@ public class GameController {
     private BoardPane boardPane;
     private PlayerPanel playerPanel;
     private CardsFrame cardsFrame;
-    private TradeFrame tradeFrame;
     //Setup variables
     private ArrayList<Integer> validSetupSettlementLocs;
     private int[] secondSettlementLocs;
@@ -189,10 +186,6 @@ public class GameController {
         if (cardsFrame != null) {
             cardsFrame.dispose();
             cardsFrame = null;
-        }
-        if (tradeFrame != null) {
-            tradeFrame.dispose();
-            tradeFrame = null;
         }
         if (!turnIterator.hasNext()) {
             turnIterator = Arrays.asList(players).iterator();
@@ -376,7 +369,80 @@ public class GameController {
                 startNextTurn();
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.OFFER_TRADE)) {
                 playerPanel.setButtonsEnabled(false);
-                tradeFrame = new TradeFrame(icons, new TradeListener(), currentPlayer);
+                int[] trade = OfferTrade.offerTrade(icons, currentPlayer);
+                if (trade != null) {
+                    int[] giveCards = new int[RESOURCE_TYPES.length];
+                    int[] takeCards = new int[RESOURCE_TYPES.length];
+                    System.arraycopy(trade, 0, giveCards, 0, giveCards.length);
+                    System.arraycopy(trade, giveCards.length, takeCards, 0, takeCards.length);
+                    ArrayList<Checkbox> recipients = new ArrayList<Checkbox>(players.length - 1);
+                    JPanel checkBoxPanel = new JPanel(new GridLayout(1, players.length - 1));
+                    for (Player player : players) {
+                        if (!player.getColor().equals(currentPlayer.getColor())) {
+                            recipients.add(new Checkbox(player.getName(), true));
+                            recipients.get(recipients.size() - 1).setName(player.getColor());
+                            checkBoxPanel.add(recipients.get(recipients.size() - 1));
+                        }
+                    }
+                    JPanel message = new JPanel(new BorderLayout());
+                    message.add(new JLabel("To whom do you want to offer this trade?", JLabel.CENTER), BorderLayout.NORTH);
+                    message.add(checkBoxPanel, BorderLayout.CENTER);
+                    JOptionPane.showMessageDialog(mainFrame, message, "Offer Trade", JOptionPane.QUESTION_MESSAGE, new ImageIcon());
+                    JPanel tradeOffer, tempPanel;
+                    CardPane tempPane;
+                    for (Checkbox checkbox : recipients) {
+                        if (checkbox.getState()) {
+                            //Show the offer to the recipient
+                            tradeOffer = new JPanel(new BorderLayout());
+                            tradeOffer.add(new JLabel(checkbox.getLabel() + ", do you accept the following trade from " + currentPlayer.getName() + "?", JLabel.CENTER), BorderLayout.NORTH);
+                            tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
+                            for (int i = 0; i < RESOURCE_TYPES.length; i++) {
+                                for (int j = 0; j < trade[i]; j++) {
+                                    tempPane.addCard(new JLabel(icons.getResourceIcon(RESOURCE_TYPES[i])));
+                                }
+                            }
+                            tempPanel = new JPanel();
+                            tempPanel.setBorder(BorderFactory.createTitledBorder("Receive"));
+                            tempPanel.add(tempPane);
+                            tradeOffer.add(tempPanel, BorderLayout.CENTER);
+                            tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
+                            for (int i = RESOURCE_TYPES.length; i < trade.length; i++) {
+                                for (int j = 0; j < trade[i]; j++) {
+                                    tempPane.addCard(new JLabel(icons.getResourceIcon(RESOURCE_TYPES[i])));
+                                }
+                            }
+                            tempPanel = new JPanel();
+                            tempPanel.setBorder(BorderFactory.createTitledBorder("Give"));
+                            tempPanel.add(tempPane);
+                            tradeOffer.add(tempPanel, BorderLayout.SOUTH);
+                            //Ask the recipient if they would like to accept the offer
+                            if (JOptionPane.showConfirmDialog(mainFrame, tradeOffer, "Trade Offer", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon()) == JOptionPane.YES_OPTION) {
+                                for (int i = 0; i < giveCards.length; i++) {
+                                    currentPlayer.takeResource(RESOURCE_TYPES[i], giveCards[i]);
+                                    playerColorMap.get(checkbox.getName()).giveResource(RESOURCE_TYPES[i], giveCards[i]);
+                                    if (cardsFrame != null) {
+                                        for (int j = 0; j < giveCards[i]; j++) {
+                                            cardsFrame.removeResourceCard(RESOURCE_TYPES[i]);
+                                        }
+                                    }
+                                }
+                                for (int i = 0; i < takeCards.length; i++) {
+                                    currentPlayer.giveResource(RESOURCE_TYPES[i], takeCards[i]);
+                                    playerColorMap.get(checkbox.getName()).takeResource(RESOURCE_TYPES[i], takeCards[i]);
+                                    if (cardsFrame != null) {
+                                        for (int j = 0; j < takeCards[i]; j++) {
+                                            cardsFrame.addResourceCard(RESOURCE_TYPES[i]);
+                                        }
+                                    }
+                                }
+                                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                                JOptionPane.showMessageDialog(mainFrame, "Trade Completed");
+                                break;
+                            }
+                        }
+                    }
+                }
+                playerPanel.setButtonsEnabled(true);
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.TRADE_IN_RESOURCE_CARDS)) {
                 playerPanel.setButtonsEnabled(false);
                 String[] cardsTraded = TradeInResourceCards.tradeInResourceCards(icons, currentPlayer);
@@ -787,90 +853,6 @@ public class GameController {
                     playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
                     playerPanel.setButtonsEnabled(true);
                 }
-            }
-        }
-    }
-
-    /**
-     * Reads in the trade (if one was constructed) and asks the player to whom
-     * they want to offer this trade. The trade is completed with the first
-     * player to accept the offer.
-     */
-    private class TradeListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            int[] giveCards = tradeFrame.getGiveCards();
-            int[] takeCards = tradeFrame.getTakeCards();
-            tradeFrame.dispose();
-            tradeFrame = null;
-            if (giveCards != null && takeCards != null) {
-                ArrayList<Checkbox> recipients = new ArrayList<Checkbox>(players.length - 1);
-                JPanel checkBoxPanel = new JPanel(new GridLayout(1, players.length - 1));
-                for (Player player : players) {
-                    if (!player.getColor().equals(currentPlayer.getColor())) {
-                        recipients.add(new Checkbox(player.getName(), true));
-                        recipients.get(recipients.size() - 1).setName(player.getColor());
-                        checkBoxPanel.add(recipients.get(recipients.size() - 1));
-                    }
-                }
-                JPanel message = new JPanel(new BorderLayout());
-                message.add(new JLabel("To whom do you want to offer this trade?", JLabel.CENTER), BorderLayout.NORTH);
-                message.add(checkBoxPanel, BorderLayout.CENTER);
-                JOptionPane.showMessageDialog(mainFrame, message, "Offer Trade", JOptionPane.QUESTION_MESSAGE, new ImageIcon());
-                JPanel tradeOffer, tempPanel;
-                CardPane tempPane;
-                for (Checkbox checkbox : recipients) {
-                    if (checkbox.getState()) {
-                        //Show the offer to the recipient
-                        tradeOffer = new JPanel(new BorderLayout());
-                        tradeOffer.add(new JLabel(checkbox.getLabel() + ", do you accept the following trade from " + currentPlayer.getName() + "?", JLabel.CENTER), BorderLayout.NORTH);
-                        tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
-                        for (int i = 0; i < giveCards.length; i++) {
-                            for (int j = 0; j < giveCards[i]; j++) {
-                                tempPane.addCard(new JLabel(icons.getResourceIcon(RESOURCE_TYPES[i])));
-                            }
-                        }
-                        tempPanel = new JPanel();
-                        tempPanel.setBorder(BorderFactory.createTitledBorder("Receive"));
-                        tempPanel.add(tempPane);
-                        tradeOffer.add(tempPanel, BorderLayout.CENTER);
-                        tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
-                        for (int i = 0; i < giveCards.length; i++) {
-                            for (int j = 0; j < giveCards[i]; j++) {
-                                tempPane.addCard(new JLabel(icons.getResourceIcon(RESOURCE_TYPES[i])));
-                            }
-                        }
-                        tempPanel = new JPanel();
-                        tempPanel.setBorder(BorderFactory.createTitledBorder("Give"));
-                        tempPanel.add(tempPane);
-                        tradeOffer.add(tempPanel, BorderLayout.SOUTH);
-                        //Ask the recipient if they would like to accept the offer
-                        if (JOptionPane.showConfirmDialog(mainFrame, tradeOffer, "Trade Offer", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon()) == JOptionPane.YES_OPTION) {
-                            for (int i = 0; i < giveCards.length; i++) {
-                                currentPlayer.takeResource(RESOURCE_TYPES[i], giveCards[i]);
-                                playerColorMap.get(checkbox.getName()).giveResource(RESOURCE_TYPES[i], giveCards[i]);
-                                if (cardsFrame != null) {
-                                    for (int j = 0; j < giveCards[i]; j++) {
-                                        cardsFrame.removeResourceCard(RESOURCE_TYPES[i]);
-                                    }
-                                }
-                            }
-                            for (int i = 0; i < takeCards.length; i++) {
-                                currentPlayer.giveResource(RESOURCE_TYPES[i], takeCards[i]);
-                                playerColorMap.get(checkbox.getName()).takeResource(RESOURCE_TYPES[i], takeCards[i]);
-                                if (cardsFrame != null) {
-                                    for (int j = 0; j < takeCards[i]; j++) {
-                                        cardsFrame.addResourceCard(RESOURCE_TYPES[i]);
-                                    }
-                                }
-                            }
-                            playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
-                            JOptionPane.showMessageDialog(mainFrame, "Trade Completed");
-                            break;
-                        }
-                    }
-                }
-                playerPanel.setButtonsEnabled(true);
             }
         }
     }
