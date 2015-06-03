@@ -6,8 +6,6 @@ import soc.base.model.Player;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 /**
@@ -124,7 +122,7 @@ public class StealResourceCard {
             randomizedCards.add(orderedCards.remove(randomNum));
         }
         JPanel cardPanel = new JPanel(new BorderLayout());
-        cardPanel.add(new JLabel("<html><b>Select the card you want to steal from " + victim.getName(), JLabel.CENTER), BorderLayout.NORTH);
+        cardPanel.add(new JLabel("<html><b>Select the card you want to steal from " + victim.getName() + "</b></html>", JLabel.CENTER), BorderLayout.NORTH);
         cardPanel.add(new CardPane(randomizedCards, GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT), BorderLayout.CENTER);
         JButton[] backButton = new JButton[1];
         backButton[0] = new JButton("Back");

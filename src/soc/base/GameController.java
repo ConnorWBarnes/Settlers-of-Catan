@@ -56,7 +56,7 @@ public class GameController {
         icons = new GameIcons();
         devCardDeck = generateShuffledDevCards();
         devCardsBuiltThisTurn = new ArrayList<DevelopmentCard>();
-        //Construct players and gameBoard
+        //Create the players and gameBoard
         String[] playerColors = {"Blue", "Orange", "Red", "White"};//TODO: Change in order to support 5-6 player expansion
         players = PlayerConstructor.constructPlayers(playerColors);
         if (players == null) {//The dialog created by constructPlayers() was closed
@@ -67,17 +67,18 @@ public class GameController {
             playerColorMap.put(player.getColor(), player);
         }
         determineTurnOrder(players);
-        //TODO: Let the players know what the turn order is
-        constructGameBoard();
+        turnIterator = Arrays.asList(players).iterator();
 
-        //Construct the remaining contents of the frame and add the contents to the frame
+        //Construct the remaining contents of the frame
         //TODO: Add menu bar
+        createGameBoard();
         playerPanel = new PlayerPanel(icons, new PlayerPanelListener());
         JPanel boardPanel = new JPanel();
         boardPanel.add(boardPane);
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(boardPanel, BorderLayout.NORTH);
         mainPanel.add(playerPanel, BorderLayout.CENTER);
+        //Add the contents to the frame
         mainFrame = new JFrame("Settlers of Catan");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.add(mainPanel);
@@ -133,20 +134,41 @@ public class GameController {
     }
 
     /**
-     * Determines the order in which the specified players take turns.
-     * @param players An array of the players whose turn order is to be determined
+     * Determines the order in which the specified players take turns and then displays a dialog window showing said order.
+     * @param players The players whose turn order is to be determined
      */
     public void determineTurnOrder(Player[] players) {//The implementation for this method may change later on, which is why the current implementation is not in the constructor
         //Shuffle the array using the Fisher-Yates shuffle
         Random random = new Random();
-        int index;
-        Player temp;
         for (int i = players.length - 1; i > 0; i--) {
-            index = random.nextInt(i + 1);
-            temp = players[index];
+            int index = random.nextInt(i + 1);
+            Player temp = players[index];
             players[index] = players[i];
             players[i] = temp;
         }
+        //Let the players know what the turn order is
+        JPanel playerOrder = new JPanel(new GridLayout(players.length, 1));
+        String[] numberEndings = {"st", "nd", "rd"};
+        for (int i = 0; i < players.length; i++) {
+            JPanel tempPanel = new JPanel(new GridLayout(1, 2, -1, -1));
+            JLabel tempLabel = new JLabel();
+            if (i < numberEndings.length) {
+                tempLabel.setText((i + 1) + numberEndings[i]);
+            } else {
+                tempLabel.setText((i + 1) + "th");
+            }
+            tempLabel.setHorizontalAlignment(JLabel.CENTER);
+            tempLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+            tempPanel.add(tempLabel);
+            tempLabel = new JLabel(players[i].getName(), icons.getSettlementIcon(players[i].getColor()), JLabel.CENTER);
+            tempLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+            tempPanel.add(tempLabel);
+            playerOrder.add(tempPanel);
+        }
+        JPanel message = new JPanel(new BorderLayout());
+        message.add(new JLabel("<html><center>Turn Order:<br>(determined randomly)</center></html>)", JLabel.CENTER), BorderLayout.NORTH);
+        message.add(playerOrder);
+        JOptionPane.showMessageDialog(null, message, "Setup", JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
     }
 
     /**
@@ -154,18 +176,14 @@ public class GameController {
      * generate a new Board. Continues to generate new Boards until the user
      * accepts one of them.
      */
-    private void constructGameBoard() {
-        Board tempBoard;
-        BoardPane tempPane;
-        JPanel message;
-        Object[] options = {"Use this board", "Use a different board"};
+    private void createGameBoard() {
         while (true) {
-            tempBoard = new Board();
-            tempPane = new BoardPane(icons, tempBoard.getTiles());
-            message = new JPanel(new BorderLayout());
+            Board tempBoard = new Board();
+            BoardPane tempPane = new BoardPane(icons, tempBoard.getTiles());
+            JPanel message = new JPanel(new BorderLayout());
             message.add(new JLabel("Would you like to use this board?", JLabel.CENTER), BorderLayout.NORTH);
             message.add(tempPane, BorderLayout.CENTER);
-            int response = JOptionPane.showOptionDialog(null, message, "Choose Board", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(), options, options[0]);
+            int response = JOptionPane.showOptionDialog(null, message, "Choose Board", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(), new Object[]{"Use this board", "Use a different board"}, "Use this board");
             if (response == JOptionPane.YES_OPTION) {
                 gameBoard = tempBoard;
                 boardPane = tempPane;
@@ -197,12 +215,12 @@ public class GameController {
         int redDie = (int) (Math.random() * 6 + 1);
         int yellowDie = (int) (Math.random() * 6 + 1);
         //Show the user what they rolled
-        JPanel dicePanel = new JPanel();
-        dicePanel.add(new JLabel(icons.getRedDieIcon(redDie)));
-        dicePanel.add(new JLabel(icons.getYellowDieIcon(yellowDie)));
+        JPanel tempPanel = new JPanel();
+        tempPanel.add(new JLabel(icons.getRedDieIcon(redDie)));
+        tempPanel.add(new JLabel(icons.getYellowDieIcon(yellowDie)));
         JPanel message = new JPanel(new BorderLayout());
         message.add(new JLabel("You rolled:", JLabel.CENTER), BorderLayout.NORTH);
-        message.add(dicePanel, BorderLayout.CENTER);
+        message.add(tempPanel, BorderLayout.CENTER);
         JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
         int numRolled = redDie + yellowDie;
         //Move the robber (if appropriate)
@@ -220,18 +238,16 @@ public class GameController {
             moveRobber();
         } else {
             //Distribute the appropriate resources
-            int giveAmount;
             HashMap<String, CardPane> paneMap = new HashMap<String, CardPane>();//Key is player color, value is CardPane of their resources
-            JLabel tempLabel;
             for (Tile tile : gameBoard.getNumberTokenTiles(numRolled)) {
                 if (!tile.hasRobber()) {
                     for (int settlementLoc : tile.getSettlementLocs()) {
                         if (gameBoard.getCorner(settlementLoc).hasCity()) {
-                            giveAmount = 2;
+                            playerColorMap.get(gameBoard.getCorner(settlementLoc).getSettlementColor()).giveResource(tile.getResourceProduced(), 2);
                         } else {
-                            giveAmount = 1;
+                            playerColorMap.get(gameBoard.getCorner(settlementLoc).getSettlementColor()).giveResource(tile.getResourceProduced(), 1);
                         }
-                        playerColorMap.get(gameBoard.getCorner(settlementLoc).getSettlementColor()).giveResource(tile.getResourceProduced(), giveAmount);
+
                         //Update cardsFrame if necessary
                         if (cardsFrame != null && gameBoard.getCorner(settlementLoc).getSettlementColor().equals(currentPlayer.getColor())) {
                             cardsFrame.addResourceCard(tile.getResourceProduced());
@@ -239,36 +255,34 @@ public class GameController {
                         if (paneMap.get(gameBoard.getCorner(settlementLoc).getSettlementColor()) == null) {
                             paneMap.put(gameBoard.getCorner(settlementLoc).getSettlementColor(), new CardPane(GameIcons.CARD_WIDTH * 5, GameIcons.CARD_HEIGHT));
                         }
-                        tempLabel = new JLabel(icons.getResourceIcon(tile.getResourceProduced()));
-                        tempLabel.setName(tile.getResourceProduced());
+                        JLabel tempLabel = new JLabel(icons.getResourceIcon(tile.getResourceProduced()));
+                        tempLabel.setName(tile.getResourceProduced());//Set the name of the label so the CardPane will sort it correctly
                         paneMap.get(gameBoard.getCorner(settlementLoc).getSettlementColor()).addCard(tempLabel);
                     }
                 }
             }
             //Show the resources that each player received
             if (paneMap.isEmpty()) {//No one received any resources
-                dicePanel = new JPanel();
-                dicePanel.add(new JLabel("None"));
+                tempPanel = new JPanel();
+                tempPanel.add(new JLabel("None"));
             } else {
-                dicePanel = new JPanel(new GridLayout(paneMap.size(), 2, -1, -1));
+                tempPanel = new JPanel(new GridLayout(paneMap.size(), 2, -1, -1));
                 JPanel resourcesPanel;
                 for (Player player : players) {//Displays players in order
                     if (paneMap.keySet().contains(player.getColor())) {
-                        tempLabel = new JLabel(player.getName());
+                        JLabel tempLabel = new JLabel(player.getName(), JLabel.CENTER);
                         tempLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-                        tempLabel.setHorizontalAlignment(JLabel.CENTER);
-                        tempLabel.setVerticalAlignment(JLabel.CENTER);
                         resourcesPanel = new JPanel();
                         resourcesPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
                         resourcesPanel.add(paneMap.get(player.getColor()));
-                        dicePanel.add(tempLabel);
-                        dicePanel.add(resourcesPanel);
+                        tempPanel.add(tempLabel);
+                        tempPanel.add(resourcesPanel);
                     }
                 }
             }
             message = new JPanel(new BorderLayout());
             message.add(new JLabel("Resources Received:", JLabel.CENTER), BorderLayout.NORTH);
-            message.add(dicePanel, BorderLayout.CENTER);
+            message.add(tempPanel, BorderLayout.CENTER);
             JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
             playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
             playerPanel.setButtonsEnabled(true);
@@ -348,14 +362,13 @@ public class GameController {
     private class PlayerPanelListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            //TODO
             if (actionEvent.getActionCommand().equals(PlayerPanel.VIEW_CARDS)) {
-                if (cardsFrame == null) {
-                    cardsFrame = new CardsFrame(icons, currentPlayer);
-                } else {
+                if (cardsFrame != null) {
                     cardsFrame.setVisible(true);
                     cardsFrame.toFront();
                     cardsFrame.requestFocus();
+                } else {
+                    cardsFrame = new CardsFrame(icons, currentPlayer);
                 }
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.END_TURN)) {
                 playerPanel.setButtonsEnabled(false);
@@ -388,20 +401,18 @@ public class GameController {
                     message.add(new JLabel("To whom do you want to offer this trade?", JLabel.CENTER), BorderLayout.NORTH);
                     message.add(checkBoxPanel, BorderLayout.CENTER);
                     JOptionPane.showMessageDialog(mainFrame, message, "Offer Trade", JOptionPane.QUESTION_MESSAGE, new ImageIcon());
-                    JPanel tradeOffer, tempPanel;
-                    CardPane tempPane;
                     for (Checkbox checkbox : recipients) {
                         if (checkbox.getState()) {
                             //Show the offer to the recipient
-                            tradeOffer = new JPanel(new BorderLayout());
+                            JPanel tradeOffer = new JPanel(new BorderLayout());
                             tradeOffer.add(new JLabel(checkbox.getLabel() + ", do you accept the following trade from " + currentPlayer.getName() + "?", JLabel.CENTER), BorderLayout.NORTH);
-                            tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
+                            CardPane tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
                             for (int i = 0; i < RESOURCE_TYPES.length; i++) {
                                 for (int j = 0; j < trade[i]; j++) {
                                     tempPane.addCard(new JLabel(icons.getResourceIcon(RESOURCE_TYPES[i])));
                                 }
                             }
-                            tempPanel = new JPanel();
+                            JPanel tempPanel = new JPanel();
                             tempPanel.setBorder(BorderFactory.createTitledBorder("Receive"));
                             tempPanel.add(tempPane);
                             tradeOffer.add(tempPanel, BorderLayout.CENTER);
@@ -443,6 +454,8 @@ public class GameController {
                     }
                 }
                 playerPanel.setButtonsEnabled(true);
+                mainFrame.toFront();
+                mainFrame.requestFocus();
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.TRADE_IN_RESOURCE_CARDS)) {
                 playerPanel.setButtonsEnabled(false);
                 String[] cardsTraded = TradeInResourceCards.tradeInResourceCards(icons, currentPlayer);
@@ -497,11 +510,10 @@ public class GameController {
                 } else {
                     //Construct a list of all the valid locations at which the current player can place a settlement
                     ArrayList<Integer> validCornerLocs = new ArrayList<Integer>();
-                    boolean locIsValid;
                     for (int roadLoc : currentPlayer.getRoadLocs()) {
                         for (int cornerLoc : gameBoard.getRoad(roadLoc).getAdjacentCornerLocs()) {
                             if (!gameBoard.getCorner(cornerLoc).hasSettlement()) {
-                                locIsValid = true;
+                                boolean locIsValid = true;
                                 for (int adjacentCornerLoc : gameBoard.getCorner(cornerLoc).getAdjacentCornerLocs()) {
                                     if (gameBoard.getCorner(adjacentCornerLoc).hasSettlement()) {
                                         locIsValid = false;
@@ -616,13 +628,12 @@ public class GameController {
                             int index = JOptionPane.showOptionDialog(null, new JLabel("Select a resource type to announce", JLabel.CENTER), DevelopmentCard.MONOPOLY, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon(), resourceIcons, resourceIcons[0]);
                             //Take every resource card of the type announced from each player and give it to the current player
                             HashMap<String, CardPane> paneMap = new HashMap<String, CardPane>();//Key is player color, value is CardPane of the resources stolen from them
-                            JLabel resourceCard;
                             for (Player player : players) {
                                 if (!player.getColor().equals(currentPlayer.getColor()) && player.getNumResourceCards(RESOURCE_TYPES[index]) > 0) {
                                     paneMap.put(player.getColor(), new CardPane(GameIcons.CARD_WIDTH * 3, GameIcons.CARD_HEIGHT));
                                     for (int i = 0; i < player.getNumResourceCards(RESOURCE_TYPES[index]); i++) {
-                                        resourceCard = new JLabel(icons.getResourceIcon(RESOURCE_TYPES[index]));
-                                        resourceCard.setName(RESOURCE_TYPES[i]);
+                                        JLabel resourceCard = new JLabel(icons.getResourceIcon(RESOURCE_TYPES[index]));
+                                        resourceCard.setName(RESOURCE_TYPES[i]);//Set the name of the label so the CardPane will sort it correctly
                                         paneMap.get(player.getColor()).addCard(resourceCard);
                                         if (cardsFrame != null) {
                                             cardsFrame.addResourceCard(RESOURCE_TYPES[index]);
@@ -638,14 +649,13 @@ public class GameController {
                                 cardPanel.add(new JLabel("No resource cards were stolen", JLabel.CENTER));
                             } else {
                                 cardPanel.setLayout(new GridLayout(paneMap.size(), 2, -1, -1));
-                                JPanel resourcesPanel;
                                 for (Player player : players) {//Displays players in order
                                     if (paneMap.keySet().contains(player.getColor())) {
-                                        resourceCard = new JLabel(player.getName());
+                                        JLabel resourceCard = new JLabel(player.getName());
                                         resourceCard.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
                                         resourceCard.setHorizontalAlignment(JLabel.CENTER);
                                         resourceCard.setVerticalAlignment(JLabel.CENTER);
-                                        resourcesPanel = new JPanel();
+                                        JPanel resourcesPanel = new JPanel();
                                         resourcesPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
                                         resourcesPanel.add(paneMap.get(player.getColor()));
                                         cardPanel.add(resourceCard);
@@ -664,7 +674,7 @@ public class GameController {
                             if (currentPlayer.getNumRemainingRoads() == 0) {
                                 JPanel message = new JPanel(new BorderLayout());
                                 message.add(new JLabel("You do not have any road tokens to place.", JLabel.CENTER), BorderLayout.NORTH);
-                                message.add(new JLabel("This card will now be removed from your hand."));
+                                message.add(new JLabel("This card will now be removed from your hand.", JLabel.CENTER), BorderLayout.CENTER);
                                 playerPanel.setButtonsEnabled(true);
                                 mainFrame.toFront();
                                 mainFrame.requestFocus();
@@ -765,36 +775,32 @@ public class GameController {
             } else {//Every player has placed their first two settlements and roads
                 //Distribute resources from second settlements
                 JPanel resourceTable = new JPanel(new GridLayout(players.length, 2, -1, -1));
-                JLabel playerName, tempLabel;
-                JPanel resourcePanel;
-                CardPane initialResources;
+
                 for (int i = 0; i < players.length; i++) {
-                    playerName = new JLabel(players[i].getName() + ":");
+                    JLabel playerName = new JLabel(players[i].getName() + ":");
                     playerName.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
                     playerName.setHorizontalAlignment(JLabel.CENTER);
                     playerName.setVerticalAlignment(JLabel.CENTER);
 
-                    initialResources = new CardPane(GameIcons.CARD_WIDTH * 3, GameIcons.CARD_HEIGHT);
+                    CardPane initialResources = new CardPane(GameIcons.CARD_WIDTH * 3, GameIcons.CARD_HEIGHT);
                     for (int tileLoc : gameBoard.getCorner(secondSettlementLocs[i]).getAdjacentTileLocs()) {
                         if (!gameBoard.getTile(tileLoc).getTerrain().equals(Tile.DESERT)) {
                             players[i].giveResource(gameBoard.getTile(tileLoc).getResourceProduced(), 1);
-                            tempLabel = new JLabel(icons.getResourceIcon(gameBoard.getTile(tileLoc).getResourceProduced()));
+                            JLabel tempLabel = new JLabel(icons.getResourceIcon(gameBoard.getTile(tileLoc).getResourceProduced()));
                             tempLabel.setName(gameBoard.getTile(tileLoc).getResourceProduced());
                             initialResources.addCard(tempLabel);
                         }
                     }
-                    resourcePanel = new JPanel();
+                    JPanel resourcePanel = new JPanel();
                     resourcePanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
                     resourcePanel.add(initialResources);
                     resourceTable.add(playerName);
                     resourceTable.add(resourcePanel);
                 }
-                playerName = new JLabel("Resources received from second settlement", JLabel.CENTER);
-                resourcePanel = new JPanel(new BorderLayout());
-                resourcePanel.add(playerName, BorderLayout.NORTH);
-                resourcePanel.add(resourceTable, BorderLayout.CENTER);
-                JOptionPane.showMessageDialog(mainFrame, resourcePanel, "Setup", JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
-                turnIterator = Arrays.asList(players).iterator();//TODO: Move this line of code into the rollForOrder() method
+                JPanel message = new JPanel(new BorderLayout());
+                message.add(new JLabel("Resources received from second settlement", JLabel.CENTER), BorderLayout.NORTH);
+                message.add(resourceTable, BorderLayout.CENTER);
+                JOptionPane.showMessageDialog(mainFrame, message, "Setup", JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
                 //Clean up variables that are no longer needed
                 validSetupSettlementLocs = null;
                 secondSettlementLocs = null;
@@ -989,7 +995,7 @@ public class GameController {
                     playerPanel.setButtonsEnabled(true);
                 }
             } catch (NumberFormatException formatException) {//Cancel was clicked
-                if (first) {
+                if (first) {//No roads were placed
                     currentPlayer.giveDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
                     if (cardsFrame != null) {
                         cardsFrame.addDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
@@ -997,7 +1003,7 @@ public class GameController {
                     playerPanel.setNumDevCards(currentPlayer.getSumDevCards());
                     JOptionPane.showMessageDialog(mainFrame, "The Road Building card has been returned to your hand");
                     playerPanel.setButtonsEnabled(true);
-                } else {
+                } else {//One road has already been placed
                     JPanel message = new JPanel(new BorderLayout());
                     message.add(new JLabel("You are about to forfeit your second road.", JLabel.CENTER), BorderLayout.NORTH);
                     message.add(new JLabel("Are you sure you want to do this?", JLabel.CENTER), BorderLayout.CENTER);

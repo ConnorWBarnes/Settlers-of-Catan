@@ -172,9 +172,7 @@ public class Board {
         defaultTileList.add(new Tile(Tile.DESERT, true));
         //Put each tile on the board in a random location
         Collections.shuffle(defaultTileList);
-        for (int i = 0; i < tileMap.length; i++) {
-            tileMap[i] = defaultTileList.remove(i);
-        }
+        tileMap = defaultTileList.toArray(tileMap);
         //Construct the number token map
         numberTokenMap = new HashMap<Integer, LinkedList<Tile>>();
         for (int i = 2; i < 7; i++) {
