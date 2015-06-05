@@ -4,8 +4,8 @@ import soc.base.GameController;
 import soc.base.model.Player;
 
 import javax.swing.*;
-import java.awt.event.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
@@ -87,6 +87,7 @@ public class TradeInResourceCards {
 
         //Add the contents to the dialog and display it
         dialog = new JDialog((JDialog) null, "Trade In Resource Cards", true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{confirmTradeInButton, cancelButton}));
         dialog.pack();
         dialog.setLocationRelativeTo(null);

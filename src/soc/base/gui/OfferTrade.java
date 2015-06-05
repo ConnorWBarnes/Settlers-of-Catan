@@ -19,8 +19,25 @@ public class OfferTrade {
     private CardPane keepPane, givePane, takePane;
     private JDialog dialog;
     //Information variables
-    private Player currentPlayer;
-    private int[] giveCards, takeCards;
+    private Player player;
+    private Trade trade;
+    private boolean offerAccepted;//Whether or not the user accepted the trade offer (only used when offerTrade() is called)
+
+    /**
+     * Represents a trade of resource cards between two players.
+     */
+    public class Trade {
+        public int[] giveCards;//The cards that the offerer will give up for the cards in takeCards
+        public int[] takeCards;//The cards that the offerer will receive for the cards in giveCards
+
+        /**
+         * Constructs a trade where no resource cards are exchanged.
+         */
+        public Trade() {
+            giveCards = new int[GameController.RESOURCE_TYPES.length];
+            takeCards = new int[GameController.RESOURCE_TYPES.length];
+        }
+    }
 
     /**
      * Allows the specified player to offer a trade of resource cards to any other player.
@@ -28,34 +45,28 @@ public class OfferTrade {
      * is willing to give, and the last five are the cards that the specified player wants
      * to receive. Returns null if no trade was created.
      * @param icons The icons to use to display the resource cards
-     * @param currentPlayer The player creating the offer
+     * @param player The player creating the offer
      * @return An array of ints representing the cards that the specified player is willing
      * to give for the cards that the specified player wants (or null if no trade was created)
      */
-    public static int[] offerTrade(GameIcons icons, Player currentPlayer) {
-        OfferTrade offerTrade = new OfferTrade(icons, currentPlayer);
-        int[] trade = new int[GameController.RESOURCE_TYPES.length * 2];
-        if (offerTrade.giveCards != null && offerTrade.takeCards != null) {
-            System.arraycopy(offerTrade.giveCards, 0, trade, 0, offerTrade.giveCards.length);
-            System.arraycopy(offerTrade.takeCards, 0, trade, offerTrade.giveCards.length, offerTrade.takeCards.length);
-            return trade;
-        } else {
-            return null;
-        }
+    //Note: This method only uses the methods and classes that are above the offerTrade() method
+    public static Trade createOffer(GameIcons icons, Player player) {
+        OfferTrade offerTrade = new OfferTrade(icons, player);
+        return offerTrade.trade;
     }
 
     /**
-     * Creates a dialog that allows the specified player to create a trade of resource
+     * Creates a dialog window that allows the specified player to create a trade of resource
      * cards that can then be offered to any other player.
      * @param icons The icons to use to display the resource cards
-     * @param currentPlayer The player creating the offer
+     * @param player The player creating the offer
      */
-    private OfferTrade(GameIcons icons, Player currentPlayer) {
+    private OfferTrade(GameIcons icons, Player player) {
         this.icons = icons;
-        this.currentPlayer = currentPlayer;
+        this.player = player;
         //Create the contents of the dialog
         JButton offerTradeButton = new JButton("Offer Trade");
-        offerTradeButton.addActionListener(new ButtonListener());
+        offerTradeButton.addActionListener(new OfferTradeListener());
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             @Override
@@ -68,6 +79,7 @@ public class OfferTrade {
         message.add(buildRecipientPlayerPanel(), BorderLayout.CENTER);
         //Add the contents to the dialog and display it
         dialog = new JDialog((JDialog) null, "Offer Trade", true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{offerTradeButton, cancelButton}));
         dialog.pack();
         dialog.setLocationRelativeTo(null);
@@ -81,10 +93,10 @@ public class OfferTrade {
      * @return a JPanel containing all of the current player's resource cards
      */
     private JPanel buildCurrentPlayerPanel() {
-        ArrayList<JLabel> cards = new ArrayList<JLabel>(currentPlayer.getSumResourceCards());
+        ArrayList<JLabel> cards = new ArrayList<JLabel>(player.getSumResourceCards());
         JLabel tempLabel;
         for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-            for (int j = 0; j < currentPlayer.getNumResourceCards(GameController.RESOURCE_TYPES[i]); j++) {
+            for (int j = 0; j < player.getNumResourceCards(GameController.RESOURCE_TYPES[i]); j++) {
                 tempLabel = new JLabel(icons.getResourceIcon(GameController.RESOURCE_TYPES[i]));
                 tempLabel.setName(String.valueOf(i));
                 tempLabel.addMouseListener(new KeepListener());
@@ -150,7 +162,7 @@ public class OfferTrade {
             for (MouseListener listener : labelClicked.getMouseListeners()) {
                 labelClicked.removeMouseListener(listener);
             }
-            labelClicked.addMouseListener(new OfferListener());
+            labelClicked.addMouseListener(new GiveListener());
             //Move the resource that was clicked from the keep pane to the offer pane
             givePane.addCard(labelClicked);
             dialog.revalidate();
@@ -162,7 +174,7 @@ public class OfferTrade {
      * Removes the card that was clicked from givePane and moves it into
      * keepPane.
      */
-    private class OfferListener extends MouseAdapter {
+    private class GiveListener extends MouseAdapter {
         @Override
         public void mouseReleased(MouseEvent e) {
             JLabel labelClicked = givePane.removeCard(e.getComponent().getName());
@@ -206,25 +218,120 @@ public class OfferTrade {
     }
 
     /**
-     * Constructs giveCards and takeCards such that they reflect the cards in
+     * Constructs giveCards and takeCards in trade such that it reflects the cards in
      * givePane and takePane (respectfully), and then disposes the dialog window.
      */
-    private class ButtonListener implements ActionListener {
+    private class OfferTradeListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             Component[] giveComponents = givePane.getComponents();
             Component[] takeComponents = takePane.getComponents();
             if (giveComponents.length > 0 || takeComponents.length > 0) {
-                giveCards = new int[GameController.RESOURCE_TYPES.length];
-                takeCards = new int[GameController.RESOURCE_TYPES.length];
+                trade = new Trade();
                 for (Component component : giveComponents) {
-                    giveCards[Integer.parseInt(component.getName())]++;
+                    trade.giveCards[Integer.parseInt(component.getName())]++;
                 }
                 for (Component component : takeComponents) {
-                    takeCards[Integer.parseInt(component.getName())]++;
+                    trade.takeCards[Integer.parseInt(component.getName())]++;
                 }
             }
             dialog.dispose();
+        }
+    }
+
+    /**
+     * Displays the specified trade and asks the user if they want to accept it.
+     * Does not allow a player to accept a trade if they cannot complete it.
+     * @param icons       The icons to use to display the trade
+     * @param trade       The trade to display
+     * @param offererName The name of the player offering the trade
+     * @param recipient   The player receiving the offer
+     * @return true if the trade is accepted, otherwise false
+     */
+    //Note: This method only uses the methods and classes below (and the Trade class)
+    public static boolean offerTrade(GameIcons icons, Trade trade, String offererName, Player recipient) {
+        OfferTrade tradeOffer = new OfferTrade(icons, trade, offererName, recipient);
+        return tradeOffer.offerAccepted;
+    }
+
+    /**
+     * Creates a dialog window that displays the specified trade and gives the
+     * user the option to accept or decline the trade.
+     * @param icons       The icons to use to display the trade
+     * @param trade       The trade to display
+     * @param offererName The name of the player offering the trade
+     * @param recipient   The player receiving the offer
+     */
+    private OfferTrade(GameIcons icons, Trade trade, String offererName, Player recipient) {
+        player = recipient;
+        offerAccepted = false;
+        this.trade = trade;
+        //Build the panel showing the trade
+        JPanel message = new JPanel(new BorderLayout());
+        message.add(new JLabel(recipient.getName() + ", do you accept the following trade from " + offererName + "?", JLabel.CENTER), BorderLayout.NORTH);
+        CardPane tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
+        for (int i = 0; i < this.trade.giveCards.length; i++) {
+            for (int j = 0; j < this.trade.giveCards[i]; j++) {
+                JLabel tempLabel = new JLabel(icons.getResourceIcon(GameController.RESOURCE_TYPES[i]));
+                tempLabel.setName(GameController.RESOURCE_TYPES[i]);
+                tempPane.addCard(tempLabel);
+            }
+        }
+        JPanel tempPanel = new JPanel();
+        tempPanel.setBorder(BorderFactory.createTitledBorder("Receive"));
+        tempPanel.add(tempPane);
+        message.add(tempPanel, BorderLayout.CENTER);
+        tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
+        for (int i = 0; i < trade.takeCards.length; i++) {
+            for (int j = 0; j < trade.takeCards[i]; j++) {
+                tempPane.addCard(new JLabel(icons.getResourceIcon(GameController.RESOURCE_TYPES[i])));
+            }
+        }
+        tempPanel = new JPanel();
+        tempPanel.setBorder(BorderFactory.createTitledBorder("Give"));
+        tempPanel.add(tempPane);
+        message.add(tempPanel, BorderLayout.SOUTH);
+        //Build the "Accept" and "Decline" buttons
+        JButton accept = new JButton("Accept");
+        accept.addActionListener(new AcceptTradeListener());
+        JButton decline = new JButton("Decline");
+        decline.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dialog.dispose();
+            }
+        });
+        dialog = new JDialog((JDialog) null, "Offer Trade", true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{accept, decline}));
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }
+
+    /**
+     * Checks to see if the recipient has the resource cards to uphold their end
+     * of the deal. If the recipient can uphold their end of the deal, then the
+     * dialog window is disposed. If not, then the user is notified and the
+     * dialog window is not disposed.
+     */
+    private class AcceptTradeListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            //Check to see if the recipient can uphold their end of the deal
+            boolean canCompleteTrade = true;
+            for (int i = 0; i < trade.takeCards.length; i++) {
+                if (player.getNumResourceCards(GameController.RESOURCE_TYPES[i]) < trade.takeCards[i]) {
+                    canCompleteTrade = false;
+                    break;
+                }
+            }
+            if (canCompleteTrade) {
+                offerAccepted = true;
+                dialog.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "You do not have the resource cards to uphold your end of the trade", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

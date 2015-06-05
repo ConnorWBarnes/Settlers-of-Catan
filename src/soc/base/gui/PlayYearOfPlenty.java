@@ -5,7 +5,10 @@ import soc.base.model.DevelopmentCard;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Contains a dialog window that asks the user to select the two resource cards they wish to receive, as if they have just played the
@@ -57,19 +60,11 @@ public class PlayYearOfPlenty {
 
         //Add the contents to the dialog and display it
         dialog = new JDialog((JDialog) null, DevelopmentCard.YEAR_OF_PLENTY, true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{takeResourcesButton, cancelButton}));
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
-    }
-
-    /**
-     * Returns the types of the resource cards that were selected, or null if the player decided to cancel or closed the
-     * frame.
-     * @return the types of the resource cards that were selected
-     */
-    public String[] getSelectedResources() {
-        return selectedResources;
     }
 
     /**

@@ -4,31 +4,40 @@ import soc.base.gui.OfferTrade;
 import soc.base.model.Player;
 
 /**
- * Tests the OfferTrade class by calling its offerTrade() method and printing
- * out the give cards and the take cards.
+ * Tests the createOffer() and offerTrade() methods in the OfferTrade class. The createOffer() method
+ * is tested by calling it and printing out the trade that is returned, and the offerTrade() method
+ * is tested by calling it twice: once using a player who has the resources to complete the trade, and once using a
+ * player who does not have the resources to complete the trade.
  * @author Connor Barnes
  */
 public class OfferTradeTest {
 
     public static void main(String[] args) {
-        Player player = new Player();
+        Player offerer = new Player("Blue", "Offerer");
         for (String resource : GameController.RESOURCE_TYPES) {
-            player.giveResource(resource, 2);
+            offerer.giveResource(resource, 2);
         }
-        int[] trade = OfferTrade.offerTrade(new GameIcons(), player);
+        GameIcons icons = new GameIcons();
+        OfferTrade.Trade trade = OfferTrade.createOffer(icons, offerer);
         if (trade != null) {
-            int[] giveCards = new int[GameController.RESOURCE_TYPES.length];
-            int[] takeCards = new int[GameController.RESOURCE_TYPES.length];
-            System.arraycopy(trade, 0, giveCards, 0, giveCards.length);
-            System.arraycopy(trade, giveCards.length, takeCards, 0, takeCards.length);
+            //Print out the trade
             System.out.println("Give cards:");
             for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-                System.out.print(GameController.RESOURCE_TYPES[i] + ": " + giveCards[i] + " ");
+                System.out.print(GameController.RESOURCE_TYPES[i] + ": " + trade.giveCards[i] + " ");
             }
             System.out.println("\nTake cards:");
             for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
-                System.out.print(GameController.RESOURCE_TYPES[i] + ": " + takeCards[i] + " ");
+                System.out.print(GameController.RESOURCE_TYPES[i] + ": " + trade.takeCards[i] + " ");
             }
+            //Create a player who can't complete the trade and a player who can complete the trade
+            Player cannotComplete = new Player("Orange", "Cannot Complete");
+            Player canComplete = new Player("Red", "Can Complete");
+            for (int i = 0; i < trade.takeCards.length; i++) {
+                canComplete.giveResource(GameController.RESOURCE_TYPES[i], trade.takeCards[i]);
+            }
+            //Offer the trade to both players
+            System.out.println("Player who cannot complete the trade: " + OfferTrade.offerTrade(icons, trade, offerer.getName(), cannotComplete));
+            System.out.println("Player who can complete the trade: " + OfferTrade.offerTrade(icons, trade, offerer.getName(), canComplete));
         } else {
             System.out.println("A trade offer was not constructed");
         }

@@ -4,13 +4,13 @@ import soc.base.model.Tile;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.EventListener;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Represents the visual representation of the game board. Shows all the tiles, number tokens, harbors, and player
@@ -33,7 +33,7 @@ public class BoardPane extends JLayeredPane {
 	private LocationConverter locConverter;
 	private JLabel robberLabel;
     private MouseListener starListener;
-    private JButton validLocTriggerButton;
+    private LocationListener locListener;
     private LinkedList<JLabel> stars;
     private HashMap<Integer, String> settlementLabelColors;
 	private HashMap<Integer, JLabel> settlementLabels;//Keys are the corner locations of the settlements that have been added
@@ -42,14 +42,14 @@ public class BoardPane extends JLayeredPane {
     /**
      * Constructs a new layered pane that shows a board with the specified tiles and the specified number tokens.
      * Automatically places the robber on the desert tile.
-     * @param inIcons the icons used to display the board and everything on it
+     * @param icons the icons used to display the board and everything on it
      * @param tiles the resource tiles to display (and where to display them)
      */
-	public BoardPane(GameIcons inIcons, Tile[] tiles) {
-		super();
-		icons = inIcons;
-		locConverter = new LocationConverter();
-		setPreferredSize(new Dimension(icons.getBoardIcon().getIconWidth(), icons.getBoardIcon().getIconHeight()));
+    public BoardPane(GameIcons icons, Tile[] tiles) {
+        super();
+        this.icons = icons;
+        locConverter = new LocationConverter();
+        setPreferredSize(new Dimension(this.icons.getBoardIcon().getIconWidth(), this.icons.getBoardIcon().getIconHeight()));
         settlementLabelColors = new HashMap<Integer, String>();
         settlementLabels = new HashMap<Integer, JLabel>();
         stars = new LinkedList<JLabel>();
@@ -59,9 +59,9 @@ public class BoardPane extends JLayeredPane {
 		JLabel[] numberTokenLabels = buildNumberTokenLabels(tiles);
 
 		//Set the location and size of the base label and each tile and number token panel
-        JLabel baseLabel = new JLabel(icons.getBoardIcon());
-        baseLabel.setBounds(0, 0, icons.getBoardIcon().getIconWidth(), icons.getBoardIcon().getIconHeight());
-		setTileLabelBounds(tileLabels);
+        JLabel baseLabel = new JLabel(this.icons.getBoardIcon());
+        baseLabel.setBounds(0, 0, this.icons.getBoardIcon().getIconWidth(), this.icons.getBoardIcon().getIconHeight());
+        setTileLabelBounds(tileLabels);
 		setNumberTokenLabelBounds(numberTokenLabels);
 		
 		//Add boardPanel to the layered pane
@@ -81,57 +81,67 @@ public class BoardPane extends JLayeredPane {
             }
 		}
         starListener = new StarListener();
-        validLocTriggerButton = new JButton();
 	}
 
     /**
      * Displays a star at every location in the specified list of locations. The specified ActionListener is added to a
      * button, and when a star is clicked, the button's ActionCommand is set so the star's corresponding location.
      * @param validLocs the list of locations to display a star at
-     * @param triggerListener the ActionListener that listens for when the player selects a location (or cancels)
+     * @param locListener the EventListener that listens for when the player selects a location (or cancels)
      * @param locType the type of locations in the specified list (see static variables)
      */
-    public void showValidLocs(Collection<Integer> validLocs, ActionListener triggerListener, int locType, boolean cancelOption) {
-        for (ActionListener listener : validLocTriggerButton.getActionListeners()) {
-            validLocTriggerButton.removeActionListener(listener);
-        }
-        validLocTriggerButton.addActionListener(triggerListener);
-        JLabel tempLabel = new JLabel(icons.getCancelIcon());
+    public void showValidLocs(Collection<Integer> validLocs, LocationListener locListener, int locType, boolean cancelOption) {
+        this.locListener = locListener;
         if (cancelOption) {
             //Create and add the cancel option
-            tempLabel.setName("Cancel");
-            tempLabel.addMouseListener(starListener);
-            tempLabel.setBounds(20, 20, (int) tempLabel.getPreferredSize().getWidth(), (int) tempLabel.getPreferredSize().getHeight());
-            add(tempLabel, TOP_LAYER);
-            stars.add(tempLabel);
+            JLabel cancelLabel = new JLabel(icons.getCancelIcon());
+            cancelLabel.setName(String.valueOf(-1));
+            cancelLabel.addMouseListener(starListener);
+            cancelLabel.setBounds(20, 20, (int) cancelLabel.getPreferredSize().getWidth(), (int) cancelLabel.getPreferredSize().getHeight());
+            add(cancelLabel, TOP_LAYER);
+            stars.add(cancelLabel);
         }
         //Put a star on every valid roadLoc
 		for (int loc : validLocs) {
+            JLabel starLabel = new JLabel();
             if (locType == LOC_TYPE_ROAD) {
-                tempLabel = new JLabel(icons.getStarIcon(GameIcons.PLAYER_TOKEN_STAR));
-                tempLabel.setLocation(locConverter.getRoadPoint(loc));
+                starLabel.setIcon(icons.getStarIcon(GameIcons.PLAYER_TOKEN_STAR));
+                starLabel.setLocation(locConverter.getRoadPoint(loc));
             } else if (locType == LOC_TYPE_SETTLEMENT) {
-                tempLabel = new JLabel(icons.getStarIcon(GameIcons.PLAYER_TOKEN_STAR));
-                tempLabel.setLocation(locConverter.getSettlementPoint(loc));
+                starLabel.setIcon(icons.getStarIcon(GameIcons.PLAYER_TOKEN_STAR));
+                starLabel.setLocation(locConverter.getSettlementPoint(loc));
             } else { //locType == LOC_TYPE_ROBBER
-                tempLabel = new JLabel(icons.getStarIcon(GameIcons.ROBBER_STAR));
+                starLabel.setIcon(icons.getStarIcon(GameIcons.ROBBER_STAR));
                 Point tempPoint = locConverter.getRobberPoint(loc);
-                tempPoint.translate((GameIcons.NUMBER_TOKEN_WIDTH - tempLabel.getIcon().getIconWidth()) / 2,
-                        (GameIcons.NUMBER_TOKEN_WIDTH - tempLabel.getIcon().getIconWidth()) / 2 - 3);
-                tempLabel.setLocation(tempPoint);
+                tempPoint.translate((GameIcons.NUMBER_TOKEN_WIDTH - starLabel.getIcon().getIconWidth()) / 2,
+                        (GameIcons.NUMBER_TOKEN_WIDTH - starLabel.getIcon().getIconWidth()) / 2 - 3);
+                starLabel.setLocation(tempPoint);
             }
-            tempLabel.setSize(tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
-            tempLabel.setName(String.valueOf(loc));
-            tempLabel.addMouseListener(starListener);
+            starLabel.setSize(starLabel.getIcon().getIconWidth(), starLabel.getIcon().getIconHeight());
+            starLabel.setName(String.valueOf(loc));
+            starLabel.addMouseListener(starListener);
             if (locType == LOC_TYPE_ROBBER) {
-                add(tempLabel, ROBBER_STAR_LAYER);
+                add(starLabel, ROBBER_STAR_LAYER);
             } else {
-                add(tempLabel, TOP_LAYER);
+                add(starLabel, TOP_LAYER);
             }
-            stars.add(tempLabel);
-		}
+            stars.add(starLabel);
+        }
 		repaint();
 	}
+
+    /**
+     * The interface for EventListeners that listen for when the user selects a location via the showValidLocs() method.
+     */
+    public interface LocationListener extends EventListener {
+        /**
+         * Called when the user selects a location (or cancels) via the
+         * showValidLocs() method.
+         * @param location the location selected by the user (or -1 if the user
+         *                 decided to cancel)
+         */
+        void locationSelected(int location);
+    }
 
     /**
      * Displays a road of the specified color at the specified location.
@@ -229,16 +239,14 @@ public class BoardPane extends JLayeredPane {
      */
 	private JLabel[] buildNumberTokenLabels(Tile[] tiles)	{
 		JLabel[] numberTokenLabels = new JLabel[tiles.length];
-		JLabel tempLabel;
 		for (int i = 0; i < tiles.length; i++) {
 			//If the current tile is the desert tile, create and put the robber there
             if (tiles[i].getTerrain().equals(Tile.DESERT)) {
                 robberLabel = new JLabel(icons.getRobberIcon());
 				numberTokenLabels[i] = robberLabel;
-			} else {
-                tempLabel = new JLabel(icons.getNumberTokenIcon(tiles[i].getNumberTokenLetter()));
-				numberTokenLabels[i] = tempLabel;
-			}
+            } else {
+                numberTokenLabels[i] = new JLabel(icons.getNumberTokenIcon(tiles[i].getNumberTokenLetter()));
+            }
 		}
 		return numberTokenLabels;
 	}
@@ -249,10 +257,9 @@ public class BoardPane extends JLayeredPane {
      * @param tileLabels the JLabels of each terrain hex
      */
     private void setTileLabelBounds(JLabel[] tileLabels) {
-        int index = 0;
-        for (JLabel label : tileLabels) {
-            label.setLocation(locConverter.getTilePoint(index++));
-            label.setSize(label.getIcon().getIconWidth(), label.getIcon().getIconHeight());
+        for (int i = 0; i < tileLabels.length; i++) {
+            tileLabels[i].setLocation(locConverter.getTilePoint(i));
+            tileLabels[i].setSize(tileLabels[i].getIcon().getIconWidth(), tileLabels[i].getIcon().getIconHeight());
         }
     }
 
@@ -262,17 +269,16 @@ public class BoardPane extends JLayeredPane {
      * @param numberTokenLabels the JLabels of each number token
      */
     private void setNumberTokenLabelBounds(JLabel[] numberTokenLabels) {
-        int index = 0;
-        for (JLabel label : numberTokenLabels) {
-            label.setLocation(locConverter.getNumberTokenPoint(index++));
-            label.setSize(label.getIcon().getIconWidth(), label.getIcon().getIconHeight());
+        for (int i = 0; i < numberTokenLabels.length; i++) {
+            numberTokenLabels[i].setLocation(locConverter.getNumberTokenPoint(i));
+            numberTokenLabels[i].setSize(numberTokenLabels[i].getIcon().getIconWidth(), numberTokenLabels[i].getIcon().getIconHeight());
         }
     }
 
     /**
      * MouseListener that is added to each star icon when displaying valid
-     * locations. When a star is clicked, the ActionCommand of the trigger
-     * button is set to the star's location, and then the button is clicked.
+     * locations. When a star is clicked, the stars are removed and the
+     * LocationListener is notified.
      */
     private class StarListener extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
@@ -282,8 +288,7 @@ public class BoardPane extends JLayeredPane {
             stars = new LinkedList<JLabel>();
             revalidate();
             repaint();
-            validLocTriggerButton.setActionCommand(e.getComponent().getName());
-            validLocTriggerButton.doClick();
+            locListener.locationSelected(Integer.parseInt(e.getComponent().getName()));
         }
     }
 }

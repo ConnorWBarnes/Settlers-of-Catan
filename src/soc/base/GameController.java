@@ -382,19 +382,18 @@ public class GameController {
                 startNextTurn();
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.OFFER_TRADE)) {
                 playerPanel.setButtonsEnabled(false);
-                int[] trade = OfferTrade.offerTrade(icons, currentPlayer);
+                OfferTrade.Trade trade = OfferTrade.createOffer(icons, currentPlayer);
                 if (trade != null) {
-                    int[] giveCards = new int[RESOURCE_TYPES.length];
-                    int[] takeCards = new int[RESOURCE_TYPES.length];
-                    System.arraycopy(trade, 0, giveCards, 0, giveCards.length);
-                    System.arraycopy(trade, giveCards.length, takeCards, 0, takeCards.length);
                     ArrayList<Checkbox> recipients = new ArrayList<Checkbox>(players.length - 1);
                     JPanel checkBoxPanel = new JPanel(new GridLayout(1, players.length - 1));
                     for (Player player : players) {
                         if (!player.getColor().equals(currentPlayer.getColor())) {
                             recipients.add(new Checkbox(player.getName(), true));
                             recipients.get(recipients.size() - 1).setName(player.getColor());
-                            checkBoxPanel.add(recipients.get(recipients.size() - 1));
+                            JPanel tempPanel = new JPanel(new BorderLayout());
+                            tempPanel.add(new JLabel(icons.getSettlementIcon(player.getColor()), JLabel.CENTER), BorderLayout.NORTH);
+                            tempPanel.add(recipients.get(recipients.size() - 1), BorderLayout.CENTER);
+                            checkBoxPanel.add(tempPanel);
                         }
                     }
                     JPanel message = new JPanel(new BorderLayout());
@@ -403,45 +402,21 @@ public class GameController {
                     JOptionPane.showMessageDialog(mainFrame, message, "Offer Trade", JOptionPane.QUESTION_MESSAGE, new ImageIcon());
                     for (Checkbox checkbox : recipients) {
                         if (checkbox.getState()) {
-                            //Show the offer to the recipient
-                            JPanel tradeOffer = new JPanel(new BorderLayout());
-                            tradeOffer.add(new JLabel(checkbox.getLabel() + ", do you accept the following trade from " + currentPlayer.getName() + "?", JLabel.CENTER), BorderLayout.NORTH);
-                            CardPane tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
-                            for (int i = 0; i < RESOURCE_TYPES.length; i++) {
-                                for (int j = 0; j < trade[i]; j++) {
-                                    tempPane.addCard(new JLabel(icons.getResourceIcon(RESOURCE_TYPES[i])));
-                                }
-                            }
-                            JPanel tempPanel = new JPanel();
-                            tempPanel.setBorder(BorderFactory.createTitledBorder("Receive"));
-                            tempPanel.add(tempPane);
-                            tradeOffer.add(tempPanel, BorderLayout.CENTER);
-                            tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
-                            for (int i = RESOURCE_TYPES.length; i < trade.length; i++) {
-                                for (int j = 0; j < trade[i]; j++) {
-                                    tempPane.addCard(new JLabel(icons.getResourceIcon(RESOURCE_TYPES[i])));
-                                }
-                            }
-                            tempPanel = new JPanel();
-                            tempPanel.setBorder(BorderFactory.createTitledBorder("Give"));
-                            tempPanel.add(tempPane);
-                            tradeOffer.add(tempPanel, BorderLayout.SOUTH);
-                            //Ask the recipient if they would like to accept the offer
-                            if (JOptionPane.showConfirmDialog(mainFrame, tradeOffer, "Trade Offer", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, new ImageIcon()) == JOptionPane.YES_OPTION) {
-                                for (int i = 0; i < giveCards.length; i++) {
-                                    currentPlayer.takeResource(RESOURCE_TYPES[i], giveCards[i]);
-                                    playerColorMap.get(checkbox.getName()).giveResource(RESOURCE_TYPES[i], giveCards[i]);
+                            if (OfferTrade.offerTrade(icons, trade, currentPlayer.getName(), playerColorMap.get(checkbox.getName()))) {//Asks the recipient if they would like to accept the offer
+                                for (int i = 0; i < trade.giveCards.length; i++) {
+                                    currentPlayer.takeResource(RESOURCE_TYPES[i], trade.giveCards[i]);
+                                    playerColorMap.get(checkbox.getName()).giveResource(RESOURCE_TYPES[i], trade.giveCards[i]);
                                     if (cardsFrame != null) {
-                                        for (int j = 0; j < giveCards[i]; j++) {
+                                        for (int j = 0; j < trade.giveCards[i]; j++) {
                                             cardsFrame.removeResourceCard(RESOURCE_TYPES[i]);
                                         }
                                     }
                                 }
-                                for (int i = 0; i < takeCards.length; i++) {
-                                    currentPlayer.giveResource(RESOURCE_TYPES[i], takeCards[i]);
-                                    playerColorMap.get(checkbox.getName()).takeResource(RESOURCE_TYPES[i], takeCards[i]);
+                                for (int i = 0; i < trade.takeCards.length; i++) {
+                                    currentPlayer.giveResource(RESOURCE_TYPES[i], trade.takeCards[i]);
+                                    playerColorMap.get(checkbox.getName()).takeResource(RESOURCE_TYPES[i], trade.takeCards[i]);
                                     if (cardsFrame != null) {
-                                        for (int j = 0; j < takeCards[i]; j++) {
+                                        for (int j = 0; j < trade.takeCards[i]; j++) {
                                             cardsFrame.addResourceCard(RESOURCE_TYPES[i]);
                                         }
                                     }
@@ -727,10 +702,9 @@ public class GameController {
      * Places one of the current player's settlements at the location they chose
      * and allows them to place a road adjacent to the new settlement.
      */
-    private class SetUpSettlementListener implements ActionListener {
+    private class SetUpSettlementListener implements BoardPane.LocationListener {
         @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            int settlementLoc = Integer.parseInt(actionEvent.getActionCommand());
+        public void locationSelected(int settlementLoc) {
             //Record settlementLoc in firstSettlementLocs if appropriate
             if (playerIndex < players.length) {
                 secondSettlementLocs[playerIndex] = settlementLoc;
@@ -757,10 +731,9 @@ public class GameController {
      * resource card for each terrain hex adjacent to the player's second
      * settlement once everyone has placed their first settlements and roads.
      */
-    private class SetUpRoadListener implements ActionListener {
+    private class SetUpRoadListener implements BoardPane.LocationListener {
         @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            int roadLoc = Integer.parseInt(actionEvent.getActionCommand());
+        public void locationSelected(int roadLoc) {
             //Add the road to the board
             gameBoard.addRoad(roadLoc, currentPlayer.getColor());
             currentPlayer.addRoad(roadLoc, gameBoard.getRoad(roadLoc));
@@ -814,10 +787,9 @@ public class GameController {
      * to steal a resource card from any player who has a settlement adjacent to
      * the specified tile.
      */
-    private class MoveRobberListener implements ActionListener {
+    private class MoveRobberListener implements BoardPane.LocationListener {
         @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            int tileLoc = Integer.parseInt(actionEvent.getActionCommand());
+        public void locationSelected(int tileLoc) {
             //Move the robber to the specified location
             gameBoard.moveRobber(tileLoc);
             boardPane.moveRobber(tileLoc);
@@ -868,11 +840,10 @@ public class GameController {
      * places a road of their color at the location they selected (unless they
      * chose to cancel, in which case nothing happens).
      */
-    private class RoadListener implements ActionListener {
+    private class RoadListener implements BoardPane.LocationListener {
         @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            try {
-                int roadLoc = Integer.parseInt(actionEvent.getActionCommand());
+        public void locationSelected(int roadLoc) {
+            if (roadLoc > -1) {//User did not cancel
                 //Update the model
                 currentPlayer.takeResource(BRICK, 1);
                 currentPlayer.takeResource(LUMBER, 1);
@@ -887,8 +858,6 @@ public class GameController {
                     cardsFrame.removeResourceCard(LUMBER);
                 }
                 checkLongestRoad();
-            } catch (NumberFormatException formatException) {
-                //Cancel was clicked, so do nothing
             }
             playerPanel.setButtonsEnabled(true);
         }
@@ -899,11 +868,10 @@ public class GameController {
      * player and places a settlement of their color at the location they
      * selected (unless they chose to cancel, in which case nothing happens).
      */
-    private class SettlementListener implements ActionListener {
+    private class SettlementListener implements BoardPane.LocationListener {
         @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            try {
-                int settlementLoc = Integer.parseInt(actionEvent.getActionCommand());
+        public void locationSelected(int settlementLoc) {
+            if (settlementLoc > -1) {//User did not cancel
                 //Update the model
                 currentPlayer.takeResource(BRICK, 1);
                 currentPlayer.takeResource(GRAIN, 1);
@@ -922,8 +890,6 @@ public class GameController {
                     cardsFrame.removeResourceCard(WOOL);
                 }
                 checkVictoryPoints();
-            } catch (NumberFormatException formatException) {
-                //Cancel was clicked, so do nothing
             }
             playerPanel.setButtonsEnabled(true);
         }
@@ -934,18 +900,17 @@ public class GameController {
      * places a city of their color at the location they selected (unless they
      * chose to cancel, in which case nothing happens).
      */
-    private class CityListener implements ActionListener {
+    private class CityListener implements BoardPane.LocationListener {
         @Override
-        public void actionPerformed(ActionEvent actionEvent) {
+        public void locationSelected(int settlementLoc) {
             try {
-                int cornerLoc = Integer.parseInt(actionEvent.getActionCommand());
                 //Update the model
                 currentPlayer.takeResource(GRAIN, 2);
                 currentPlayer.takeResource(ORE, 3);
-                gameBoard.upgradeSettlement(cornerLoc);
-                currentPlayer.addSettlement(cornerLoc);
+                gameBoard.upgradeSettlement(settlementLoc);
+                currentPlayer.addSettlement(settlementLoc);
                 //Update the view
-                boardPane.addCity(cornerLoc);
+                boardPane.addCity(settlementLoc);
                 playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
                 playerPanel.setNumCities(currentPlayer.getNumRemainingCities());
                 playerPanel.setNumSettlements(currentPlayer.getNumRemainingSettlements());
@@ -969,13 +934,12 @@ public class GameController {
      * to the player if they decide to cancel before placing the first road, but the player forfeits their second road
      * if they decide to cancel after placing the first road.
      */
-    private class RoadBuildingListener implements ActionListener {
+    private class RoadBuildingListener implements BoardPane.LocationListener {
         private boolean first = true;
 
         @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            try {
-                int roadLoc = Integer.parseInt(actionEvent.getActionCommand());
+        public void locationSelected(int roadLoc) {
+            if (roadLoc > -1) {//User did not cancel
                 //Update the model
                 gameBoard.addRoad(roadLoc, currentPlayer.getColor());
                 currentPlayer.addRoad(roadLoc, gameBoard.getRoad(roadLoc));
@@ -994,7 +958,7 @@ public class GameController {
                 } else {//Second road was just placed
                     playerPanel.setButtonsEnabled(true);
                 }
-            } catch (NumberFormatException formatException) {//Cancel was clicked
+            } else {//User canceled
                 if (first) {//No roads were placed
                     currentPlayer.giveDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
                     if (cardsFrame != null) {

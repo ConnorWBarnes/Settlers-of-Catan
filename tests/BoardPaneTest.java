@@ -3,14 +3,12 @@ import soc.base.gui.GameIcons;
 import soc.base.model.Board;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
  * Tests the BoardPane class. Constructs a new Board, and then uses said Board
- * to construct and test a new BoardPane Each method in this class is designed
+ * to construct and test a new BoardPane. Each method in this class is designed
  * to test one aspect of the BoardPane class. To use them, add them to the main method
  * at the end of this class.
  * @author Connor Barnes
@@ -18,11 +16,14 @@ import java.util.Scanner;
 public class BoardPaneTest {
     private BoardPane boardPane;
 
+    /**
+     * Creates and displays a BoardPane object. Does not test the
+     * showValidLocs() method in the BoardPane class.
+     */
     public BoardPaneTest () {
         JFrame frame = new JFrame("BoardPane Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Board board = new Board();
-        boardPane = new BoardPane(new GameIcons(), board.getTiles());
+        boardPane = new BoardPane(new GameIcons(), (new Board()).getTiles());
         frame.add(boardPane);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -42,7 +43,7 @@ public class BoardPaneTest {
             limit = 72;
         } else if (type == BoardPane.LOC_TYPE_SETTLEMENT) {
             limit = 54;
-        } else {
+        } else {//type == BoardPane.LOC_TYPE_ROBBER
             limit = 19;
         }
         for (int i = 0; i < limit; i++) {
@@ -100,18 +101,21 @@ public class BoardPaneTest {
         }
     }
 
-    private class TestListener implements ActionListener {
+    /**
+     * Prints out the index of the location that was clicked.
+     */
+    private class TestListener implements BoardPane.LocationListener {
         @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println("Index clicked: " + e.getActionCommand());
+        public void locationSelected(int loc) {
+            System.out.println("Index clicked: " + loc);
         }
     }
 
     /**
-     * @param args the command line arguments
+     * @param args command line arguments (unused)
      */
     public static void main (String[] args) {
         BoardPaneTest mainTest = new BoardPaneTest();
-        mainTest.testShowValidLocs(BoardPane.LOC_TYPE_SETTLEMENT);
+        mainTest.testShowValidLocs(BoardPane.LOC_TYPE_ROAD);
     }
 }
