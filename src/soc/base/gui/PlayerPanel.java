@@ -4,9 +4,7 @@ import soc.base.model.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 /**
  * Represents a panel containing player information and a list of actions
@@ -37,6 +35,7 @@ public class PlayerPanel extends JPanel {
     private JLabel costsLabel, roadLabel, settlementLabel, cityLabel, resourceCardLabel, devCardLabel;
 	private JLabel longestRoadLabel, largestArmyLabel;
     private JFrame costsFrame;
+    private JLabel costsFrameLabel;
     private String playerColor;
 
     /**
@@ -72,7 +71,7 @@ public class PlayerPanel extends JPanel {
         playerColor = nextPlayer.getColor();
         //Update the border around buttonPanel and change the color of the costs panel and the player's tokens
         buttonPanel.setBorder(BorderFactory.createTitledBorder(nextPlayer.getColoredName() + ", what would you like to do?"));
-        costsLabel.setIcon(icons.getScaledCostsCardIcon(nextPlayer.getColor()));
+        costsLabel.setIcon(new ImageIcon(icons.getCostsCardIcon(playerColor).getImage().getScaledInstance((int) (GameIcons.COSTS_CARD_WIDTH * (buttonPanel.getPreferredSize().getHeight() / GameIcons.COSTS_CARD_HEIGHT)), (int) buttonPanel.getPreferredSize().getHeight(), Image.SCALE_SMOOTH)));
         roadLabel.setIcon(icons.getVerticalRoadIcon(nextPlayer.getColor()));
         settlementLabel.setIcon(icons.getSettlementIcon(nextPlayer.getColor()));
         cityLabel.setIcon(icons.getCityIcon(nextPlayer.getColor()));
@@ -192,8 +191,7 @@ public class PlayerPanel extends JPanel {
      */
     private JPanel buildCostsPanel() {
         playerColor = "Red"; //Red is default/placeholder
-        costsLabel = new JLabel();
-        costsLabel.setIcon(icons.getScaledCostsCardIcon(playerColor));
+        costsLabel = new JLabel(new ImageIcon(icons.getCostsCardIcon(playerColor).getImage().getScaledInstance((int) (GameIcons.COSTS_CARD_WIDTH * (buttonPanel.getPreferredSize().getHeight() / GameIcons.COSTS_CARD_HEIGHT)), (int) buttonPanel.getPreferredSize().getHeight(), Image.SCALE_SMOOTH)));
         costsLabel.addMouseListener(new CostsCardListener());
         JPanel costsPanel = new JPanel();
         costsPanel.setBackground(BACKGROUND_COLOR);
@@ -318,10 +316,17 @@ public class PlayerPanel extends JPanel {
     private class CostsCardListener extends MouseAdapter {
         @Override
         public void mouseReleased(MouseEvent e) {
+            costsFrameLabel = new JLabel(new ImageIcon(icons.getCostsCardIcon(playerColor).getImage().getScaledInstance((int) (GameIcons.COSTS_CARD_WIDTH * ((double) GameIcons.BOARD_HEIGHT / GameIcons.COSTS_CARD_HEIGHT)), GameIcons.BOARD_HEIGHT, Image.SCALE_SMOOTH)));
             costsFrame = new JFrame("Building Costs");
             costsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            costsFrame.add(new JLabel(icons.getUnscaledCostsCardIcon(playerColor)));
+            costsFrame.add(costsFrameLabel);
             costsFrame.pack();
+            costsFrame.addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    costsFrameLabel.setIcon(new ImageIcon(icons.getCostsCardIcon(playerColor).getImage().getScaledInstance(costsFrame.getWidth(), costsFrame.getHeight(), Image.SCALE_SMOOTH)));
+                }
+            });
             costsFrame.setLocationRelativeTo(null);
             costsFrame.setVisible(true);
         }
