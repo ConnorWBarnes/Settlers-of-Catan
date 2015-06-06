@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Added method getColoredName() to Player class.&#10;Replaced all usages of getName() where it is used to display a player's name with getColoredName().&#10;Replaced offererName argument with an argument of type Player.&#10;Added documentation to PlayerPanelTest.">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/GameController.java" afterPath="$PROJECT_DIR$/src/soc/base/GameController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/OfferTrade.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/OfferTrade.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/OfferTradeTest.java" afterPath="$PROJECT_DIR$/tests/OfferTradeTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/model/Player.java" afterPath="$PROJECT_DIR$/src/soc/base/model/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/PlayerPanelTest.java" afterPath="$PROJECT_DIR$/tests/PlayerPanelTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java" />
+    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Added method getColoredName() to Player class.&#10;Replaced all usages of getName() where it is used to display a player's name with getColoredName().&#10;Set the background color of PlayerPanel to Color.LIGHT_GRAY so the name of a Player whose color is white will be readable.&#10;Replaced offererName argument with an argument of type Player.&#10;Added documentation to PlayerPanelTest.">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/Images/Tiles/Desert Tile.png" afterPath="$PROJECT_DIR$/resources/Images/Tiles/Desert Tile.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/Images/Tiles/Fields Tile.png" afterPath="$PROJECT_DIR$/resources/Images/Tiles/Fields Tile.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/Images/Tiles/Forrest Tile.png" afterPath="$PROJECT_DIR$/resources/Images/Tiles/Forrest Tile.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/Images/Tiles/Hills Tile.png" afterPath="$PROJECT_DIR$/resources/Images/Tiles/Hills Tile.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/Images/Tiles/Mountains Tile.png" afterPath="$PROJECT_DIR$/resources/Images/Tiles/Mountains Tile.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/Images/Tiles/Pasture Tile.png" afterPath="$PROJECT_DIR$/resources/Images/Tiles/Pasture Tile.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Settlers of Catan.iws" />
@@ -53,71 +53,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DiscardResources.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java">
+      <file leaf-file-name="LocationConverter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="131" column="60" selection-start-line="131" selection-start-column="60" selection-end-line="131" selection-end-column="60" />
+              <caret line="322" column="102" selection-start-line="322" selection-start-column="102" selection-end-line="322" selection-end-column="102" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StealResourceCard.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java">
+      <file leaf-file-name="GameIcons.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/GameIcons.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="80" column="73" selection-start-line="80" selection-start-column="73" selection-end-line="80" selection-end-column="73" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OfferTrade.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/OfferTrade.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="243" column="101" selection-start-line="243" selection-start-column="101" selection-end-line="243" selection-end-column="101" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OfferTradeTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/OfferTradeTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="39" column="114" selection-start-line="39" selection-start-column="114" selection-end-line="39" selection-end-column="114" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/model/Player.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="145" column="20" selection-start-line="145" selection-start-column="20" selection-end-line="145" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerPanelTest.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/tests/PlayerPanelTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9578544">
-              <caret line="73" column="23" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="29" column="59" selection-start-line="29" selection-start-column="59" selection-end-line="29" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.3448276">
+              <caret line="19" column="45" selection-start-line="19" selection-start-column="45" selection-end-line="19" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -152,7 +102,6 @@
         <option value="$PROJECT_DIR$/src/soc/base/model/Graph.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/GraphNode.java" />
         <option value="$PROJECT_DIR$/tests/BoardTest.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Road.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/CardPane.java" />
         <option value="$PROJECT_DIR$/tests/CardsFrameTest.java" />
@@ -174,7 +123,6 @@
         <option value="$PROJECT_DIR$/src/soc/base/gui/ResourceDiscard.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/StealResourceCardFrame.java" />
         <option value="$PROJECT_DIR$/tests/StealResourceCardFrameTest.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/PlayDevCardFrame.java" />
         <option value="$PROJECT_DIR$/tests/PlayDevCardFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/ChooseDevCard.java" />
@@ -189,10 +137,8 @@
         <option value="$PROJECT_DIR$/tests/TradeFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Board.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/BoardPane.java" />
-        <option value="$PROJECT_DIR$/tests/BoardPaneTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/PlayYearOfPlenty.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/TradeInResourceCards.java" />
-        <option value="$PROJECT_DIR$/tests/PlayerPanelTest.java" />
         <option value="$PROJECT_DIR$/tests/OfferTradeTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Player.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/OfferTrade.java" />
@@ -200,6 +146,10 @@
         <option value="$PROJECT_DIR$/src/soc/base/GameController.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java" />
+        <option value="$PROJECT_DIR$/tests/PlayerPanelTest.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" />
+        <option value="$PROJECT_DIR$/tests/BoardPaneTest.java" />
       </list>
     </option>
   </component>
@@ -411,7 +361,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.PlayerPanelTest">
+  <component name="RunManager" selected="Application.BoardPaneTest">
     <configuration default="false" name="PlayYearOfPlentyTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="PlayYearOfPlentyTest" />
@@ -650,10 +600,10 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.PlayerPanelTest" />
-        <item index="1" class="java.lang.String" itemvalue="Application.GameController" />
-        <item index="2" class="java.lang.String" itemvalue="Application.OfferTradeTest" />
-        <item index="3" class="java.lang.String" itemvalue="Application.BoardPaneTest" />
+        <item index="0" class="java.lang.String" itemvalue="Application.BoardPaneTest" />
+        <item index="1" class="java.lang.String" itemvalue="Application.PlayerPanelTest" />
+        <item index="2" class="java.lang.String" itemvalue="Application.GameController" />
+        <item index="3" class="java.lang.String" itemvalue="Application.OfferTradeTest" />
         <item index="4" class="java.lang.String" itemvalue="Application.PlayYearOfPlentyTest" />
       </list>
     </recent_temporary>
@@ -879,7 +829,13 @@
       <option name="project" value="LOCAL" />
       <updated>1433537423514</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Added method getColoredName() to Player class.&#10;Replaced all usages of getName() where it is used to display a player's name with getColoredName().&#10;Set the background color of PlayerPanel to Color.LIGHT_GRAY so the name of a Player whose color is white will be readable.&#10;Replaced offererName argument with an argument of type Player.&#10;Added documentation to PlayerPanelTest.">
+      <created>1433623624180</created>
+      <option name="number" value="00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1433623624181</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -960,7 +916,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Added the StealResourceCardFrame class and a test for it" />
     <MESSAGE value="Added methods to GameController for constructing a new set of players and constructing a board.&#10;Added class ConstructPlayersTest for testing the method in GameController for constructing a new set of players." />
     <MESSAGE value="Revised the BoardPane class to add Components to the pane  more efficiently and increase readability" />
     <MESSAGE value="Finished setup phase in GameController" />
@@ -985,7 +940,8 @@
     <MESSAGE value="Renamed the TradeFrame class  to OfferTrade and refactored it to use a JDialog to let the user create a trade offer instead of a JFrame." />
     <MESSAGE value="Fixed tile placement bug in Board class.&#10;Closed an html tag in the StealResourceCard class.&#10;Added code to the determineTurnOrder() method in the GameController class to display the determined order." />
     <MESSAGE value="Added methods to OfferTrade class for offering a trade to another player and updated OfferTradeTester to test these new methods. Also fixed several bugs in the OfferTrade class.&#10;Set the default close operation of the dialog windows in the PlayYearOfPlenty class and the TradeInResourceCards class to DISPOSE_ON_CLOSE.&#10;Removed unused method in the PlayYearOfPlenty class.&#10;Added LocationListener interface to the BoardPane class to replace ActionListener.&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added methods to OfferTrade class for offering a trade to another player and updated OfferTradeTester to test these new methods. Also fixed several bugs in the OfferTrade class.&#10;Set the default close operation of the dialog windows in the PlayYearOfPlenty class and the TradeInResourceCards class to DISPOSE_ON_CLOSE.&#10;Removed unused method in the PlayYearOfPlenty class.&#10;Added LocationListener interface to the BoardPane class to replace ActionListener.&#10;" />
+    <MESSAGE value="Added method getColoredName() to Player class.&#10;Replaced all usages of getName() where it is used to display a player's name with getColoredName().&#10;Set the background color of PlayerPanel to Color.LIGHT_GRAY so the name of a Player whose color is white will be readable.&#10;Replaced offererName argument with an argument of type Player.&#10;Added documentation to PlayerPanelTest." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added method getColoredName() to Player class.&#10;Replaced all usages of getName() where it is used to display a player's name with getColoredName().&#10;Set the background color of PlayerPanel to Color.LIGHT_GRAY so the name of a Player whose color is white will be readable.&#10;Replaced offererName argument with an argument of type Player.&#10;Added documentation to PlayerPanelTest." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -1244,20 +1200,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/GameIcons.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.023017902">
-          <caret line="124" column="16" selection-start-line="124" selection-start-column="16" selection-end-line="124" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18414322">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1270,13 +1212,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="174" column="51" selection-start-line="174" selection-start-column="51" selection-end-line="174" selection-end-column="51" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/BoardPaneTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="108" column="47" selection-start-line="108" selection-start-column="47" selection-end-line="108" selection-end-column="47" />
         </state>
       </provider>
     </entry>
@@ -1337,8 +1272,10 @@
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="59" selection-start-line="29" selection-start-column="59" selection-end-line="29" selection-end-column="59" />
-          <folding />
+          <caret line="31" column="59" selection-start-line="31" selection-start-column="59" selection-end-line="31" selection-end-column="59" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1346,6 +1283,40 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="145" column="20" selection-start-line="145" selection-start-column="20" selection-end-line="145" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="127" column="60" selection-start-line="127" selection-start-column="60" selection-end-line="127" selection-end-column="60" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="80" column="73" selection-start-line="80" selection-start-column="73" selection-end-line="80" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/OfferTradeTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="39" column="114" selection-start-line="39" selection-start-column="114" selection-end-line="39" selection-end-column="114" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/PlayerPanelTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9578544">
+          <caret line="74" column="23" selection-start-line="74" selection-start-column="23" selection-end-line="74" selection-end-column="23" />
           <folding />
         </state>
       </provider>
@@ -1369,34 +1340,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java">
+    <entry file="file://$PROJECT_DIR$/tests/BoardPaneTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="131" column="60" selection-start-line="131" selection-start-column="60" selection-end-line="131" selection-end-column="60" />
+        <state vertical-scroll-proportion="0.81609195">
+          <caret line="118" column="8" selection-start-line="118" selection-start-column="8" selection-end-line="118" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java">
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="80" column="73" selection-start-line="80" selection-start-column="73" selection-end-line="80" selection-end-column="73" />
+          <caret line="322" column="102" selection-start-line="322" selection-start-column="102" selection-end-line="322" selection-end-column="102" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/OfferTradeTest.java">
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/GameIcons.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="114" selection-start-line="39" selection-start-column="114" selection-end-line="39" selection-end-column="114" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/PlayerPanelTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9578544">
-          <caret line="73" column="23" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.3448276">
+          <caret line="19" column="45" selection-start-line="19" selection-start-column="45" selection-end-line="19" selection-end-column="45" />
           <folding />
         </state>
       </provider>

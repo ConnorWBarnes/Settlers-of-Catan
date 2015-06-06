@@ -3,7 +3,7 @@ package soc.base.gui;
 import soc.base.GameController;
 import soc.base.model.Tile;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import java.util.HashMap;
 
 /**
@@ -15,9 +15,15 @@ import java.util.HashMap;
  */
 public class GameIcons {
     public static final int BOARD_WIDTH = 632;
+    public static final int BOARD_HEIGHT = 550;
+    public static final int TILE_WIDTH = 94;
+    public static final int TILE_HEIGHT = 109;
+    public static final int NUMBER_TOKEN_WIDTH = 40;
+    public static final int NUMBER_TOKEN_HEIGHT = 40;
+    public static final int PLAYER_TOKEN_WIDTH = 30;
+    public static final int PLAYER_TOKEN_HEIGHT = 30;
     public static final int CARD_WIDTH = 90;
     public static final int CARD_HEIGHT = 135;
-    public static final int NUMBER_TOKEN_WIDTH = 40;
     public static final boolean PLAYER_TOKEN_STAR = true;
     public static final boolean ROBBER_STAR = false;
 

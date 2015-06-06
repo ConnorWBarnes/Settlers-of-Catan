@@ -1,6 +1,6 @@
 package soc.base.gui;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.HashMap;
 
 /**
@@ -12,36 +12,14 @@ public class LocationConverter {
     public static final int VERTICAL = 0;
     public static final int NEGATIVE_SLOPE = 1;
     public static final int POSITIVE_SLOPE = 2;
-    //Icon sizes
-    public static final int TILE_WIDTH = 95;
-    public static final int TILE_HEIGHT = 110;
-    public static final int PLAYER_TOKEN_WIDTH = 30;
-    public static final int PLAYER_TOKEN_HEIGHT = 30;
-    public static final int TILE_OFFSET_X = TILE_WIDTH / 2;
-    public static final int TILE_OFFSET_Y = (3 * TILE_HEIGHT) / 4;
+    //Tile offsets
+    private final int TILE_OFFSET_X = GameIcons.TILE_WIDTH / 2;
+    private final int TILE_OFFSET_Y = (3 * GameIcons.TILE_HEIGHT) / 4;
     //Tile locations
-    public static final int FIRST_ROW_TILE_X = 173;
-    public static final int FIRST_ROW_TILE_Y = 55;
-    public static final int SECOND_ROW_TILE_X = FIRST_ROW_TILE_X - (TILE_OFFSET_X);
-    public static final int SECOND_ROW_TILE_Y = FIRST_ROW_TILE_Y + (TILE_OFFSET_Y);
-    public static final int THIRD_ROW_TILE_X = FIRST_ROW_TILE_X - (2 * TILE_OFFSET_X);
-    public static final int THIRD_ROW_TILE_Y = FIRST_ROW_TILE_Y + (2 * TILE_OFFSET_Y);
-    public static final int FOURTH_ROW_TILE_X = SECOND_ROW_TILE_X;
-    public static final int FOURTH_ROW_TILE_Y = FIRST_ROW_TILE_Y + (3 * TILE_OFFSET_Y);
-    public static final int FIFTH_ROW_TILE_X = FIRST_ROW_TILE_X;
-    public static final int FIFTH_ROW_TILE_Y = FIRST_ROW_TILE_Y + (4 * TILE_OFFSET_Y);
-    //Number token locations
-    public static final int FIRST_ROW_NUMBER_TOKEN_X = 200;
-    public static final int FIRST_ROW_NUMBER_TOKEN_Y = 90;
-    public static final int SECOND_ROW_NUMBER_TOKEN_X = FIRST_ROW_NUMBER_TOKEN_X - (TILE_OFFSET_X);
-    public static final int SECOND_ROW_NUMBER_TOKEN_Y = FIRST_ROW_NUMBER_TOKEN_Y + (TILE_OFFSET_Y);
-    public static final int THIRD_ROW_NUMBER_TOKEN_X = FIRST_ROW_NUMBER_TOKEN_X - (2 * TILE_OFFSET_X);
-    public static final int THIRD_ROW_NUMBER_TOKEN_Y = FIRST_ROW_NUMBER_TOKEN_Y + (2 * TILE_OFFSET_Y);
-    public static final int FOURTH_ROW_NUMBER_TOKEN_X = SECOND_ROW_NUMBER_TOKEN_X;
-    public static final int FOURTH_ROW_NUMBER_TOKEN_Y = FIRST_ROW_NUMBER_TOKEN_Y + (3 * TILE_OFFSET_Y);
-    public static final int FIFTH_ROW_NUMBER_TOKEN_X = FIRST_ROW_NUMBER_TOKEN_X;
-    public static final int FIFTH_ROW_NUMBER_TOKEN_Y = FIRST_ROW_NUMBER_TOKEN_Y + (4 * TILE_OFFSET_Y);
+    private final int FIRST_ROW_TILE_X = GameIcons.BOARD_WIDTH / 2 - (GameIcons.TILE_WIDTH / 2) - (2 * TILE_OFFSET_X);
+    private final int FIRST_ROW_TILE_Y = GameIcons.BOARD_HEIGHT / 2 - (GameIcons.TILE_HEIGHT / 2) - (2 * TILE_OFFSET_Y);
 
+    //The key for each map is the location of the item and the value is the point at which to place the image of the item
     private HashMap<Integer, Point> roadPoints, settlementPoints, tilePoints, numberTokenPoints;
 
     /**
@@ -147,205 +125,234 @@ public class LocationConverter {
         return new Point(numberTokenPoints.get(tileLoc));
     }
 
+    /**
+     * Maps each road location to the point at which to place the icon for a
+     * road at that location.
+     */
     private void populateRoadPoints() {
-        int i, x, y;
+        int x, y;
         /* Vertical road locations */
         //First row
-        x = FIRST_ROW_TILE_X - (PLAYER_TOKEN_WIDTH / 2);
-        y = FIRST_ROW_TILE_Y + (TILE_HEIGHT / 2) - (PLAYER_TOKEN_HEIGHT / 2);
-        for (i = 0; i < 4; i++) {
-            roadPoints.put(i + 6, new Point(x + (i * TILE_WIDTH), y));
+        x = FIRST_ROW_TILE_X - (GameIcons.PLAYER_TOKEN_WIDTH / 2);
+        y = FIRST_ROW_TILE_Y + (GameIcons.TILE_HEIGHT / 2) - (GameIcons.PLAYER_TOKEN_HEIGHT / 2);
+        for (int i = 0; i < 4; i++) {
+            roadPoints.put(i + 6, new Point(x + (i * GameIcons.TILE_WIDTH), y));
         }
         //Second row
         x -= TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 5; i++) {
-            roadPoints.put(i + 18, new Point(x + (i * TILE_WIDTH), y));
+        for (int i = 0; i < 5; i++) {
+            roadPoints.put(i + 18, new Point(x + (i * GameIcons.TILE_WIDTH), y));
         }
         //Third row
         x -= TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 6; i++) {
-            roadPoints.put(i + 33, new Point(x + (i * TILE_WIDTH), y));
+        for (int i = 0; i < 6; i++) {
+            roadPoints.put(i + 33, new Point(x + (i * GameIcons.TILE_WIDTH), y));
         }
         //Fourth row
         x += TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 5; i++) {
-            roadPoints.put(i + 49, new Point(x + (i * TILE_WIDTH), y));
+        for (int i = 0; i < 5; i++) {
+            roadPoints.put(i + 49, new Point(x + (i * GameIcons.TILE_WIDTH), y));
         }
         //Fifth row
         x += TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 4; i++) {
-            roadPoints.put(i + 62, new Point(x + (i * TILE_WIDTH), y));
+        for (int i = 0; i < 4; i++) {
+            roadPoints.put(i + 62, new Point(x + (i * GameIcons.TILE_WIDTH), y));
         }
 		/* Positive and negative slope road locations */
         //First row
-        x = FIRST_ROW_TILE_X + (((TILE_WIDTH / 2) - PLAYER_TOKEN_WIDTH) / 2);
-        y = FIRST_ROW_TILE_Y + (((TILE_HEIGHT / 4) - PLAYER_TOKEN_HEIGHT) / 2);
-        for (i = 0; i < 3; i++) {
-            roadPoints.put(i * 2, new Point(x + (i * TILE_WIDTH), y));
-            roadPoints.put(i * 2 + 1, new Point(x + (i * TILE_WIDTH) + (TILE_WIDTH / 2), y));
+        x = FIRST_ROW_TILE_X + (((GameIcons.TILE_WIDTH / 2) - GameIcons.PLAYER_TOKEN_WIDTH) / 2);
+        y = FIRST_ROW_TILE_Y + (((GameIcons.TILE_HEIGHT / 4) - GameIcons.PLAYER_TOKEN_HEIGHT) / 2);
+        for (int i = 0; i < 3; i++) {
+            roadPoints.put(i * 2, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            roadPoints.put(i * 2 + 1, new Point(x + (i * GameIcons.TILE_WIDTH) + (GameIcons.TILE_WIDTH / 2), y));
         }
         //Second row
         x -= TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 4; i++) {
-            roadPoints.put((i + 5) * 2, new Point(x + (i * TILE_WIDTH), y));
-            roadPoints.put((i + 5) * 2 + 1, new Point(x + (i * TILE_WIDTH) + (TILE_WIDTH / 2), y));
+        for (int i = 0; i < 4; i++) {
+            roadPoints.put((i + 5) * 2, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            roadPoints.put((i + 5) * 2 + 1, new Point(x + (i * GameIcons.TILE_WIDTH) + (GameIcons.TILE_WIDTH / 2), y));
         }
         //Third row
         x -= TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 5; i++) {
-            roadPoints.put((i + 11) * 2 + 1, new Point(x + (i * TILE_WIDTH), y));
-            roadPoints.put((i + 12) * 2, new Point(x + (i * TILE_WIDTH) + (TILE_WIDTH / 2), y));
+        for (int i = 0; i < 5; i++) {
+            roadPoints.put((i + 11) * 2 + 1, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            roadPoints.put((i + 12) * 2, new Point(x + (i * GameIcons.TILE_WIDTH) + (GameIcons.TILE_WIDTH / 2), y));
         }
         //Fourth row
         x += TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 5; i++) {
-            roadPoints.put((i + 20) * 2, new Point(x + (i * TILE_WIDTH), y));
-            roadPoints.put((i + 19) * 2 + 1, new Point(x + (i * TILE_WIDTH) - (TILE_WIDTH / 2), y));
+        for (int i = 0; i < 5; i++) {
+            roadPoints.put((i + 20) * 2, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            roadPoints.put((i + 19) * 2 + 1, new Point(x + (i * GameIcons.TILE_WIDTH) - (GameIcons.TILE_WIDTH / 2), y));
         }
         //Fifth row
         x += TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 4; i++) {
-            roadPoints.put((i + 27) * 2 + 1, new Point(x + (i * TILE_WIDTH), y));
-            roadPoints.put((i + 27) * 2, new Point(x + (i * TILE_WIDTH) - (TILE_WIDTH / 2), y));
+        for (int i = 0; i < 4; i++) {
+            roadPoints.put((i + 27) * 2 + 1, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            roadPoints.put((i + 27) * 2, new Point(x + (i * GameIcons.TILE_WIDTH) - (GameIcons.TILE_WIDTH / 2), y));
         }
         //Bottom of fifth row
         x += TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 3; i++) {
-            roadPoints.put((i + 33) * 2 + 1, new Point(x + (i * TILE_WIDTH), y));
-            roadPoints.put((i + 33) * 2, new Point(x + (i * TILE_WIDTH) - (TILE_WIDTH / 2), y));
+        for (int i = 0; i < 3; i++) {
+            roadPoints.put((i + 33) * 2 + 1, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            roadPoints.put((i + 33) * 2, new Point(x + (i * GameIcons.TILE_WIDTH) - (GameIcons.TILE_WIDTH / 2), y));
         }
     }
 
+    /**
+     * Maps each settlement/city location to the point at which to place the icon for a settlement/city at that location.
+     */
     private void populateSettlementPoints() {
-        int i, x, y;
-		/* Tops and bottoms of the tiles */
+        int x, y;
+        /* Tops and bottoms of the tiles */
         //First row
-        x = FIRST_ROW_TILE_X + TILE_OFFSET_X - (PLAYER_TOKEN_WIDTH / 2);
-        y = FIRST_ROW_TILE_Y - (PLAYER_TOKEN_HEIGHT / 2);
-        for (i = 0; i < 3; i++) {
-            settlementPoints.put(i * 2 + 1, new Point(x + (i * TILE_WIDTH), y)); //Top
-            settlementPoints.put(i * 2 + 1 + 8, new Point(x + (i * TILE_WIDTH), y + TILE_HEIGHT)); //Bottom
+        x = FIRST_ROW_TILE_X + TILE_OFFSET_X - (GameIcons.PLAYER_TOKEN_WIDTH / 2);
+        y = FIRST_ROW_TILE_Y - (GameIcons.PLAYER_TOKEN_HEIGHT / 2);
+        for (int i = 0; i < 3; i++) {
+            settlementPoints.put(i * 2 + 1, new Point(x + (i * GameIcons.TILE_WIDTH), y)); //Top
+            settlementPoints.put(i * 2 + 1 + 8, new Point(x + (i * GameIcons.TILE_WIDTH), y + GameIcons.TILE_HEIGHT)); //Bottom
         }
         //Second row
         x -= TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 4; i++) {
-            settlementPoints.put((i + 4) * 2, new Point(x + (i * TILE_WIDTH), y));
-            settlementPoints.put((i + 4) * 2 + 10, new Point(x + (i * TILE_WIDTH), y + TILE_HEIGHT));
+        for (int i = 0; i < 4; i++) {
+            settlementPoints.put((i + 4) * 2, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            settlementPoints.put((i + 4) * 2 + 10, new Point(x + (i * GameIcons.TILE_WIDTH), y + GameIcons.TILE_HEIGHT));
         }
         //Third row
         x -= TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 5; i++) {
-            settlementPoints.put((i + 8) * 2 + 1, new Point(x + (i * TILE_WIDTH), y));
-            settlementPoints.put((i + 8) * 2 + 1 + 11, new Point(x + (i * TILE_WIDTH), y + TILE_HEIGHT));
+        for (int i = 0; i < 5; i++) {
+            settlementPoints.put((i + 8) * 2 + 1, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            settlementPoints.put((i + 8) * 2 + 1 + 11, new Point(x + (i * GameIcons.TILE_WIDTH), y + GameIcons.TILE_HEIGHT));
         }
         //Fourth row
         x += TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 4; i++) {
-            settlementPoints.put((i + 14) * 2 + 1, new Point(x + (i * TILE_WIDTH), y));
-            settlementPoints.put((i + 14) * 2 + 1 + 10, new Point(x + (i * TILE_WIDTH), y + TILE_HEIGHT));
+        for (int i = 0; i < 4; i++) {
+            settlementPoints.put((i + 14) * 2 + 1, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            settlementPoints.put((i + 14) * 2 + 1 + 10, new Point(x + (i * GameIcons.TILE_WIDTH), y + GameIcons.TILE_HEIGHT));
         }
         //Fifth row
         x += TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 3; i++) {
-            settlementPoints.put((i + 20) * 2, new Point(x + (i * TILE_WIDTH), y));
-            settlementPoints.put((i + 20) * 2 + 8, new Point(x + (i * TILE_WIDTH), y + TILE_HEIGHT));
+        for (int i = 0; i < 3; i++) {
+            settlementPoints.put((i + 20) * 2, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            settlementPoints.put((i + 20) * 2 + 8, new Point(x + (i * GameIcons.TILE_WIDTH), y + GameIcons.TILE_HEIGHT));
         }
 		/* Outside corners */
         //First row
-        x = FIRST_ROW_TILE_X - (PLAYER_TOKEN_WIDTH / 2);
-        y = FIRST_ROW_TILE_Y + (TILE_HEIGHT / 4) - (PLAYER_TOKEN_HEIGHT / 2);
-        for (i = 0; i < 4; i++) {
-            settlementPoints.put(i * 2, new Point(x + (i * TILE_WIDTH), y));
-            settlementPoints.put(i * 2 + 8, new Point(x + (i * TILE_WIDTH), y + (TILE_HEIGHT / 2)));
+        x = FIRST_ROW_TILE_X - (GameIcons.PLAYER_TOKEN_WIDTH / 2);
+        y = FIRST_ROW_TILE_Y + (GameIcons.TILE_HEIGHT / 4) - (GameIcons.PLAYER_TOKEN_HEIGHT / 2);
+        for (int i = 0; i < 4; i++) {
+            settlementPoints.put(i * 2, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            settlementPoints.put(i * 2 + 8, new Point(x + (i * GameIcons.TILE_WIDTH), y + (GameIcons.TILE_HEIGHT / 2)));
         }
         //Second row
         x -= TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 5; i++) {
-            settlementPoints.put((i + 3) * 2 + 1, new Point(x + (i * TILE_WIDTH), y));
-            settlementPoints.put((i + 3) * 2 + 1 + 10, new Point(x + (i * TILE_WIDTH), y + (TILE_HEIGHT / 2)));
+        for (int i = 0; i < 5; i++) {
+            settlementPoints.put((i + 3) * 2 + 1, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            settlementPoints.put((i + 3) * 2 + 1 + 10, new Point(x + (i * GameIcons.TILE_WIDTH), y + (GameIcons.TILE_HEIGHT / 2)));
         }
         //Third row
         x -= TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 6; i++) {
-            settlementPoints.put((i + 8) * 2, new Point(x + (i * TILE_WIDTH), y));
-            settlementPoints.put((i + 8) * 2 + 11, new Point(x + (i * TILE_WIDTH), y + (TILE_HEIGHT / 2)));
+        for (int i = 0; i < 6; i++) {
+            settlementPoints.put((i + 8) * 2, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            settlementPoints.put((i + 8) * 2 + 11, new Point(x + (i * GameIcons.TILE_WIDTH), y + (GameIcons.TILE_HEIGHT / 2)));
         }
         //Fourth row
         x += TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 5; i++) {
-            settlementPoints.put((i + 14) * 2, new Point(x + (i * TILE_WIDTH), y));
-            settlementPoints.put((i + 14) * 2 + 10, new Point(x + (i * TILE_WIDTH), y + (TILE_HEIGHT / 2)));
+        for (int i = 0; i < 5; i++) {
+            settlementPoints.put((i + 14) * 2, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            settlementPoints.put((i + 14) * 2 + 10, new Point(x + (i * GameIcons.TILE_WIDTH), y + (GameIcons.TILE_HEIGHT / 2)));
         }
         //Fifth row
         x += TILE_OFFSET_X;
         y += TILE_OFFSET_Y;
-        for (i = 0; i < 4; i++) {
-            settlementPoints.put((i + 19) * 2 + 1, new Point(x + (i * TILE_WIDTH), y));
-            settlementPoints.put((i + 19) * 2 + 1 + 8, new Point(x + (i * TILE_WIDTH), y + (TILE_HEIGHT / 2)));
+        for (int i = 0; i < 4; i++) {
+            settlementPoints.put((i + 19) * 2 + 1, new Point(x + (i * GameIcons.TILE_WIDTH), y));
+            settlementPoints.put((i + 19) * 2 + 1 + 8, new Point(x + (i * GameIcons.TILE_WIDTH), y + (GameIcons.TILE_HEIGHT / 2)));
         }
     }
 
+    /**
+     * Maps each tile location to the point at which to place the icon for a tile at that location.
+     */
     private void populateTilePoints() {
-        int i;
+        final int SECOND_ROW_TILE_X = FIRST_ROW_TILE_X - (TILE_OFFSET_X);
+        final int SECOND_ROW_TILE_Y = FIRST_ROW_TILE_Y + (TILE_OFFSET_Y);
+        final int THIRD_ROW_TILE_X = FIRST_ROW_TILE_X - (2 * TILE_OFFSET_X);
+        final int THIRD_ROW_TILE_Y = FIRST_ROW_TILE_Y + (2 * TILE_OFFSET_Y);
+        final int FOURTH_ROW_TILE_X = SECOND_ROW_TILE_X;
+        final int FOURTH_ROW_TILE_Y = FIRST_ROW_TILE_Y + (3 * TILE_OFFSET_Y);
+        final int FIFTH_ROW_TILE_X = FIRST_ROW_TILE_X;
+        final int FIFTH_ROW_TILE_Y = FIRST_ROW_TILE_Y + (4 * TILE_OFFSET_Y);
         //First row
-        for (i = 0; i < 3; i++)	{
-            tilePoints.put(i, new Point(FIRST_ROW_TILE_X + (TILE_WIDTH * i), FIRST_ROW_TILE_Y));
+        for (int i = 0; i < 3; i++) {
+            tilePoints.put(i, new Point(FIRST_ROW_TILE_X + (GameIcons.TILE_WIDTH * i), FIRST_ROW_TILE_Y));
         }
         //Second row
-        for (i = 0; i < 4; i++) {
-            tilePoints.put(i + 3, new Point(SECOND_ROW_TILE_X + (TILE_WIDTH * i), SECOND_ROW_TILE_Y));
+        for (int i = 0; i < 4; i++) {
+            tilePoints.put(i + 3, new Point(SECOND_ROW_TILE_X + (GameIcons.TILE_WIDTH * i), SECOND_ROW_TILE_Y));
         }
         //Third row
-        for (i = 0; i < 5; i++) {
-            tilePoints.put(i + 7, new Point(THIRD_ROW_TILE_X + (TILE_WIDTH * i), THIRD_ROW_TILE_Y));
+        for (int i = 0; i < 5; i++) {
+            tilePoints.put(i + 7, new Point(THIRD_ROW_TILE_X + (GameIcons.TILE_WIDTH * i), THIRD_ROW_TILE_Y));
         }
         //Fourth row
-        for (i = 0; i < 4; i++) {
-            tilePoints.put(i + 12, new Point(FOURTH_ROW_TILE_X + (TILE_WIDTH * i), FOURTH_ROW_TILE_Y));
+        for (int i = 0; i < 4; i++) {
+            tilePoints.put(i + 12, new Point(FOURTH_ROW_TILE_X + (GameIcons.TILE_WIDTH * i), FOURTH_ROW_TILE_Y));
         }
         //Fifth row
-        for (i = 0; i < 3; i++) {
-            tilePoints.put(i + 16, new Point(FIFTH_ROW_TILE_X + (TILE_WIDTH * i), FIFTH_ROW_TILE_Y));
+        for (int i = 0; i < 3; i++) {
+            tilePoints.put(i + 16, new Point(FIFTH_ROW_TILE_X + (GameIcons.TILE_WIDTH * i), FIFTH_ROW_TILE_Y));
         }
     }
 
+    /**
+     * Maps each tile location to the point at which to place the icon for a number token on the tile at that location.
+     */
     private void populateNumberTokenPoints() {
-        int i;
+        final int FIRST_ROW_NUMBER_TOKEN_X = GameIcons.BOARD_WIDTH / 2 - (GameIcons.NUMBER_TOKEN_WIDTH / 2) - (2 * TILE_OFFSET_X);
+        final int FIRST_ROW_NUMBER_TOKEN_Y = GameIcons.BOARD_HEIGHT / 2 - (GameIcons.NUMBER_TOKEN_HEIGHT / 2) - (2 * TILE_OFFSET_Y);
+        final int SECOND_ROW_NUMBER_TOKEN_X = FIRST_ROW_NUMBER_TOKEN_X - (TILE_OFFSET_X);
+        final int SECOND_ROW_NUMBER_TOKEN_Y = FIRST_ROW_NUMBER_TOKEN_Y + (TILE_OFFSET_Y);
+        final int THIRD_ROW_NUMBER_TOKEN_X = FIRST_ROW_NUMBER_TOKEN_X - (2 * TILE_OFFSET_X);
+        final int THIRD_ROW_NUMBER_TOKEN_Y = FIRST_ROW_NUMBER_TOKEN_Y + (2 * TILE_OFFSET_Y);
+        final int FOURTH_ROW_NUMBER_TOKEN_X = SECOND_ROW_NUMBER_TOKEN_X;
+        final int FOURTH_ROW_NUMBER_TOKEN_Y = FIRST_ROW_NUMBER_TOKEN_Y + (3 * TILE_OFFSET_Y);
+        final int FIFTH_ROW_NUMBER_TOKEN_X = FIRST_ROW_NUMBER_TOKEN_X;
+        final int FIFTH_ROW_NUMBER_TOKEN_Y = FIRST_ROW_NUMBER_TOKEN_Y + (4 * TILE_OFFSET_Y);
         //First row
-        for (i = 0; i < 3; i++) {
-            numberTokenPoints.put(i, new Point(FIRST_ROW_NUMBER_TOKEN_X + (TILE_WIDTH * i), FIRST_ROW_NUMBER_TOKEN_Y));
+        for (int i = 0; i < 3; i++) {
+            numberTokenPoints.put(i, new Point(FIRST_ROW_NUMBER_TOKEN_X + (GameIcons.TILE_WIDTH * i), FIRST_ROW_NUMBER_TOKEN_Y));
         }
         //Second row
-        for (i = 0; i < 4; i++) {
-            numberTokenPoints.put(i + 3, new Point(SECOND_ROW_NUMBER_TOKEN_X + (TILE_WIDTH * i), SECOND_ROW_NUMBER_TOKEN_Y));
+        for (int i = 0; i < 4; i++) {
+            numberTokenPoints.put(i + 3, new Point(SECOND_ROW_NUMBER_TOKEN_X + (GameIcons.TILE_WIDTH * i), SECOND_ROW_NUMBER_TOKEN_Y));
         }
         //Third row
-        for (i = 0; i < 5; i++) {
-            numberTokenPoints.put(i + 7, new Point(THIRD_ROW_NUMBER_TOKEN_X + (TILE_WIDTH * i), THIRD_ROW_NUMBER_TOKEN_Y));
+        for (int i = 0; i < 5; i++) {
+            numberTokenPoints.put(i + 7, new Point(THIRD_ROW_NUMBER_TOKEN_X + (GameIcons.TILE_WIDTH * i), THIRD_ROW_NUMBER_TOKEN_Y));
         }
         //Fourth row
-        for (i = 0; i < 4; i++) {
-            numberTokenPoints.put(i + 12, new Point(FOURTH_ROW_NUMBER_TOKEN_X + (TILE_WIDTH * i), FOURTH_ROW_NUMBER_TOKEN_Y));
+        for (int i = 0; i < 4; i++) {
+            numberTokenPoints.put(i + 12, new Point(FOURTH_ROW_NUMBER_TOKEN_X + (GameIcons.TILE_WIDTH * i), FOURTH_ROW_NUMBER_TOKEN_Y));
         }
         //Fifth row
-        for (i = 0; i < 3; i++) {
-            numberTokenPoints.put(i + 16, new Point(FIFTH_ROW_NUMBER_TOKEN_X + (TILE_WIDTH * i), FIFTH_ROW_NUMBER_TOKEN_Y));
+        for (int i = 0; i < 3; i++) {
+            numberTokenPoints.put(i + 16, new Point(FIFTH_ROW_NUMBER_TOKEN_X + (GameIcons.TILE_WIDTH * i), FIFTH_ROW_NUMBER_TOKEN_Y));
         }
     }
 }
