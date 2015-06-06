@@ -31,7 +31,7 @@ public class OfferTrade {
         public int[] takeCards;//The cards that the offerer will receive for the cards in giveCards
 
         /**
-         * Constructs a trade where no resource cards are exchanged.
+         * Initializes giveCards and takeCards to two new empty arrays.
          */
         public Trade() {
             giveCards = new int[GameController.RESOURCE_TYPES.length];
@@ -241,16 +241,16 @@ public class OfferTrade {
 
     /**
      * Displays the specified trade and asks the user if they want to accept it.
-     * Does not allow a player to accept a trade if they cannot complete it.
+     * Does not allow a player to accept a trade if they do not have the cards that the offerer wants.
      * @param icons       The icons to use to display the trade
      * @param trade       The trade to display
-     * @param offererName The name of the player offering the trade
+     * @param offerer     The player offering the trade
      * @param recipient   The player receiving the offer
      * @return true if the trade is accepted, otherwise false
      */
     //Note: This method only uses the methods and classes below (and the Trade class)
-    public static boolean offerTrade(GameIcons icons, Trade trade, String offererName, Player recipient) {
-        OfferTrade tradeOffer = new OfferTrade(icons, trade, offererName, recipient);
+    public static boolean offerTrade(GameIcons icons, Trade trade, Player offerer, Player recipient) {
+        OfferTrade tradeOffer = new OfferTrade(icons, trade, offerer, recipient);
         return tradeOffer.offerAccepted;
     }
 
@@ -259,16 +259,16 @@ public class OfferTrade {
      * user the option to accept or decline the trade.
      * @param icons       The icons to use to display the trade
      * @param trade       The trade to display
-     * @param offererName The name of the player offering the trade
+     * @param offerer     The player offering the trade
      * @param recipient   The player receiving the offer
      */
-    private OfferTrade(GameIcons icons, Trade trade, String offererName, Player recipient) {
+    private OfferTrade(GameIcons icons, Trade trade, Player offerer, Player recipient) {
         player = recipient;
         offerAccepted = false;
         this.trade = trade;
         //Build the panel showing the trade
         JPanel message = new JPanel(new BorderLayout());
-        message.add(new JLabel(recipient.getName() + ", do you accept the following trade from " + offererName + "?", JLabel.CENTER), BorderLayout.NORTH);
+        message.add(new JLabel(recipient.getColoredName() + ", do you accept the following trade from " + offerer.getColoredName() + "?", JLabel.CENTER), BorderLayout.NORTH);
         CardPane tempPane = new CardPane(GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
         for (int i = 0; i < this.trade.giveCards.length; i++) {
             for (int j = 0; j < this.trade.giveCards[i]; j++) {
@@ -310,8 +310,8 @@ public class OfferTrade {
     }
 
     /**
-     * Checks to see if the recipient has the resource cards to uphold their end
-     * of the deal. If the recipient can uphold their end of the deal, then the
+     * Checks to see if the recipient has the resource cards that the offerer wants.
+     * If the recipient has the cards the offerer wants, then the
      * dialog window is disposed. If not, then the user is notified and the
      * dialog window is not disposed.
      */
@@ -330,7 +330,7 @@ public class OfferTrade {
                 offerAccepted = true;
                 dialog.dispose();
             } else {
-                JOptionPane.showMessageDialog(null, "You do not have the resource cards to uphold your end of the trade", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "You do not have the resource cards that the offerer wants", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

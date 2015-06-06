@@ -103,7 +103,7 @@ public class GameController {
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
         boardPane.showValidLocs(validSetupSettlementLocs, new SetUpSettlementListener(), BoardPane.LOC_TYPE_SETTLEMENT, false);
-        JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + ", please place a settlement and a road next to the new settlement", "Setup", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(mainFrame, currentPlayer.getColoredName() + ", please place a settlement and a road next to the new settlement", "Setup", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -160,7 +160,7 @@ public class GameController {
             tempLabel.setHorizontalAlignment(JLabel.CENTER);
             tempLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
             tempPanel.add(tempLabel);
-            tempLabel = new JLabel(players[i].getName(), icons.getSettlementIcon(players[i].getColor()), JLabel.CENTER);
+            tempLabel = new JLabel(players[i].getColoredName(), icons.getSettlementIcon(players[i].getColor()), JLabel.CENTER);
             tempLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
             tempPanel.add(tempLabel);
             playerOrder.add(tempPanel);
@@ -210,7 +210,7 @@ public class GameController {
         }
         currentPlayer = turnIterator.next();
         playerPanel.updatePlayer(currentPlayer);
-        JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + ", it is now your turn", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(mainFrame, currentPlayer.getColoredName() + ", it is now your turn", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
         //Roll the dice
         int redDie = (int) (Math.random() * 6 + 1);
         int yellowDie = (int) (Math.random() * 6 + 1);
@@ -226,9 +226,8 @@ public class GameController {
         //Move the robber (if appropriate)
         if (numRolled == 7) {
             for (Player player : players) {
-                int[] discardedResources;
                 if (player.getSumResourceCards() > 7) {
-                    discardedResources = DiscardResources.discardResources(icons, player);
+                    int[] discardedResources = DiscardResources.discardResources(icons, player);
                     //Discard the cards specified by the player
                     for (int i = 0; i < RESOURCE_TYPES.length; i++) {
                         player.takeResource(RESOURCE_TYPES[i], discardedResources[i]);
@@ -270,7 +269,7 @@ public class GameController {
                 JPanel resourcesPanel;
                 for (Player player : players) {//Displays players in order
                     if (paneMap.keySet().contains(player.getColor())) {
-                        JLabel tempLabel = new JLabel(player.getName(), JLabel.CENTER);
+                        JLabel tempLabel = new JLabel(player.getColoredName(), JLabel.CENTER);
                         tempLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
                         resourcesPanel = new JPanel();
                         resourcesPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
@@ -298,7 +297,7 @@ public class GameController {
             validRobberLocs.add(i);
         }
         validRobberLocs.remove(gameBoard.getRobberLoc());
-        JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + ", please move the robber", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(mainFrame, currentPlayer.getColoredName() + ", please move the robber", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
         boardPane.showValidLocs(validRobberLocs, new MoveRobberListener(), BoardPane.LOC_TYPE_ROBBER, false);
     }
 
@@ -307,7 +306,7 @@ public class GameController {
      */
     private void checkVictoryPoints() {
         if (currentPlayer.getNumVictoryPoints() >= WIN_LIMIT) {
-            JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + " wins!", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(mainFrame, currentPlayer.getColoredName() + " wins!", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
     }
@@ -388,7 +387,7 @@ public class GameController {
                     JPanel checkBoxPanel = new JPanel(new GridLayout(1, players.length - 1));
                     for (Player player : players) {
                         if (!player.getColor().equals(currentPlayer.getColor())) {
-                            recipients.add(new Checkbox(player.getName(), true));
+                            recipients.add(new Checkbox(player.getColoredName(), true));
                             recipients.get(recipients.size() - 1).setName(player.getColor());
                             JPanel tempPanel = new JPanel(new BorderLayout());
                             tempPanel.add(new JLabel(icons.getSettlementIcon(player.getColor()), JLabel.CENTER), BorderLayout.NORTH);
@@ -402,7 +401,7 @@ public class GameController {
                     JOptionPane.showMessageDialog(mainFrame, message, "Offer Trade", JOptionPane.QUESTION_MESSAGE, new ImageIcon());
                     for (Checkbox checkbox : recipients) {
                         if (checkbox.getState()) {
-                            if (OfferTrade.offerTrade(icons, trade, currentPlayer.getName(), playerColorMap.get(checkbox.getName()))) {//Asks the recipient if they would like to accept the offer
+                            if (OfferTrade.offerTrade(icons, trade, currentPlayer, playerColorMap.get(checkbox.getName()))) {//Asks the recipient if they would like to accept the offer
                                 for (int i = 0; i < trade.giveCards.length; i++) {
                                     currentPlayer.takeResource(RESOURCE_TYPES[i], trade.giveCards[i]);
                                     playerColorMap.get(checkbox.getName()).giveResource(RESOURCE_TYPES[i], trade.giveCards[i]);
@@ -626,7 +625,7 @@ public class GameController {
                                 cardPanel.setLayout(new GridLayout(paneMap.size(), 2, -1, -1));
                                 for (Player player : players) {//Displays players in order
                                     if (paneMap.keySet().contains(player.getColor())) {
-                                        JLabel resourceCard = new JLabel(player.getName());
+                                        JLabel resourceCard = new JLabel(player.getColoredName());
                                         resourceCard.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
                                         resourceCard.setHorizontalAlignment(JLabel.CENTER);
                                         resourceCard.setVerticalAlignment(JLabel.CENTER);
@@ -744,13 +743,13 @@ public class GameController {
                 currentPlayer = turnIterator.next();
                 playerPanel.updatePlayer(currentPlayer);
                 boardPane.showValidLocs(validSetupSettlementLocs, new SetUpSettlementListener(), BoardPane.LOC_TYPE_SETTLEMENT, false);
-                JOptionPane.showMessageDialog(mainFrame, currentPlayer.getName() + ", please place a settlement and a road next to the new settlement", "Setup", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(mainFrame, currentPlayer.getColoredName() + ", please place a settlement and a road next to the new settlement", "Setup", JOptionPane.INFORMATION_MESSAGE);
             } else {//Every player has placed their first two settlements and roads
                 //Distribute resources from second settlements
                 JPanel resourceTable = new JPanel(new GridLayout(players.length, 2, -1, -1));
 
                 for (int i = 0; i < players.length; i++) {
-                    JLabel playerName = new JLabel(players[i].getName() + ":");
+                    JLabel playerName = new JLabel(players[i].getColoredName() + ":");
                     playerName.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
                     playerName.setHorizontalAlignment(JLabel.CENTER);
                     playerName.setVerticalAlignment(JLabel.CENTER);

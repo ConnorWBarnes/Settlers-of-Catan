@@ -125,18 +125,18 @@ public class Player {
 
     /**
      * Sets the color of this player to the specified color.
-     * @param inColor this player's new color
+     * @param color this player's new color
      */
-    public void setColor(String inColor) {
-        color = inColor;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     /**
      * Sets the name of this player to the specified name.
-     * @param inName the new name of this player
+     * @param name the new name of this player
      */
-    public void setName(String inName) {
-        name = inName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -145,6 +145,16 @@ public class Player {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Returns the name of this player surrounded by the html tags necessary to
+     * display it in the color of this player.
+     * @return the name of this player with html tags that display it in the
+     * color of this player
+     */
+    public String getColoredName() {
+        return "<html><font color=\"" + color + "\">" + name + "</font>";
     }
 
     /**

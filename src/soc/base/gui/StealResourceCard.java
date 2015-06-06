@@ -78,7 +78,7 @@ public class StealResourceCard {
         //Construct a button for each potential victim
         JButton[] options = new JButton[potentialVictims.length];
         for (int i = 0; i < potentialVictims.length; i++) {
-            options[i] = new JButton(potentialVictims[i].getName(), icons.getSettlementIcon(potentialVictims[i].getColor()));
+            options[i] = new JButton(potentialVictims[i].getColoredName(), icons.getSettlementIcon(potentialVictims[i].getColor()));
             options[i].setActionCommand(String.valueOf(i));//Each button's ActionCommand is the index of its respective player in potentialVictims
             options[i].addActionListener(new ActionListener() {
                 @Override

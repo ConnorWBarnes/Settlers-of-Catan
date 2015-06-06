@@ -3,8 +3,10 @@ package soc.base.gui;
 import soc.base.model.Player;
 
 import javax.swing.*;
-import java.awt.event.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Represents a panel containing player information and a list of actions
@@ -27,11 +29,12 @@ public class PlayerPanel extends JPanel {
     public static final String END_TURN = "End Turn";
     public static final String[] BUTTON_NAMES = {BUILD_ROAD, BUILD_SETTLEMENT, BUILD_CITY, BUILD_DEV_CARD, VIEW_CARDS,
             OFFER_TRADE, PLAY_DEV_CARD, TRADE_IN_RESOURCE_CARDS, END_TURN};
-    private static final int VIEW_CARDS_INDEX = 4;
+    private final Color BACKGROUND_COLOR = Color.LIGHT_GRAY;
 
     private GameIcons icons;
     private JButton[] playerButtons;
-	private JLabel costsLabel, roadLabel, settlementLabel, cityLabel, resourceCardLabel, devCardLabel;
+    private JPanel buttonPanel;
+    private JLabel costsLabel, roadLabel, settlementLabel, cityLabel, resourceCardLabel, devCardLabel;
 	private JLabel longestRoadLabel, largestArmyLabel;
     private JFrame costsFrame;
     private String playerColor;
@@ -40,19 +43,21 @@ public class PlayerPanel extends JPanel {
      * Constructs a new player panel with the specified icons and adds the
      * specified ActionListener to each button (i.e. Build Road, View Cards,
      * etc.).
-     * @param inIcons the icons to use to display player information
+     * @param icons the icons to use to display player information
      * @param buttonListener the ActionListener to add to each button
      */
-    public PlayerPanel(GameIcons inIcons, ActionListener buttonListener) {
+    public PlayerPanel(GameIcons icons, ActionListener buttonListener) {
         super();
-        icons = inIcons;
+        this.icons = icons;
         setLayout(new FlowLayout());
+        buttonPanel = buildButtonPanel(buttonListener);
         add(buildCostsPanel());
-        add(buildButtonPanel(buttonListener));
+        add(buttonPanel);
         add(buildTokensAndCardsPanel());
         add(buildLongestRoadPanel());
         add(buildLargestArmyPanel());
         setButtonsEnabled(false);
+        setBackground(BACKGROUND_COLOR);
     }
 
     /**
@@ -65,7 +70,8 @@ public class PlayerPanel extends JPanel {
             costsFrame = null;
         }
         playerColor = nextPlayer.getColor();
-        //Change the color of the costs panel and the player's tokens
+        //Update the border around buttonPanel and change the color of the costs panel and the player's tokens
+        buttonPanel.setBorder(BorderFactory.createTitledBorder(nextPlayer.getColoredName() + ", what would you like to do?"));
         costsLabel.setIcon(icons.getScaledCostsCardIcon(nextPlayer.getColor()));
         roadLabel.setIcon(icons.getVerticalRoadIcon(nextPlayer.getColor()));
         settlementLabel.setIcon(icons.getSettlementIcon(nextPlayer.getColor()));
@@ -190,6 +196,7 @@ public class PlayerPanel extends JPanel {
         costsLabel.setIcon(icons.getScaledCostsCardIcon(playerColor));
         costsLabel.addMouseListener(new CostsCardListener());
         JPanel costsPanel = new JPanel();
+        costsPanel.setBackground(BACKGROUND_COLOR);
         costsPanel.add(costsLabel);
         return costsPanel;
     }
@@ -201,6 +208,7 @@ public class PlayerPanel extends JPanel {
      * @return a JPanel containing all the player buttons
      */
     private JPanel buildButtonPanel(ActionListener buttonListener) {
+        final int VIEW_CARDS_INDEX = 4;
         //Create the buttons in the button panel
         playerButtons = new JButton[BUTTON_NAMES.length];
         for (int i = 0; i < playerButtons.length; i++) {
@@ -225,10 +233,12 @@ public class PlayerPanel extends JPanel {
         playerButtons = tempButtons;
         //Add the "End Turn" button to a separate JPanel
         JPanel endTurnPanel = new JPanel();
+        endTurnPanel.setBackground(BACKGROUND_COLOR);
         endTurnPanel.setLayout(new BorderLayout());
         endTurnPanel.add(playerButtons[playerButtons.length - 1], BorderLayout.CENTER);
         //Add both panels to another JPanel and return it
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(BACKGROUND_COLOR);
         buttonPanel.setBorder(BorderFactory.createTitledBorder("What would you like to do?"));
         buttonPanel.setLayout(new BorderLayout());
         buttonPanel.add(actionButtonPanel, BorderLayout.NORTH);
@@ -256,17 +266,20 @@ public class PlayerPanel extends JPanel {
         devCardLabel.setText(" x 0");
         //Add the token labels to a JPanel
         JPanel tokensPanel = new JPanel();
+        tokensPanel.setBackground(BACKGROUND_COLOR);
         tokensPanel.setLayout(new GridLayout(1, 3));
         tokensPanel.add(roadLabel);
         tokensPanel.add(settlementLabel);
         tokensPanel.add(cityLabel);
         //Add the card labels to a separate JPanel
         JPanel cardsPanel = new JPanel();
+        cardsPanel.setBackground(BACKGROUND_COLOR);
         cardsPanel.setLayout(new GridLayout(1, 2));
         cardsPanel.add(resourceCardLabel);
         cardsPanel.add(devCardLabel);
         //Add both JPanels to another JPanel and return it
         JPanel tokensAndCardsPanel = new JPanel();
+        tokensAndCardsPanel.setBackground(BACKGROUND_COLOR);
         tokensAndCardsPanel.setLayout(new BorderLayout());
         tokensAndCardsPanel.add(tokensPanel, BorderLayout.NORTH);
         tokensAndCardsPanel.add(cardsPanel, BorderLayout.CENTER);
@@ -281,6 +294,7 @@ public class PlayerPanel extends JPanel {
     private JPanel buildLongestRoadPanel() {
         longestRoadLabel = new JLabel();
         JPanel longestRoadPanel = new JPanel();
+        longestRoadPanel.setBackground(BACKGROUND_COLOR);
         longestRoadPanel.add(longestRoadLabel);
         return longestRoadPanel;
     }
@@ -293,6 +307,7 @@ public class PlayerPanel extends JPanel {
     private JPanel buildLargestArmyPanel() {
         largestArmyLabel = new JLabel();
         JPanel largestArmyPanel = new JPanel();
+        largestArmyPanel.setBackground(BACKGROUND_COLOR);
         largestArmyPanel.add(longestRoadLabel);
         return largestArmyPanel;
     }

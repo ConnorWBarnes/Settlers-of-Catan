@@ -11,7 +11,6 @@ import soc.base.model.Player;
  * @author Connor Barnes
  */
 public class OfferTradeTest {
-
     public static void main(String[] args) {
         Player offerer = new Player("Blue", "Offerer");
         for (String resource : GameController.RESOURCE_TYPES) {
@@ -29,6 +28,7 @@ public class OfferTradeTest {
             for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
                 System.out.print(GameController.RESOURCE_TYPES[i] + ": " + trade.takeCards[i] + " ");
             }
+            System.out.println("\n");
             //Create a player who can't complete the trade and a player who can complete the trade
             Player cannotComplete = new Player("Orange", "Cannot Complete");
             Player canComplete = new Player("Red", "Can Complete");
@@ -36,8 +36,8 @@ public class OfferTradeTest {
                 canComplete.giveResource(GameController.RESOURCE_TYPES[i], trade.takeCards[i]);
             }
             //Offer the trade to both players
-            System.out.println("Player who cannot complete the trade: " + OfferTrade.offerTrade(icons, trade, offerer.getName(), cannotComplete));
-            System.out.println("Player who can complete the trade: " + OfferTrade.offerTrade(icons, trade, offerer.getName(), canComplete));
+            System.out.println("Player who cannot complete the trade: " + OfferTrade.offerTrade(icons, trade, offerer, cannotComplete));
+            System.out.println("Player who can complete the trade: " + OfferTrade.offerTrade(icons, trade, offerer, canComplete));
         } else {
             System.out.println("A trade offer was not constructed");
         }

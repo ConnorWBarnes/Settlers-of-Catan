@@ -7,6 +7,8 @@ import soc.base.model.Player;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Tests the PlayerPanel class by constructing a new player with a few resource
@@ -16,28 +18,32 @@ import java.awt.event.ActionListener;
  * @author Connor Barnes
  */
 public class PlayerPanelTest {
-    private static final String[] PLAYER_COLORS = {"Blue", "Orange", "Red", "White"};
+    private final String[] PLAYER_COLORS = {"Blue", "Orange", "Red", "White"};
     private PlayerPanel playerPanel;
     private Player player;
-    private int colorIndex;
+    private Iterator<String> colorIterator;
 
+    /**
+     * Creates and displays a new PlayerPanel object. Uses the object to call
+     * updatePlayer() and passes in a player who has a few resource cards and a
+     * few development cards.
+     */
     public PlayerPanelTest() {
         JFrame frame = new JFrame("PlayerPanel Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        GameIcons icons = new GameIcons();
-        colorIndex = 0;
-        player = new Player(PLAYER_COLORS[colorIndex]);
+        colorIterator = Arrays.asList(PLAYER_COLORS).iterator();
+        player = new Player(colorIterator.next());
         for (String resource : GameController.RESOURCE_TYPES) {
             player.giveResource(resource, 1);
         }
-        player.giveDevCard(new DevelopmentCard("Knight"));
-        player.giveDevCard(new DevelopmentCard("Year of Plenty"));
-        player.giveDevCard(new DevelopmentCard("Monopoly"));
-        player.giveDevCard(new DevelopmentCard("Chapel"));
-        player.giveDevCard(new DevelopmentCard("Road Building"));
-        player.giveDevCard(new DevelopmentCard("Knight"));
+        player.giveDevCard(new DevelopmentCard(DevelopmentCard.KNIGHT));
+        player.giveDevCard(new DevelopmentCard(DevelopmentCard.YEAR_OF_PLENTY));
+        player.giveDevCard(new DevelopmentCard(DevelopmentCard.MONOPOLY));
+        player.giveDevCard(new DevelopmentCard(DevelopmentCard.CHAPEL));
+        player.giveDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
+        player.giveDevCard(new DevelopmentCard(DevelopmentCard.KNIGHT));
 
-        playerPanel = new PlayerPanel(icons, new ButtonListener());
+        playerPanel = new PlayerPanel(new GameIcons(), new ButtonListener());
         playerPanel.updatePlayer(player);
         playerPanel.setButtonsEnabled(true);
         frame.add(playerPanel);
@@ -46,26 +52,30 @@ public class PlayerPanelTest {
         frame.setVisible(true);
     }
 
+    /**
+     * Prints out the ActionCommand of the ActionEvent fired by the button that was pressed.
+     * If the "End Turn" button was pressed, the color of the player is changed and the
+     * PlayerPanel is updated.
+     */
     private class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             System.out.println("Button pressed: " + actionEvent.getActionCommand());
-            if (actionEvent.getActionCommand().equals("End Turn")) {
-                if (colorIndex + 1 == PLAYER_COLORS.length) {
-                    colorIndex = 0;
-                } else {
-                    colorIndex++;
+            if (actionEvent.getActionCommand().equals(PlayerPanel.END_TURN)) {
+                if (!colorIterator.hasNext()) {
+                    colorIterator = Arrays.asList(PLAYER_COLORS).iterator();
                 }
-                player.setColor(PLAYER_COLORS[colorIndex]);
+                player.setColor(colorIterator.next());
                 playerPanel.updatePlayer(player);
             }
         }
     }
 
     /**
-     * @param args the command line arguments
+     * Starts the test.
+     * @param args command line arguments (unused)
      */
     public static void main (String[] args) {
-        PlayerPanelTest mainTest = new PlayerPanelTest();
+        new PlayerPanelTest();
     }
 }

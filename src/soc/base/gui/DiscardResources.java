@@ -4,12 +4,8 @@ import soc.base.GameController;
 import soc.base.model.Player;
 
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.*;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -129,7 +125,7 @@ public class DiscardResources {
             //Add the contents to the frame
             setLayout(new BorderLayout());
             JPanel tempPanel = new JPanel();
-            tempPanel.add(new JLabel(player.getName() + ", please discard half (" + (player.getSumResourceCards() / 2) + ") of your resource cards"));
+            tempPanel.add(new JLabel(player.getColoredName() + ", please discard half (" + (player.getSumResourceCards() / 2) + ") of your resource cards"));
             add(tempPanel, BorderLayout.NORTH);
             tempPanel = new JPanel(new BorderLayout());
             JPanel cardPanel = new JPanel();
