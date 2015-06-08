@@ -13,6 +13,9 @@ import java.awt.*;
  * @author Connor Barnes
  */
 public class PlayerInfoPanel extends JPanel {
+    public static boolean TOP_CORNER = true;
+    public static boolean BOTTOM_CORNER = false;
+
     private GameIcons icons;
     private JLabel roadsLabel, settlementsLabel, citiesLabel, resourcesLabel, devCardsLabel;
     private JLabel longestRoadLabel, largestArmyLabel;
@@ -22,7 +25,7 @@ public class PlayerInfoPanel extends JPanel {
      * @param icons The icons to use to display the information
      * @param player The player whose information is to be displayed
      */
-    public PlayerInfoPanel(GameIcons icons, Player player) {
+    public PlayerInfoPanel(GameIcons icons, Player player, boolean orientation) {
         super(new BorderLayout(-1, -1));
         this.icons = icons;
         //Create the contents of the panel
@@ -31,11 +34,16 @@ public class PlayerInfoPanel extends JPanel {
         JPanel tokenAndCardPanel = new JPanel(new BorderLayout(-1, -1));
         tokenAndCardPanel.add(buildTokenPanel(player), BorderLayout.NORTH);
         tokenAndCardPanel.add(buildCardPanel(player), BorderLayout.CENTER);
-        JPanel roadAndArmyPanel = buildRoadAndArmyPanel(player);
         //Add the contents to the panel
-        add(nameLabel, BorderLayout.NORTH);
-        add(tokenAndCardPanel, BorderLayout.CENTER);
-        add(roadAndArmyPanel, BorderLayout.SOUTH);
+        if (orientation) {//orientation == NAME_ON_TOP
+            add(nameLabel, BorderLayout.NORTH);
+            add(tokenAndCardPanel, BorderLayout.CENTER);
+            add(buildRoadAndArmyPanel(player), BorderLayout.SOUTH);
+        } else {
+            add(nameLabel, BorderLayout.CENTER);
+            add(tokenAndCardPanel, BorderLayout.SOUTH);
+            add(buildRoadAndArmyPanel(player), BorderLayout.NORTH);
+        }
     }
 
     /**
@@ -164,13 +172,13 @@ public class PlayerInfoPanel extends JPanel {
     private JPanel buildRoadAndArmyPanel(Player player) {
         //Create the contents of the panel
         longestRoadLabel = new JLabel();
-        longestRoadLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        longestRoadLabel.setHorizontalAlignment(JLabel.CENTER);
         setLongestRoad(player.hasLongestRoad());
         largestArmyLabel = new JLabel();
-        largestArmyLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        largestArmyLabel.setHorizontalAlignment(JLabel.CENTER);
         setLargestArmy(player.hasLargestArmy());
         //Add the contents to the panel
-        JPanel roadAndArmyPanel = new JPanel(new GridLayout(1, 2, -1, -1));
+        JPanel roadAndArmyPanel = new JPanel(new GridLayout(1, 2));
         roadAndArmyPanel.add(longestRoadLabel);
         roadAndArmyPanel.add(largestArmyLabel);
         return roadAndArmyPanel;

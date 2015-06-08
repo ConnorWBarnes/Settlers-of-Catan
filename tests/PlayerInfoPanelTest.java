@@ -23,7 +23,7 @@ public class PlayerInfoPanelTest {
         }
         player.setLongestRoadStatus(true);
         player.setLargestArmyStatus(true);
-        PlayerInfoPanel playerInfoPanel = new PlayerInfoPanel(new GameIcons(), player);
+        PlayerInfoPanel playerInfoPanel = new PlayerInfoPanel(new GameIcons(), player, PlayerInfoPanel.BOTTOM_CORNER);
         //Use the player to create and display a PlayerInfoPanel
         JFrame frame = new JFrame("PlayerInfoPanel Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
