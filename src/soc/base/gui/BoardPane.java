@@ -149,17 +149,8 @@ public class BoardPane extends JLayeredPane {
      * @param color the color of the road
      */
 	public void addRoad(int roadLoc, String color) {
-		JLabel tempLabel;
-		int iconType = locConverter.getRoadIconType(roadLoc);
-		//Add the correct icon to the panel
-		if (iconType == LocationConverter.VERTICAL) {
-			tempLabel = new JLabel(icons.getVerticalRoadIcon(color));
-		} else if (iconType == LocationConverter.NEGATIVE_SLOPE) {
-			tempLabel = new JLabel(icons.getNegativeSlopeRoadIcon(color));
-		} else { //iconType == LocationConverter.POSITIVE_SLOPE
-			tempLabel = new JLabel(icons.getPositiveSlopeRoadIcon(color));
-		}
-		//Set the label location
+        JLabel tempLabel = new JLabel(icons.getRoadIcon(color, locConverter.getRoadIconType(roadLoc)));
+        //Set the label location
 		tempLabel.setLocation(locConverter.getRoadPoint(roadLoc));
         tempLabel.setSize(tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
 		//Add the road to the board

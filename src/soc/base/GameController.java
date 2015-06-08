@@ -27,7 +27,7 @@ public class GameController {
     public static final String WOOL = "Wool";
     public static final String[] RESOURCE_TYPES = {BRICK, GRAIN, LUMBER, ORE, WOOL};
     public static final String HARBOR_TYPE_ANY = "Any";
-    public static final int WIN_LIMIT = 10;
+    private final int WIN_LIMIT = 10;
 
     //Model variables
     private Player[] players;
@@ -41,6 +41,7 @@ public class GameController {
     private GameIcons icons;
     private JFrame mainFrame;
     private BoardPane boardPane;
+    private HashMap<Player, PlayerInfoPanel> playerInfoPanelMap;
     private PlayerPanel playerPanel;
     private CardsFrame cardsFrame;
     //Setup variables
@@ -57,7 +58,7 @@ public class GameController {
         devCardDeck = generateShuffledDevCards();
         devCardsBuiltThisTurn = new ArrayList<DevelopmentCard>();
         //Create the players and gameBoard
-        String[] playerColors = {"Blue", "Orange", "Red", "White"};//TODO: Change in order to support 5-6 player expansion
+        String[] playerColors = {"Blue", "Orange", "Red", "White"};//Does not support 5-6 player expansion
         players = PlayerConstructor.constructPlayers(playerColors);
         if (players == null) {//The dialog created by constructPlayers() was closed
             System.exit(0);
@@ -71,12 +72,9 @@ public class GameController {
 
         //Construct the remaining contents of the frame
         //TODO: Add menu bar
-        createGameBoard();
         playerPanel = new PlayerPanel(icons, new PlayerPanelListener());
-        JPanel boardPanel = new JPanel();
-        boardPanel.add(boardPane);
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.add(boardPanel, BorderLayout.NORTH);
+        mainPanel.add(createMainPane(), BorderLayout.NORTH);
         mainPanel.add(playerPanel, BorderLayout.CENTER);
         //Add the contents to the frame
         mainFrame = new JFrame("Settlers of Catan");
@@ -172,11 +170,13 @@ public class GameController {
     }
 
     /**
-     * Constructs a new Board and asks the user if they would like to keep it or
-     * generate a new Board. Continues to generate new Boards until the user
-     * accepts one of them.
+     * Creates and returns a JLayeredPane containing the BoardPane and the PlayerInfoPanels.
+     * When creating the BoardPane, a new Board is created and displayed and the user is asked if they would like to keep it or
+     * generate a new Board. Continues to generate new Boards until the user accepts one of them.
+     * @return A JLayeredPane containing the BoardPane and the PlayerInfoPanels
      */
-    private void createGameBoard() {
+    private JLayeredPane createMainPane() {
+        //Create the BoardPane
         while (true) {
             Board tempBoard = new Board();
             BoardPane tempPane = new BoardPane(icons, tempBoard.getTiles());
@@ -187,11 +187,38 @@ public class GameController {
             if (response == JOptionPane.YES_OPTION) {
                 gameBoard = tempBoard;
                 boardPane = tempPane;
-                return;
+                break;
             } else if (response == JOptionPane.CLOSED_OPTION) {
                 System.exit(0);
             }
         }
+        //Create the PlayerInfoPanels
+        playerInfoPanelMap = new HashMap<Player, PlayerInfoPanel>(players.length);
+        for (int i = 0; i < players.length; i++) {
+            if (i < 2) {
+                playerInfoPanelMap.put(players[i], new PlayerInfoPanel(icons, players[i], PlayerInfoPanel.TOP_CORNER));
+            } else {
+                playerInfoPanelMap.put(players[i], new PlayerInfoPanel(icons, players[i], PlayerInfoPanel.BOTTOM_CORNER));
+            }
+        }
+        //Set the location/bounds of BoardPane and the PlayerInfoPanels
+        int infoPanelWidth = (int) playerInfoPanelMap.get(players[0]).getPreferredSize().getWidth();
+        int infoPanelHeight = (int) playerInfoPanelMap.get(players[0]).getPreferredSize().getHeight();
+        boardPane.setSize(boardPane.getPreferredSize());
+        boardPane.setLocation(infoPanelWidth / 2, 0);
+        Point[] points = new Point[]{new Point(0, 0), new Point(GameIcons.BOARD_WIDTH, 0), new Point(0, GameIcons.BOARD_HEIGHT - infoPanelHeight), new Point(GameIcons.BOARD_WIDTH, GameIcons.BOARD_HEIGHT - infoPanelHeight)};
+        for (int i = 0; i < players.length; i++) {
+            playerInfoPanelMap.get(players[i]).setSize(playerInfoPanelMap.get(players[i]).getPreferredSize());
+            playerInfoPanelMap.get(players[i]).setLocation(points[i]);
+        }
+        //Add the BoardPane and the PlayerInfoPanels to the same JLayeredPane
+        JLayeredPane mainPane = new JLayeredPane();
+        mainPane.setPreferredSize(new Dimension(GameIcons.BOARD_WIDTH + infoPanelWidth, GameIcons.BOARD_HEIGHT));
+        mainPane.add(boardPane, new Integer(0));
+        for (Player player : players) {
+            mainPane.add(playerInfoPanelMap.get(player), new Integer(1));
+        }
+        return mainPane;
     }
 
     /**
@@ -283,7 +310,7 @@ public class GameController {
             message.add(new JLabel("Resources Received:", JLabel.CENTER), BorderLayout.NORTH);
             message.add(tempPanel, BorderLayout.CENTER);
             JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
-            playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+            playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
             playerPanel.setButtonsEnabled(true);
         }
     }
@@ -324,7 +351,7 @@ public class GameController {
                 }
                 longestRoadPlayer = currentPlayer;
                 currentPlayer.setLongestRoadStatus(true);
-                playerPanel.setLongestRoad(true);
+                playerInfoPanelMap.get(currentPlayer).setLongestRoad(true);
                 JOptionPane.showMessageDialog(mainFrame, "You earned Longest Road!", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
                 checkVictoryPoints();
             }
@@ -420,7 +447,7 @@ public class GameController {
                                         }
                                     }
                                 }
-                                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                                playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
                                 JOptionPane.showMessageDialog(mainFrame, "Trade Completed");
                                 break;
                             }
@@ -449,7 +476,7 @@ public class GameController {
                         }
                         cardsFrame.addResourceCard(cardsTraded[1]);
                     }
-                    playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                    playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
                     JOptionPane.showMessageDialog(mainFrame, "Trade completed");
                 }
                 playerPanel.setButtonsEnabled(true);
@@ -549,7 +576,7 @@ public class GameController {
                         cardsFrame.removeResourceCard(ORE);
                         cardsFrame.removeResourceCard(WOOL);
                     }
-                    playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                    playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
                 }
             } else {//actionEvent.getActionCommand().equals(PlayerPanel.PLAY_DEV_CARD)
                 //Construct a list of the current player's playable development cards (remove any victory point cards)
@@ -575,7 +602,7 @@ public class GameController {
                         if (cardsFrame != null) {
                             cardsFrame.removeDevCard(actionEvent.getActionCommand());
                         }
-                        playerPanel.setNumDevCards(currentPlayer.getSumDevCards());
+                        playerInfoPanelMap.get(currentPlayer).setNumDevCards(currentPlayer.getSumDevCards());
                         mainFrame.toFront();
                         mainFrame.requestFocus();
                         if (chosenDevCard.getTitle().equals(DevelopmentCard.KNIGHT)) {
@@ -587,7 +614,7 @@ public class GameController {
                                     }
                                     largestArmyPlayer = currentPlayer;
                                     currentPlayer.setLargestArmyStatus(true);
-                                    playerPanel.setLargestArmy(true);
+                                    playerInfoPanelMap.get(currentPlayer).setLargestArmy(true);
                                     JOptionPane.showMessageDialog(mainFrame, "You earned Largest Army!", mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
                                     checkVictoryPoints();
                                 }
@@ -685,7 +712,7 @@ public class GameController {
                                         cardsFrame.addResourceCard(resource);
                                     }
                                 }
-                                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                                playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
                                 playerPanel.setButtonsEnabled(true);
                             }
                             mainFrame.toFront();
@@ -713,7 +740,7 @@ public class GameController {
             gameBoard.addSettlement(settlementLoc, currentPlayer.getColor());
             currentPlayer.addSettlement(settlementLoc);
             boardPane.addSettlement(settlementLoc, currentPlayer.getColor());
-            playerPanel.setNumSettlements(currentPlayer.getNumRemainingSettlements());
+            playerInfoPanelMap.get(currentPlayer).setNumSettlements(currentPlayer.getNumRemainingSettlements());
             //Update validSetupSettlementLocs
             validSetupSettlementLocs.remove(new Integer(settlementLoc));
             for (Integer adjacentSettlementLoc : gameBoard.getCorner(settlementLoc).getAdjacentCornerLocs()) {
@@ -737,7 +764,7 @@ public class GameController {
             gameBoard.addRoad(roadLoc, currentPlayer.getColor());
             currentPlayer.addRoad(roadLoc, gameBoard.getRoad(roadLoc));
             boardPane.addRoad(roadLoc, currentPlayer.getColor());
-            playerPanel.setNumRoads(currentPlayer.getNumRemainingRoads());
+            playerInfoPanelMap.get(currentPlayer).setNumRoads(currentPlayer.getNumRemainingRoads());
             //Let the next player take their turn
             if (turnIterator.hasNext()) {
                 currentPlayer = turnIterator.next();
@@ -827,7 +854,7 @@ public class GameController {
                     if (cardsFrame != null) {
                         cardsFrame.addResourceCard((String) playerAndCard[1]);
                     }
-                    playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
+                    playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
                     playerPanel.setButtonsEnabled(true);
                 }
             }
@@ -850,8 +877,8 @@ public class GameController {
                 currentPlayer.addRoad(roadLoc, gameBoard.getRoad(roadLoc));
                 //Update the view
                 boardPane.addRoad(roadLoc, currentPlayer.getColor());
-                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
-                playerPanel.setNumRoads(currentPlayer.getNumRemainingRoads());
+                playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
+                playerInfoPanelMap.get(currentPlayer).setNumRoads(currentPlayer.getNumRemainingRoads());
                 if (cardsFrame != null) {
                     cardsFrame.removeResourceCard(BRICK);
                     cardsFrame.removeResourceCard(LUMBER);
@@ -880,8 +907,8 @@ public class GameController {
                 currentPlayer.addSettlement(settlementLoc);
                 //Update the view
                 boardPane.addSettlement(settlementLoc, currentPlayer.getColor());
-                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
-                playerPanel.setNumSettlements(currentPlayer.getNumRemainingSettlements());
+                playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
+                playerInfoPanelMap.get(currentPlayer).setNumSettlements(currentPlayer.getNumRemainingSettlements());
                 if (cardsFrame != null) {
                     cardsFrame.removeResourceCard(BRICK);
                     cardsFrame.removeResourceCard(GRAIN);
@@ -910,9 +937,9 @@ public class GameController {
                 currentPlayer.addSettlement(settlementLoc);
                 //Update the view
                 boardPane.addCity(settlementLoc);
-                playerPanel.setNumResourceCards(currentPlayer.getSumResourceCards());
-                playerPanel.setNumCities(currentPlayer.getNumRemainingCities());
-                playerPanel.setNumSettlements(currentPlayer.getNumRemainingSettlements());
+                playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
+                playerInfoPanelMap.get(currentPlayer).setNumCities(currentPlayer.getNumRemainingCities());
+                playerInfoPanelMap.get(currentPlayer).setNumSettlements(currentPlayer.getNumRemainingSettlements());
                 if (cardsFrame != null) {
                     cardsFrame.removeResourceCard(GRAIN);
                     cardsFrame.removeResourceCard(GRAIN);
@@ -944,7 +971,7 @@ public class GameController {
                 currentPlayer.addRoad(roadLoc, gameBoard.getRoad(roadLoc));
                 //Update the view
                 boardPane.addRoad(roadLoc, currentPlayer.getColor());
-                playerPanel.setNumRoads(currentPlayer.getNumRemainingRoads());
+                playerInfoPanelMap.get(currentPlayer).setNumRoads(currentPlayer.getNumRemainingRoads());
                 if (first) {//First road was just placed
                     first = false;
                     HashSet<Integer> validRoadLocs = getValidRoadLocs();
@@ -963,7 +990,7 @@ public class GameController {
                     if (cardsFrame != null) {
                         cardsFrame.addDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
                     }
-                    playerPanel.setNumDevCards(currentPlayer.getSumDevCards());
+                    playerInfoPanelMap.get(currentPlayer).setNumDevCards(currentPlayer.getSumDevCards());
                     JOptionPane.showMessageDialog(mainFrame, "The Road Building card has been returned to your hand");
                     playerPanel.setButtonsEnabled(true);
                 } else {//One road has already been placed

@@ -28,6 +28,10 @@ public class GameIcons {
     public static final int COSTS_CARD_HEIGHT = 795;
     public static final boolean PLAYER_TOKEN_STAR = true;
     public static final boolean ROBBER_STAR = false;
+    public static final String CARD_BACK = "Back";
+    public static final int VERTICAL = 0;
+    public static final int POSITIVE_SLOPE = 1;
+    public static final int NEGATIVE_SLOPE = 2;
 
     private HashMap<String, ImageIcon> tileIcons;//Key is name of terrain
     private HashMap<Character, ImageIcon> numberTokenIcons;//Key is the number of the token
@@ -42,7 +46,7 @@ public class GameIcons {
     private HashMap<String, ImageIcon> harborIcons;//Key is the type of resource
     private HashMap<Integer, ImageIcon> redDieIcons;//Key is the number of dots
     private HashMap<Integer, ImageIcon> yellowDieIcons;//Key is the number of dots
-    private ImageIcon boardIcon, robberIcon, resourceCardBackIcon, devCardBackIcon, longestRoadIcon, largestArmyIcon;
+    private ImageIcon boardIcon, robberIcon, longestRoadIcon, largestArmyIcon;
     private ImageIcon tokenStarIcon, robberStarIcon, cancelIcon;
 
     public GameIcons() {
@@ -96,7 +100,7 @@ public class GameIcons {
         for (String resource : GameController.RESOURCE_TYPES) {
             resourceIcons.put(resource, createImageIcon(filePath + resource + ".png", resource));
         }
-        resourceCardBackIcon = createImageIcon(filePath + "Resource Card Back.png", "Resource Cards");
+        resourceIcons.put(CARD_BACK, createImageIcon(filePath + "Resource Card Back.png", "Resource Cards"));
 
         //Populate devCardIcons
         filePath = "Images/Development Cards/";
@@ -104,7 +108,7 @@ public class GameIcons {
         for (String devCard : devCards) {
             devCardIcons.put(devCard, createImageIcon(filePath + devCard + ".png", devCard));
         }
-        devCardBackIcon = createImageIcon(filePath + "Development Card Back.png", "Development Cards");
+        devCardIcons.put(CARD_BACK, createImageIcon(filePath + "Development Card Back.png", "Development Cards"));
 
         //Populate harborIcons
         filePath = "Images/Harbors/";
@@ -187,34 +191,21 @@ public class GameIcons {
     }
 
     /**
-     * Returns the ImageIcon of a vertical road token of the specified color.
-     * @param color the color of the road token
-     * @return the ImageIcon of a vertical road token of the specified color
+     * Returns the ImageIcon of a road of the specified color and the specified orientation.
+     * @param color The color of the road
+     * @param orientation The orientation of the road (i.e. VERTICAL, POSITIVE_SLOPE, or NEGATIVE_SLOPE)
+     * @return the ImageIcon of a road of the specified color and the specified orientation
      */
-    public ImageIcon getVerticalRoadIcon(String color) {
-        return verticalRoadIcons.get(color);
-    }
-
-    /**
-     * Returns the ImageIcon of a road token (slanted downward) of the
-     * specified color.
-     * @param color the color of the road token
-     * @return the ImageIcon of a road token (slanted downward) of the
-     * specified color
-     */
-    public ImageIcon getNegativeSlopeRoadIcon(String color) {
-        return negativeSlopeRoadIcons.get(color);
-    }
-
-    /**
-     * Returns the ImageIcon of a road token (slanted downward) of the
-     * specified color.
-     * @param color the color of the road token
-     * @return the ImageIcon of a road token (slanted downward) of the
-     * specified color
-     */
-    public ImageIcon getPositiveSlopeRoadIcon(String color) {
-        return positiveSlopeRoadIcons.get(color);
+    public ImageIcon getRoadIcon(String color, int orientation) {
+        if (orientation == VERTICAL) {
+            return verticalRoadIcons.get(color);
+        } else if (orientation == POSITIVE_SLOPE) {
+            return positiveSlopeRoadIcons.get(color);
+        } else if (orientation == NEGATIVE_SLOPE) {
+            return negativeSlopeRoadIcons.get(color);
+        } else {
+            throw new IllegalArgumentException("The orientation argument must be GameIcons.VERTICAL, GameIcons.POSITIVE_SLOPE, or GameIcons.NEGATIVE_SLOPE");
+        }
     }
 
     /**
@@ -286,22 +277,6 @@ public class GameIcons {
      */
     public ImageIcon getRobberIcon() {
         return robberIcon;
-    }
-
-    /**
-     * Returns the ImageIcon of the back of a resource card.
-     * @return the ImageIcon of the back of a resource card
-     */
-    public ImageIcon getResourceCardBackIcon() {
-        return resourceCardBackIcon;
-    }
-
-    /**
-     * Returns the ImageIcon of the back of a development card.
-     * @return the ImageIcon of the back of a development card
-     */
-    public ImageIcon getDevCardBackIcon() {
-        return devCardBackIcon;
     }
 
     /**

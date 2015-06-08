@@ -1,7 +1,5 @@
-import soc.base.GameController;
 import soc.base.gui.GameIcons;
 import soc.base.gui.PlayerPanel;
-import soc.base.model.DevelopmentCard;
 import soc.base.model.Player;
 
 import javax.swing.*;
@@ -11,9 +9,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * Tests the PlayerPanel class by constructing a new player with a few resource
- * cards and a few development cards, and then using said player to construct
- * and test a new PlayerPanel. When a button in the PlayerPanel is pressed, the
+ * Tests the PlayerPanel class by creating a new instance of it using a new Player. When a button in the PlayerPanel is pressed, the
  * button's action command is printed out.
  * @author Connor Barnes
  */
@@ -25,23 +21,13 @@ public class PlayerPanelTest {
 
     /**
      * Creates and displays a new PlayerPanel object. Uses the object to call
-     * updatePlayer() and passes in a player who has a few resource cards and a
-     * few development cards.
+     * updatePlayer().
      */
     public PlayerPanelTest() {
         JFrame frame = new JFrame("PlayerPanel Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         colorIterator = Arrays.asList(PLAYER_COLORS).iterator();
         player = new Player(colorIterator.next());
-        for (String resource : GameController.RESOURCE_TYPES) {
-            player.giveResource(resource, 1);
-        }
-        player.giveDevCard(new DevelopmentCard(DevelopmentCard.KNIGHT));
-        player.giveDevCard(new DevelopmentCard(DevelopmentCard.YEAR_OF_PLENTY));
-        player.giveDevCard(new DevelopmentCard(DevelopmentCard.MONOPOLY));
-        player.giveDevCard(new DevelopmentCard(DevelopmentCard.CHAPEL));
-        player.giveDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
-        player.giveDevCard(new DevelopmentCard(DevelopmentCard.KNIGHT));
 
         playerPanel = new PlayerPanel(new GameIcons(), new ButtonListener());
         playerPanel.updatePlayer(player);

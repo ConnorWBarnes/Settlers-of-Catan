@@ -128,7 +128,7 @@ public class PlayerInfoPanel extends JPanel {
      */
     private JPanel buildTokenPanel(Player player) {
         //Create the contents of the panel
-        roadsLabel = new JLabel(String.valueOf(player.getNumRemainingRoads()), new ImageIcon(icons.getVerticalRoadIcon(player.getColor()).getImage().getScaledInstance((int) (GameIcons.PLAYER_TOKEN_WIDTH * ((double) 2 / 3)), (int) (GameIcons.PLAYER_TOKEN_HEIGHT * ((double) 2 / 3)), Image.SCALE_SMOOTH)), JLabel.CENTER);
+        roadsLabel = new JLabel(String.valueOf(player.getNumRemainingRoads()), new ImageIcon(icons.getRoadIcon(player.getColor(), GameIcons.VERTICAL).getImage().getScaledInstance((int) (GameIcons.PLAYER_TOKEN_WIDTH * ((double) 2 / 3)), (int) (GameIcons.PLAYER_TOKEN_HEIGHT * ((double) 2 / 3)), Image.SCALE_SMOOTH)), JLabel.CENTER);
         roadsLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         settlementsLabel = new JLabel(String.valueOf(player.getNumRemainingSettlements()), new ImageIcon(icons.getSettlementIcon(player.getColor()).getImage().getScaledInstance((int) (GameIcons.PLAYER_TOKEN_WIDTH * ((double) 2 / 3)), (int) (GameIcons.PLAYER_TOKEN_HEIGHT * ((double) 2 / 3)), Image.SCALE_SMOOTH)), JLabel.CENTER);
         settlementsLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
@@ -150,9 +150,9 @@ public class PlayerInfoPanel extends JPanel {
      */
     private JPanel buildCardPanel(Player player) {
         //Create the contents of the panel
-        resourcesLabel = new JLabel(String.valueOf(player.getSumResourceCards()), new ImageIcon(icons.getResourceCardBackIcon().getImage().getScaledInstance(GameIcons.CARD_WIDTH / 2, GameIcons.CARD_HEIGHT / 2, Image.SCALE_SMOOTH)), JLabel.CENTER);
+        resourcesLabel = new JLabel(String.valueOf(player.getSumResourceCards()), new ImageIcon(icons.getResourceIcon(GameIcons.CARD_BACK).getImage().getScaledInstance(GameIcons.CARD_WIDTH / 2, GameIcons.CARD_HEIGHT / 2, Image.SCALE_SMOOTH)), JLabel.CENTER);
         resourcesLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-        devCardsLabel = new JLabel(String.valueOf(player.getSumDevCards()), new ImageIcon(icons.getDevCardBackIcon().getImage().getScaledInstance(GameIcons.CARD_WIDTH / 2, GameIcons.CARD_HEIGHT / 2, Image.SCALE_SMOOTH)), JLabel.CENTER);
+        devCardsLabel = new JLabel(String.valueOf(player.getSumDevCards()), new ImageIcon(icons.getDevCardIcon(GameIcons.CARD_BACK).getImage().getScaledInstance(GameIcons.CARD_WIDTH / 2, GameIcons.CARD_HEIGHT / 2, Image.SCALE_SMOOTH)), JLabel.CENTER);
         devCardsLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         //Add the contents to the panel
         JPanel cardPanel = new JPanel(new GridLayout(1, 2, -1, -1));

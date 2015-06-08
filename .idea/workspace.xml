@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Actually finished PlayerInfoPanel">
+    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Removed getResourceCardBack() and getDevCardBack() from GameIcons and replaced them with getResource(CARD_BACK) and getDevCard(CARD_BACK), respectfully.&#10;Also replaced getVerticalRoadIcon(), getPositiveSlopeRoadIcon(), and getNegativeSlopeRoadIcon() in GameIcons with getRoadIcon().&#10;">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/BoardPane.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/BoardPane.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/GameController.java" afterPath="$PROJECT_DIR$/src/soc/base/GameController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/PlayerInfoPanel.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/PlayerInfoPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/PlayerInfoPanelTest.java" afterPath="$PROJECT_DIR$/tests/PlayerInfoPanelTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/PlayerPanelTest.java" afterPath="$PROJECT_DIR$/tests/PlayerPanelTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Settlers of Catan.iws" />
@@ -26,16 +32,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GameController.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GameController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="628" column="116" selection-start-line="628" selection-start-column="63" selection-end-line="628" selection-end-column="116" />
+            <state vertical-scroll-proportion="-0.57471263">
+              <caret line="160" column="127" selection-start-line="160" selection-start-column="127" selection-end-line="160" selection-end-column="127" />
               <folding>
                 <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
                 <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
                 <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
-                <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
                 <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
                 <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
                 <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
@@ -47,34 +52,74 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="PlayerPanelTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/PlayerPanelTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="11" column="82" selection-start-line="11" selection-start-column="82" selection-end-line="11" selection-end-column="82" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="GameIcons.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/soc/base/gui/GameIcons.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="27" column="52" selection-start-line="27" selection-start-column="52" selection-end-line="27" selection-end-column="52" />
+              <caret line="34" column="47" selection-start-line="34" selection-start-column="47" selection-end-line="34" selection-end-column="47" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlayerInfoPanel.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerInfoPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7241379">
-              <caret line="180" column="64" selection-start-line="180" selection-start-column="64" selection-end-line="180" selection-end-column="64" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerInfoPanelTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/PlayerInfoPanelTest.java">
+      <file leaf-file-name="BoardPane.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/BoardPane.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="8" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+              <caret line="152" column="32" selection-start-line="152" selection-start-column="32" selection-end-line="152" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LocationConverter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="330" column="18" selection-start-line="330" selection-start-column="18" selection-end-line="330" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayerInfoPanel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerInfoPanel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="154" column="0" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayerPanel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="32" column="31" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StealResourceCard.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="105" column="81" selection-start-line="105" selection-start-column="81" selection-end-line="105" selection-end-column="81" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -139,23 +184,23 @@
         <option value="$PROJECT_DIR$/src/soc/base/gui/TradeFrame.java" />
         <option value="$PROJECT_DIR$/tests/TradeFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Board.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/BoardPane.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/PlayYearOfPlenty.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/TradeInResourceCards.java" />
         <option value="$PROJECT_DIR$/tests/OfferTradeTest.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/model/Player.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/OfferTrade.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/GameController.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java" />
-        <option value="$PROJECT_DIR$/tests/PlayerPanelTest.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" />
         <option value="$PROJECT_DIR$/tests/BoardPaneTest.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/PlayerInfoFrame.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/PlayerInfoPanel.java" />
         <option value="$PROJECT_DIR$/tests/PlayerInfoPanelTest.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/BoardPane.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" />
+        <option value="$PROJECT_DIR$/tests/PlayerPanelTest.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/model/Player.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/PlayerInfoPanel.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/GameController.java" />
       </list>
     </option>
   </component>
@@ -367,7 +412,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.PlayerInfoPanelTest">
+  <component name="RunManager" selected="Application.GameController">
     <configuration default="false" name="OfferTradeTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="OfferTradeTest" />
@@ -606,10 +651,10 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.PlayerInfoPanelTest" />
+        <item index="0" class="java.lang.String" itemvalue="Application.GameController" />
         <item index="1" class="java.lang.String" itemvalue="Application.PlayerPanelTest" />
-        <item index="2" class="java.lang.String" itemvalue="Application.BoardPaneTest" />
-        <item index="3" class="java.lang.String" itemvalue="Application.GameController" />
+        <item index="2" class="java.lang.String" itemvalue="Application.PlayerInfoPanelTest" />
+        <item index="3" class="java.lang.String" itemvalue="Application.BoardPaneTest" />
         <item index="4" class="java.lang.String" itemvalue="Application.OfferTradeTest" />
       </list>
     </recent_temporary>
@@ -865,7 +910,13 @@
       <option name="project" value="LOCAL" />
       <updated>1433734651850</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Added option to display Longest Road and Largest Army at the top or the bottom of a PlayerInfoPanel">
+      <created>1433797778870</created>
+      <option name="number" value="00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1433797778870</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -886,6 +937,7 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39692307" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.50238097" order="7" side_tool="true" content_ui="tabs" />
@@ -901,37 +953,10 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39692307" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.50238097" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32288402" sideWeight="0.49761903" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17559524" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15464994" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -946,7 +971,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Commit before using graphs" />
     <MESSAGE value="Decided to only use graphs in Player class for calculating longest road length. The methods that calculate the longest road length need larger scale testing (i.e. more than two roads).&#10;LocationConverter now returns copies of its private members instead of the private members themselves.&#10;DiscardFrame will no longer automatically resize itself.&#10;Moved stars showing valid robber locations under the number tokens and enlarged these stars in order to keep them visible.&#10;CardPane now sets the size of it labels using the label's preferred size instead of the label's icon (since it may not have one).&#10;" />
     <MESSAGE value="Consolidated construction methods in Board class.&#10;Set the constructGameBoard() method to exit the program when the user closes the frame (instead of just constructing a new board)." />
     <MESSAGE value="Added methods for building a new development card.&#10;Also fixed various bugs." />
@@ -971,7 +995,8 @@
     <MESSAGE value="Replaced getScaledCostsCardIcon() and getUnscaledCostsCardIcon() in GameIcons with getCostsCardIcon() and manual image scaling when using the new method" />
     <MESSAGE value="Finished PlayerInfoPanel" />
     <MESSAGE value="Actually finished PlayerInfoPanel" />
-    <option name="LAST_COMMIT_MESSAGE" value="Actually finished PlayerInfoPanel" />
+    <MESSAGE value="Added option to display Longest Road and Largest Army at the top or the bottom of a PlayerInfoPanel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added option to display Longest Road and Largest Army at the top or the bottom of a PlayerInfoPanel" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -1008,7 +1033,6 @@
             <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
             <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
             <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
-            <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
             <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
             <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
             <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
@@ -1055,7 +1079,6 @@
             <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
             <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
             <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
-            <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
             <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
             <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
             <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
@@ -1244,13 +1267,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/BoardPane.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="97" column="52" selection-start-line="97" selection-start-column="52" selection-end-line="97" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/TradeInResourceCards.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1272,24 +1288,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/model/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="145" column="20" selection-start-line="145" selection-start-column="20" selection-end-line="145" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="127" column="60" selection-start-line="127" selection-start-column="60" selection-end-line="127" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="80" column="73" selection-start-line="80" selection-start-column="73" selection-end-line="80" selection-end-column="73" />
         </state>
       </provider>
     </entry>
@@ -1300,31 +1302,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/PlayerPanelTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9578544">
-          <caret line="74" column="23" selection-start-line="74" selection-start-column="23" selection-end-line="74" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/BoardPaneTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.81609195">
           <caret line="118" column="8" selection-start-line="118" selection-start-column="8" selection-end-line="118" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="7.378033">
-          <caret line="323" column="102" selection-start-line="323" selection-start-column="102" selection-end-line="323" selection-end-column="102" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="318" column="244" selection-start-line="318" selection-start-column="244" selection-end-line="318" selection-end-column="244" />
         </state>
       </provider>
     </entry>
@@ -1336,36 +1317,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/GameIcons.java">
+    <entry file="file://$PROJECT_DIR$/src/soc/base/model/Player.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="52" selection-start-line="27" selection-start-column="52" selection-end-line="27" selection-end-column="52" />
+          <caret line="156" column="22" selection-start-line="156" selection-start-column="22" selection-end-line="156" selection-end-column="22" />
+          <folding>
+            <element signature="e#5348#5349#0" expanded="true" />
+            <element signature="e#5375#5376#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/PlayerPanelTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="82" selection-start-line="11" selection-start-column="82" selection-end-line="11" selection-end-column="82" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/BoardPane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="152" column="32" selection-start-line="152" selection-start-column="32" selection-end-line="152" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="628" column="116" selection-start-line="628" selection-start-column="63" selection-end-line="628" selection-end-column="116" />
-          <folding>
-            <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
-            <element signature="method#checkLongestRoad#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
-            <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
-            <element signature="docComment;class#MoveRobberListener#0;class#GameController#0" expanded="false" />
-          </folding>
+          <caret line="330" column="18" selection-start-line="330" selection-start-column="18" selection-end-line="330" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="32" column="31" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tests/PlayerInfoPanelTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.87356323">
           <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1373,11 +1372,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="105" column="81" selection-start-line="105" selection-start-column="81" selection-end-line="105" selection-end-column="81" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerInfoPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7241379">
-          <caret line="180" column="64" selection-start-line="180" selection-start-column="64" selection-end-line="180" selection-end-column="64" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="154" column="0" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/GameIcons.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="34" column="47" selection-start-line="34" selection-start-column="47" selection-end-line="34" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.57471263">
+          <caret line="160" column="127" selection-start-line="160" selection-start-column="127" selection-end-line="160" selection-end-column="127" />
+          <folding>
+            <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#checkLongestRoad#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="method#getValidRoadLocs#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#PlayerPanelListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpSettlementListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
+            <element signature="docComment;class#MoveRobberListener#0;class#GameController#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

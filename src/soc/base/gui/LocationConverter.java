@@ -8,10 +8,6 @@ import java.util.HashMap;
  * @author Connor Barnes
  */
 public class LocationConverter {
-    //Types of road icons
-    public static final int VERTICAL = 0;
-    public static final int NEGATIVE_SLOPE = 1;
-    public static final int POSITIVE_SLOPE = 2;
     //Tile offsets
     private final int TILE_OFFSET_X = GameIcons.TILE_WIDTH / 2;
     private final int TILE_OFFSET_Y = (3 * GameIcons.TILE_HEIGHT) / 4;
@@ -51,18 +47,18 @@ public class LocationConverter {
                 || (33 <= roadLoc && roadLoc <= 38)
                 || (49 <= roadLoc && roadLoc <= 53)
                 || (62 <= roadLoc && roadLoc <= 65)) {
-            return VERTICAL;
+            return GameIcons.VERTICAL;
         } else if ((roadLoc <= 17) || (39 <= roadLoc && roadLoc <= 48)) {
             if ((roadLoc % 2) == 1) {
-                return NEGATIVE_SLOPE;
+                return GameIcons.NEGATIVE_SLOPE;
             } else {
-                return POSITIVE_SLOPE;
+                return GameIcons.POSITIVE_SLOPE;
             }
         } else { //((23 <= roadLoc && roadLoc <= 32) || (54 <= roadLoc))
             if ((roadLoc % 2) == 0) {
-                return NEGATIVE_SLOPE;
+                return GameIcons.NEGATIVE_SLOPE;
             } else {
-                return POSITIVE_SLOPE;
+                return GameIcons.POSITIVE_SLOPE;
             }
         }
     }

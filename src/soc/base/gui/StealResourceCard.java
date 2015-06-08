@@ -103,7 +103,7 @@ public class StealResourceCard {
         JLabel tempLabel;
         for (String resource : GameController.RESOURCE_TYPES) {
             for (int j = 0; j < victim.getNumResourceCards(resource); j++) {
-                tempLabel = new JLabel(icons.getResourceCardBackIcon());
+                tempLabel = new JLabel(icons.getResourceIcon(GameIcons.CARD_BACK));
                 tempLabel.setName(resource);//The name of each label is its resource type
                 tempLabel.addMouseListener(new MouseAdapter() {
                     @Override
