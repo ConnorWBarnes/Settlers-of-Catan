@@ -44,6 +44,7 @@ public class PlayerInfoPanel extends JPanel {
      */
     public void setNumRoads(int numRoads) {
         roadsLabel.setText(String.valueOf(numRoads));
+        repaint();
     }
 
     /**
@@ -52,6 +53,7 @@ public class PlayerInfoPanel extends JPanel {
      */
     public void setNumSettlements(int numSettlements) {
         settlementsLabel.setText(String.valueOf(numSettlements));
+        repaint();
     }
 
     /**
@@ -60,6 +62,7 @@ public class PlayerInfoPanel extends JPanel {
      */
     public void setNumCities(int numCities) {
         citiesLabel.setText(String.valueOf(numCities));
+        repaint();
     }
 
     /**
@@ -68,6 +71,7 @@ public class PlayerInfoPanel extends JPanel {
      */
     public void setNumResourceCards(int numResourceCards) {
         resourcesLabel.setText(String.valueOf(numResourceCards));
+        repaint();
     }
 
     /**
@@ -76,6 +80,7 @@ public class PlayerInfoPanel extends JPanel {
      */
     public void setNumDevCards(int numDevCards) {
         devCardsLabel.setText(String.valueOf(numDevCards));
+        repaint();
     }
 
     /**
@@ -90,6 +95,7 @@ public class PlayerInfoPanel extends JPanel {
         } else {
             longestRoadLabel.setIcon(null);
         }
+        repaint();
     }
 
     /**
@@ -104,6 +110,7 @@ public class PlayerInfoPanel extends JPanel {
         } else {
             largestArmyLabel.setIcon(null);
         }
+        repaint();
     }
 
     /**
