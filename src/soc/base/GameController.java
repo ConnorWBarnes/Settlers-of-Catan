@@ -205,15 +205,15 @@ public class GameController {
         int infoPanelWidth = (int) playerInfoPanelMap.get(players[0]).getPreferredSize().getWidth();
         int infoPanelHeight = (int) playerInfoPanelMap.get(players[0]).getPreferredSize().getHeight();
         boardPane.setSize(boardPane.getPreferredSize());
-        boardPane.setLocation(infoPanelWidth / 2, 0);
-        Point[] points = new Point[]{new Point(0, 0), new Point(GameIcons.BOARD_WIDTH, 0), new Point(0, GameIcons.BOARD_HEIGHT - infoPanelHeight), new Point(GameIcons.BOARD_WIDTH, GameIcons.BOARD_HEIGHT - infoPanelHeight)};
+        boardPane.setLocation(infoPanelWidth / 3, 0);
+        Point[] points = new Point[]{new Point(0, 0), new Point(GameIcons.BOARD_WIDTH - (infoPanelWidth / 3), 0), new Point(0, GameIcons.BOARD_HEIGHT - infoPanelHeight), new Point(GameIcons.BOARD_WIDTH - (infoPanelWidth / 3), GameIcons.BOARD_HEIGHT - infoPanelHeight)};
         for (int i = 0; i < players.length; i++) {
             playerInfoPanelMap.get(players[i]).setSize(playerInfoPanelMap.get(players[i]).getPreferredSize());
             playerInfoPanelMap.get(players[i]).setLocation(points[i]);
         }
         //Add the BoardPane and the PlayerInfoPanels to the same JLayeredPane
         JLayeredPane mainPane = new JLayeredPane();
-        mainPane.setPreferredSize(new Dimension(GameIcons.BOARD_WIDTH + infoPanelWidth, GameIcons.BOARD_HEIGHT));
+        mainPane.setPreferredSize(new Dimension(GameIcons.BOARD_WIDTH + (infoPanelWidth * 2 / 3), GameIcons.BOARD_HEIGHT));
         mainPane.add(boardPane, new Integer(0));
         for (Player player : players) {
             mainPane.add(playerInfoPanelMap.get(player), new Integer(1));

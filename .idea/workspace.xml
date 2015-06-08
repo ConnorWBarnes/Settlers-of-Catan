@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Removed getResourceCardBack() and getDevCardBack() from GameIcons and replaced them with getResource(CARD_BACK) and getDevCard(CARD_BACK), respectfully.&#10;Also replaced getVerticalRoadIcon(), getPositiveSlopeRoadIcon(), and getNegativeSlopeRoadIcon() in GameIcons with getRoadIcon().&#10;">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/BoardPane.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/BoardPane.java" />
+    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Removed getResourceCardBack() and getDevCardBack() from GameIcons and replaced them with getResource(CARD_BACK) and getDevCard(CARD_BACK), respectfully.&#10;Also replaced getVerticalRoadIcon(), getPositiveSlopeRoadIcon(), and getNegativeSlopeRoadIcon() in GameIcons with getRoadIcon().&#10;Added PlayerInfoPanels to the main window in GameController.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/GameController.java" afterPath="$PROJECT_DIR$/src/soc/base/GameController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/PlayerInfoPanel.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/PlayerInfoPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/PlayerPanelTest.java" afterPath="$PROJECT_DIR$/tests/PlayerPanelTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Settlers of Catan.iws" />
@@ -35,8 +28,8 @@
       <file leaf-file-name="GameController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.57471263">
-              <caret line="160" column="127" selection-start-line="160" selection-start-column="127" selection-end-line="160" selection-end-column="127" />
+            <state vertical-scroll-proportion="0.6436782">
+              <caret line="207" column="48" selection-start-line="207" selection-start-column="48" selection-end-line="207" selection-end-column="48" />
               <folding>
                 <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
                 <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
@@ -48,78 +41,6 @@
                 <element signature="docComment;class#SetUpRoadListener#0;class#GameController#0" expanded="false" />
                 <element signature="docComment;class#MoveRobberListener#0;class#GameController#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerPanelTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/PlayerPanelTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="82" selection-start-line="11" selection-start-column="82" selection-end-line="11" selection-end-column="82" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameIcons.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/GameIcons.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="34" column="47" selection-start-line="34" selection-start-column="47" selection-end-line="34" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BoardPane.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/BoardPane.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="152" column="32" selection-start-line="152" selection-start-column="32" selection-end-line="152" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LocationConverter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="330" column="18" selection-start-line="330" selection-start-column="18" selection-end-line="330" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerInfoPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerInfoPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="154" column="0" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="32" column="31" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StealResourceCard.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="105" column="81" selection-start-line="105" selection-start-column="81" selection-end-line="105" selection-end-column="81" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -916,7 +837,13 @@
       <option name="project" value="LOCAL" />
       <updated>1433797778870</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Removed getResourceCardBack() and getDevCardBack() from GameIcons and replaced them with getResource(CARD_BACK) and getDevCard(CARD_BACK), respectfully.&#10;Also replaced getVerticalRoadIcon(), getPositiveSlopeRoadIcon(), and getNegativeSlopeRoadIcon() in GameIcons with getRoadIcon().&#10;Added PlayerInfoPanels to the main window in GameController.">
+      <created>1433804946749</created>
+      <option name="number" value="00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1433804946749</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -971,7 +898,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Decided to only use graphs in Player class for calculating longest road length. The methods that calculate the longest road length need larger scale testing (i.e. more than two roads).&#10;LocationConverter now returns copies of its private members instead of the private members themselves.&#10;DiscardFrame will no longer automatically resize itself.&#10;Moved stars showing valid robber locations under the number tokens and enlarged these stars in order to keep them visible.&#10;CardPane now sets the size of it labels using the label's preferred size instead of the label's icon (since it may not have one).&#10;" />
     <MESSAGE value="Consolidated construction methods in Board class.&#10;Set the constructGameBoard() method to exit the program when the user closes the frame (instead of just constructing a new board)." />
     <MESSAGE value="Added methods for building a new development card.&#10;Also fixed various bugs." />
     <MESSAGE value="Added methods for building a new settlement." />
@@ -996,7 +922,8 @@
     <MESSAGE value="Finished PlayerInfoPanel" />
     <MESSAGE value="Actually finished PlayerInfoPanel" />
     <MESSAGE value="Added option to display Longest Road and Largest Army at the top or the bottom of a PlayerInfoPanel" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added option to display Longest Road and Largest Army at the top or the bottom of a PlayerInfoPanel" />
+    <MESSAGE value="Removed getResourceCardBack() and getDevCardBack() from GameIcons and replaced them with getResource(CARD_BACK) and getDevCard(CARD_BACK), respectfully.&#10;Also replaced getVerticalRoadIcon(), getPositiveSlopeRoadIcon(), and getNegativeSlopeRoadIcon() in GameIcons with getRoadIcon().&#10;Added PlayerInfoPanels to the main window in GameController." />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed getResourceCardBack() and getDevCardBack() from GameIcons and replaced them with getResource(CARD_BACK) and getDevCard(CARD_BACK), respectfully.&#10;Also replaced getVerticalRoadIcon(), getPositiveSlopeRoadIcon(), and getNegativeSlopeRoadIcon() in GameIcons with getRoadIcon().&#10;Added PlayerInfoPanels to the main window in GameController." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -1391,15 +1318,17 @@
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/GameIcons.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="47" selection-start-line="34" selection-start-column="47" selection-end-line="34" selection-end-column="47" />
-          <folding />
+          <caret line="33" column="47" selection-start-line="33" selection-start-column="47" selection-end-line="33" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/GameController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.57471263">
-          <caret line="160" column="127" selection-start-line="160" selection-start-column="127" selection-end-line="160" selection-end-column="127" />
+        <state vertical-scroll-proportion="0.6436782">
+          <caret line="207" column="48" selection-start-line="207" selection-start-column="48" selection-end-line="207" selection-end-column="48" />
           <folding>
             <element signature="docComment;method#moveRobber#0;class#GameController#0" expanded="false" />
             <element signature="docComment;method#checkVictoryPoints#0;class#GameController#0" expanded="false" />
