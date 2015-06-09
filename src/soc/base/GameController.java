@@ -934,7 +934,7 @@ public class GameController {
                 currentPlayer.takeResource(GRAIN, 2);
                 currentPlayer.takeResource(ORE, 3);
                 gameBoard.upgradeSettlement(settlementLoc);
-                currentPlayer.addSettlement(settlementLoc);
+                currentPlayer.upgradeSettlement();
                 //Update the view
                 boardPane.addCity(settlementLoc);
                 playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());

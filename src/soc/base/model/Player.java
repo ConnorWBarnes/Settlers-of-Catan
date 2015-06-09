@@ -163,14 +163,18 @@ public class Player {
      * @param resource the type of resource to give
      * @param amount the number of resource cards to give
      * @return true if the cards were added, otherwise false
+     * @throws IllegalArgumentException if the specified amount causes the player to have a negative amount of cards
      */
     public boolean giveResource(String resource, int amount) {
-        //TODO: Throw exception when amount < 0 or when trying to take more resources than the player has?
         for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
             if (GameController.RESOURCE_TYPES[i].equals(resource)) {
-                resourceCards[i] += amount;
-                sumResourceCards += amount;
-                return true;
+                if (resourceCards[i] + amount < 0) {
+                    throw new IllegalArgumentException("A player cannot have a negative amount of resource cards");
+                } else {
+                    resourceCards[i] += amount;
+                    sumResourceCards += amount;
+                    return true;
+                }
             }
         }
         return false;
@@ -181,14 +185,18 @@ public class Player {
      * @param resource the type of resource to take
      * @param amount the number of resource cards to take
      * @return true if the cards were removed, otherwise false
+     * @throws IllegalArgumentException if the specified amount causes the player to have a negative amount of cards
      */
     public boolean takeResource(String resource, int amount) {
-        //TODO: Throw exception when amount < 0 or when trying to take more resources than the player has?
         for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
             if (GameController.RESOURCE_TYPES[i].equals(resource)) {
-                resourceCards[i] -= amount;
-                sumResourceCards -= amount;
-                return true;
+                if (resourceCards[i] < amount) {
+                    throw new IllegalArgumentException("A player cannot have a negative amount of resource cards");
+                } else {
+                    resourceCards[i] -= amount;
+                    sumResourceCards -= amount;
+                    return true;
+                }
             }
         }
         return false;
@@ -265,7 +273,6 @@ public class Player {
             }
         }
         //Re-calculate longestRoadLength
-        //TODO: Test
         ArrayList<Integer> visited;
         int tempLength;
         for (int start : roadMap.keySet()) {
@@ -307,10 +314,14 @@ public class Player {
     /**
      * Adds the specified harbor to the list of harbors this player can access.
      * @param type the resource type that the new harbor affects
+     * @throws IllegalArgumentException if the specified type is not a valid harbor
      */
     public void addHarbor(String type) {
-        //TODO: Throw exception if type > GameController.HARBOR_TYPE_ANY?
-        harbors.add(type);
+        if (type.equals(GameController.HARBOR_TYPE_ANY) || Arrays.asList(GameController.RESOURCE_TYPES).contains(type)) {
+            harbors.add(type);
+        } else {
+            throw new IllegalArgumentException("Invalid harbor type");
+        }
     }
 
     /**
