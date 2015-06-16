@@ -131,6 +131,18 @@ public class BoardPane extends JLayeredPane {
 	}
 
     /**
+     * Removes all the star icons that show a valid location.
+     */
+    public void removeStars() {
+        for (JLabel star : stars) {
+            remove(getIndexOf(star));
+        }
+        stars = new LinkedList<JLabel>();
+        revalidate();
+        repaint();
+    }
+
+    /**
      * The interface for EventListeners that listen for when the user selects a location via the showValidLocs() method.
      */
     public interface LocationListener extends EventListener {
@@ -273,12 +285,7 @@ public class BoardPane extends JLayeredPane {
      */
     private class StarListener extends MouseAdapter {
         public void mouseReleased(MouseEvent e) {
-            for (JLabel star : stars) {
-                remove(getIndexOf(star));
-            }
-            stars = new LinkedList<JLabel>();
-            revalidate();
-            repaint();
+            removeStars();
             locListener.locationSelected(Integer.parseInt(e.getComponent().getName()));
         }
     }

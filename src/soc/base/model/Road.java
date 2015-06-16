@@ -1,6 +1,5 @@
 package soc.base.model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -11,8 +10,7 @@ import java.util.Arrays;
  */
 public class Road {
     private String color;//The player that owns this road
-    private ArrayList<Integer> adjacentRoadLocs;
-    private int[] adjacentCornerLocs;
+    private int[] adjacentRoadLocs, adjacentCornerLocs;
 
     /**
      * Constructs a road location that does not have a road token or any
@@ -20,8 +18,8 @@ public class Road {
      */
     public Road() {
         color = null;
-        adjacentRoadLocs = new ArrayList<Integer>();
-        adjacentCornerLocs = new int[2];
+        adjacentRoadLocs = null;
+        adjacentCornerLocs = null;
     }
 
     /**
@@ -30,7 +28,7 @@ public class Road {
      */
     public Road(Road road) {
         color = road.color;
-        adjacentRoadLocs = new ArrayList<Integer>(road.adjacentRoadLocs);
+        adjacentRoadLocs = Arrays.copyOf(road.adjacentRoadLocs, road.adjacentRoadLocs.length);
         adjacentCornerLocs = Arrays.copyOf(road.adjacentCornerLocs, road.adjacentCornerLocs.length);
     }
 
@@ -56,8 +54,8 @@ public class Road {
      * Returns true if a player has placed a road token on this road, otherwise false.
      * @return true if a player has placed a road token on this road, otherwise false
      */
-    public boolean isEmpty() {
-        return color == null;
+    public boolean hasToken() {
+        return color != null;
     }
 
     /**
@@ -67,8 +65,7 @@ public class Road {
      * @param locB the location of an adjacent corner
      */
     public void setAdjacentCornerLocs(int locA, int locB) {
-        adjacentCornerLocs[0] = locA;
-        adjacentCornerLocs[1] = locB;
+        adjacentCornerLocs = new int[]{locA, locB};
     }
 
     /**
@@ -82,47 +79,19 @@ public class Road {
     }
 
     /**
-     * Adds the specified road locations to the list of adjacent road locations.
-     * @param locA the location of an adjacent road
-     * @param locB the location of an adjacent road
-     * @param locC the location of an adjacent road
-     * @param locD the location of an adjacent road
+     * Sets the list of adjacent road locations to the specified array.
+     * @param roadLocs the locations of the adjacent roads
      */
-    public void setAdjacentRoadLocs(int locA, int locB, int locC, int locD) {
-        adjacentRoadLocs.add(locA);
-        adjacentRoadLocs.add(locB);
-        adjacentRoadLocs.add(locC);
-        adjacentRoadLocs.add(locD);
+    public void setAdjacentRoadLocs(int[] roadLocs) {
+        adjacentRoadLocs = roadLocs;
     }
 
     /**
-     * Adds the specified road locations to the list of adjacent road locations.
-     * @param locA the location of an adjacent road
-     * @param locB the location of an adjacent road
-     * @param locC the location of an adjacent road
+     * Returns an array of the locations of roads that are adjacent to this one.
+     * @return an array of the locations of roads that are adjacent to this one
      */
-    public void setAdjacentRoadLocs(int locA, int locB, int locC) {
-        adjacentRoadLocs.add(locA);
-        adjacentRoadLocs.add(locB);
-        adjacentRoadLocs.add(locC);
-    }
-
-    /**
-     * Adds the specified road locations to the list of adjacent road locations.
-     * @param locA the location of an adjacent road
-     * @param locB the location of an adjacent road
-     */
-    public void setAdjacentRoadLocs(int locA, int locB) {
-        adjacentRoadLocs.add(locA);
-        adjacentRoadLocs.add(locB);
-    }
-
-    /**
-     * Returns a list of the locations of roads that are adjacent to this one.
-     * @return a list of the locations of roads that are adjacent to this one
-     */
-    public ArrayList<Integer> getAdjacentRoadLocs() {
-        return new ArrayList<Integer>(adjacentRoadLocs);
+    public int[] getAdjacentRoadLocs() {
+        return Arrays.copyOf(adjacentRoadLocs, adjacentRoadLocs.length);
     }
 
     /**
@@ -133,7 +102,12 @@ public class Road {
      * location; otherwise false
      */
     public boolean isAdjacentToRoad(int roadLoc) {
-        return adjacentRoadLocs.contains(roadLoc);
+        for (int loc : adjacentRoadLocs) {
+            if (loc == roadLoc) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

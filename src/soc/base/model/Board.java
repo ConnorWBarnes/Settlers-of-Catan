@@ -2,10 +2,7 @@ package soc.base.model;
 
 import soc.base.GameController;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * Represents the Settlers of Catan game board. Keeps track of what objects are
@@ -13,13 +10,12 @@ import java.util.LinkedList;
  * @author Connor Barnes
  */
 public class Board {
-    private final int CENTER_TILE_INDEX = 9;
-
     private Tile[] tileMap;
     private Corner[] cornerMap;
     private Road[] roadMap;
     private int robberLoc;
     private HashMap<Integer, LinkedList<Tile>> numberTokenMap;//Key is a number token, value is a list of the tiles that have that number token
+    private HashMap<String, ArrayList<Integer>> playerRoadMap;//Key is player color, value is a list of all their road locations
 
     /**
      * Constructs a new Settlers of Catan board. The location of each tile is
@@ -30,6 +26,7 @@ public class Board {
         buildTileMap();
         buildCornerMap();
         buildRoadMap();
+        playerRoadMap = new HashMap<String, ArrayList<Integer>>();
     }
 
     /**
@@ -81,6 +78,14 @@ public class Board {
     }
 
     /**
+     * Returns the total number of roads on the board.
+     * @return the total number of roads on the board
+     */
+    public int getNumRoads() {
+        return roadMap.length;
+    }
+
+    /**
      * Returns the corner at the specified location.
      * @param cornerLoc the location of the corner
      * @return the corner at the specified location
@@ -96,6 +101,19 @@ public class Board {
      */
     public Road getRoad(int roadLoc) {
         return new Road(roadMap[roadLoc]);
+    }
+
+    /**
+     * Returns the locations of all the roads that the player of the specified color has placed.
+     * @param playerColor the color of the player whose road locations are to be returned
+     * @return the locations of all the roads that the player of the specified color has placed
+     */
+    public ArrayList<Integer> getRoadLocs(String playerColor) {
+        if (playerRoadMap.get(playerColor) == null) {
+            return null;
+        } else {
+            return new ArrayList<Integer>(playerRoadMap.get(playerColor));
+        }
     }
 
     /**
@@ -138,6 +156,10 @@ public class Board {
     public void addRoad(int roadLoc, String color) {
         //Error checking occurs in controller
         roadMap[roadLoc].setColor(color);
+        if (playerRoadMap.get(color) == null) {
+            playerRoadMap.put(color, new ArrayList<Integer>());
+        }
+        playerRoadMap.get(color).add(roadLoc);
     }
 
     /**
@@ -148,6 +170,61 @@ public class Board {
         tileMap[robberLoc].setRobberStatus(false);
         robberLoc = tileLoc;
         tileMap[robberLoc].setRobberStatus(true);
+    }
+
+    /**
+     * Returns the length of the longest continuous road created by the roads that the player with the specified color has placed on the board.
+     * @param playerColor the color of the player whose longest road length is to be calculated
+     * @return the length of the longest continuous road created by the roads at the specified locations
+     */
+    public int calcLongestRoadLength(String playerColor) {
+        ArrayList<Integer> visited = new ArrayList<Integer>(playerRoadMap.get(playerColor).size());
+        int longestRoadLength = 0;
+        for (int start : playerRoadMap.get(playerColor)) {
+            visited.add(start);
+            int tempLength = calcLongestRoadLengthHelper(start, playerRoadMap.get(playerColor), visited);
+            if (tempLength > longestRoadLength) {
+                longestRoadLength = tempLength;
+            }
+            visited.remove(new Integer(start));
+        }
+        return longestRoadLength;
+    }
+
+    /**
+     * Recursive method that explores every possible path using the specified
+     * locations and starting from the specified location that does not include
+     * any locations in the specified list of locations that have already been
+     * visited. Returns the length of the longest path found.
+     * @param start    the starting location
+     * @param roadLocs the locations that can be (or already have been) visited
+     * @param visited  the locations that have already been visited
+     * @return the length of the longest path
+     */
+    private int calcLongestRoadLengthHelper(int start, Collection<Integer> roadLocs, Collection<Integer> visited) {
+        int currentLength = 0;
+        for (int adjacentRoadLoc : roadMap[start].getAdjacentRoadLocs()) {
+            if (roadLocs.contains(adjacentRoadLoc) && !visited.contains(adjacentRoadLoc)) {
+                //Make sure there isn't another player's settlement between the road at start and the next road
+                outerLoop:
+                for (int adjacentCornerLocA : roadMap[start].getAdjacentCornerLocs()) {
+                    for (int adjacentCornerLocB : roadMap[adjacentRoadLoc].getAdjacentCornerLocs()) {
+                        if (adjacentCornerLocA == adjacentCornerLocB) {
+                            if (!cornerMap[adjacentCornerLocA].hasSettlement() || cornerMap[adjacentCornerLocA].getSettlementColor().equals(roadMap[start].getColor())) {
+                                visited.add(adjacentRoadLoc);
+                                int tempLength = calcLongestRoadLengthHelper(adjacentRoadLoc, roadLocs, visited);
+                                if (tempLength > currentLength) {
+                                    currentLength = tempLength;
+                                }
+                                visited.remove(adjacentRoadLoc);
+                            }
+                            break outerLoop;
+                        }
+                    }
+                }
+            }
+        }
+        return currentLength + 1;
     }
 
     /**
@@ -237,6 +314,7 @@ public class Board {
             }
         }
         //Add a number token to the center tile
+        final int CENTER_TILE_INDEX = 9;
         if (tileMap[CENTER_TILE_INDEX].hasRobber()) {
             robberLoc = CENTER_TILE_INDEX;
         } else {
@@ -374,78 +452,78 @@ public class Board {
             roadMap[i] = new Road();
         }
         //Set the adjacent road locations for each road
-        roadMap[0].setAdjacentRoadLocs(1, 6);
-        roadMap[1].setAdjacentRoadLocs(0, 2, 7);
-        roadMap[2].setAdjacentRoadLocs(1, 3, 7);
-        roadMap[3].setAdjacentRoadLocs(2, 4, 8);
-        roadMap[4].setAdjacentRoadLocs(3, 5, 8);
-        roadMap[5].setAdjacentRoadLocs(4, 9);
-        roadMap[6].setAdjacentRoadLocs(0, 10, 11);
-        roadMap[7].setAdjacentRoadLocs(1, 2, 12, 13);
-        roadMap[8].setAdjacentRoadLocs(3, 4, 14, 15);
-        roadMap[9].setAdjacentRoadLocs(5, 16, 17);
-        roadMap[10].setAdjacentRoadLocs(6, 11, 18);
-        roadMap[11].setAdjacentRoadLocs(6, 10, 12, 19);
-        roadMap[12].setAdjacentRoadLocs(7, 11, 13, 19);
-        roadMap[13].setAdjacentRoadLocs(7, 12, 14, 20);
-        roadMap[14].setAdjacentRoadLocs(8, 13, 15, 20);
-        roadMap[15].setAdjacentRoadLocs(8, 14, 16, 21);
-        roadMap[16].setAdjacentRoadLocs(9, 15, 17, 21);
-        roadMap[17].setAdjacentRoadLocs(9, 16, 22);
-        roadMap[18].setAdjacentRoadLocs(10, 23, 24);
-        roadMap[19].setAdjacentRoadLocs(11, 12, 25, 26);
-        roadMap[20].setAdjacentRoadLocs(13, 14, 27, 28);
-        roadMap[21].setAdjacentRoadLocs(15, 16, 29, 30);
-        roadMap[22].setAdjacentRoadLocs(17, 31, 32);
-        roadMap[23].setAdjacentRoadLocs(18, 24, 33);
-        roadMap[24].setAdjacentRoadLocs(18, 23, 25, 34);
-        roadMap[25].setAdjacentRoadLocs(19, 24, 26, 34);
-        roadMap[26].setAdjacentRoadLocs(19, 25, 27, 35);
-        roadMap[27].setAdjacentRoadLocs(20, 26, 28, 35);
-        roadMap[28].setAdjacentRoadLocs(20, 27, 29, 36);
-        roadMap[29].setAdjacentRoadLocs(21, 28, 30, 36);
-        roadMap[30].setAdjacentRoadLocs(21, 29, 31, 37);
-        roadMap[31].setAdjacentRoadLocs(22, 30, 32, 37);
-        roadMap[32].setAdjacentRoadLocs(22, 31, 38);
-        roadMap[33].setAdjacentRoadLocs(23, 39);
-        roadMap[34].setAdjacentRoadLocs(24, 25, 40, 41);
-        roadMap[35].setAdjacentRoadLocs(26, 27, 42, 43);
-        roadMap[36].setAdjacentRoadLocs(28, 29, 44, 45);
-        roadMap[37].setAdjacentRoadLocs(30, 31, 46, 47);
-        roadMap[38].setAdjacentRoadLocs(32, 48);
-        roadMap[39].setAdjacentRoadLocs(33, 40, 49);
-        roadMap[40].setAdjacentRoadLocs(34, 39, 41, 49);
-        roadMap[41].setAdjacentRoadLocs(34, 40, 42, 50);
-        roadMap[42].setAdjacentRoadLocs(35, 41, 43, 50);
-        roadMap[43].setAdjacentRoadLocs(35, 42, 44, 51);
-        roadMap[44].setAdjacentRoadLocs(36, 43, 45, 51);
-        roadMap[45].setAdjacentRoadLocs(36, 44, 46, 52);
-        roadMap[46].setAdjacentRoadLocs(37, 45, 47, 52);
-        roadMap[47].setAdjacentRoadLocs(37, 46, 48, 53);
-        roadMap[48].setAdjacentRoadLocs(38, 47, 53);
-        roadMap[49].setAdjacentRoadLocs(39, 40, 54);
-        roadMap[50].setAdjacentRoadLocs(41, 42, 55, 56);
-        roadMap[51].setAdjacentRoadLocs(43, 44, 57, 58);
-        roadMap[52].setAdjacentRoadLocs(45, 46, 59, 60);
-        roadMap[53].setAdjacentRoadLocs(47, 48, 61);
-        roadMap[54].setAdjacentRoadLocs(49, 55, 62);
-        roadMap[55].setAdjacentRoadLocs(50, 54, 56, 62);
-        roadMap[56].setAdjacentRoadLocs(50, 55, 57, 63);
-        roadMap[57].setAdjacentRoadLocs(51, 56, 58, 63);
-        roadMap[58].setAdjacentRoadLocs(51, 57, 59, 64);
-        roadMap[59].setAdjacentRoadLocs(52, 58, 60, 64);
-        roadMap[60].setAdjacentRoadLocs(52, 59, 61, 65);
-        roadMap[61].setAdjacentRoadLocs(53, 60, 65);
-        roadMap[62].setAdjacentRoadLocs(54, 55, 66);
-        roadMap[63].setAdjacentRoadLocs(56, 57, 67, 68);
-        roadMap[64].setAdjacentRoadLocs(58, 59, 69, 70);
-        roadMap[65].setAdjacentRoadLocs(60, 61, 71);
-        roadMap[66].setAdjacentRoadLocs(62, 67);
-        roadMap[67].setAdjacentRoadLocs(66, 63, 68);
-        roadMap[68].setAdjacentRoadLocs(63, 67, 69);
-        roadMap[69].setAdjacentRoadLocs(64, 68, 70);
-        roadMap[70].setAdjacentRoadLocs(64, 69, 71);
-        roadMap[71].setAdjacentRoadLocs(65, 70);
+        roadMap[0].setAdjacentRoadLocs(new int[]{1, 6});
+        roadMap[1].setAdjacentRoadLocs(new int[]{0, 2, 7});
+        roadMap[2].setAdjacentRoadLocs(new int[]{1, 3, 7});
+        roadMap[3].setAdjacentRoadLocs(new int[]{2, 4, 8});
+        roadMap[4].setAdjacentRoadLocs(new int[]{3, 5, 8});
+        roadMap[5].setAdjacentRoadLocs(new int[]{4, 9});
+        roadMap[6].setAdjacentRoadLocs(new int[]{0, 10, 11});
+        roadMap[7].setAdjacentRoadLocs(new int[]{1, 2, 12, 13});
+        roadMap[8].setAdjacentRoadLocs(new int[]{3, 4, 14, 15});
+        roadMap[9].setAdjacentRoadLocs(new int[]{5, 16, 17});
+        roadMap[10].setAdjacentRoadLocs(new int[]{6, 11, 18});
+        roadMap[11].setAdjacentRoadLocs(new int[]{6, 10, 12, 19});
+        roadMap[12].setAdjacentRoadLocs(new int[]{7, 11, 13, 19});
+        roadMap[13].setAdjacentRoadLocs(new int[]{7, 12, 14, 20});
+        roadMap[14].setAdjacentRoadLocs(new int[]{8, 13, 15, 20});
+        roadMap[15].setAdjacentRoadLocs(new int[]{8, 14, 16, 21});
+        roadMap[16].setAdjacentRoadLocs(new int[]{9, 15, 17, 21});
+        roadMap[17].setAdjacentRoadLocs(new int[]{9, 16, 22});
+        roadMap[18].setAdjacentRoadLocs(new int[]{10, 23, 24});
+        roadMap[19].setAdjacentRoadLocs(new int[]{11, 12, 25, 26});
+        roadMap[20].setAdjacentRoadLocs(new int[]{13, 14, 27, 28});
+        roadMap[21].setAdjacentRoadLocs(new int[]{15, 16, 29, 30});
+        roadMap[22].setAdjacentRoadLocs(new int[]{17, 31, 32});
+        roadMap[23].setAdjacentRoadLocs(new int[]{18, 24, 33});
+        roadMap[24].setAdjacentRoadLocs(new int[]{18, 23, 25, 34});
+        roadMap[25].setAdjacentRoadLocs(new int[]{19, 24, 26, 34});
+        roadMap[26].setAdjacentRoadLocs(new int[]{19, 25, 27, 35});
+        roadMap[27].setAdjacentRoadLocs(new int[]{20, 26, 28, 35});
+        roadMap[28].setAdjacentRoadLocs(new int[]{20, 27, 29, 36});
+        roadMap[29].setAdjacentRoadLocs(new int[]{21, 28, 30, 36});
+        roadMap[30].setAdjacentRoadLocs(new int[]{21, 29, 31, 37});
+        roadMap[31].setAdjacentRoadLocs(new int[]{22, 30, 32, 37});
+        roadMap[32].setAdjacentRoadLocs(new int[]{22, 31, 38});
+        roadMap[33].setAdjacentRoadLocs(new int[]{23, 39});
+        roadMap[34].setAdjacentRoadLocs(new int[]{24, 25, 40, 41});
+        roadMap[35].setAdjacentRoadLocs(new int[]{26, 27, 42, 43});
+        roadMap[36].setAdjacentRoadLocs(new int[]{28, 29, 44, 45});
+        roadMap[37].setAdjacentRoadLocs(new int[]{30, 31, 46, 47});
+        roadMap[38].setAdjacentRoadLocs(new int[]{32, 48});
+        roadMap[39].setAdjacentRoadLocs(new int[]{33, 40, 49});
+        roadMap[40].setAdjacentRoadLocs(new int[]{34, 39, 41, 49});
+        roadMap[41].setAdjacentRoadLocs(new int[]{34, 40, 42, 50});
+        roadMap[42].setAdjacentRoadLocs(new int[]{35, 41, 43, 50});
+        roadMap[43].setAdjacentRoadLocs(new int[]{35, 42, 44, 51});
+        roadMap[44].setAdjacentRoadLocs(new int[]{36, 43, 45, 51});
+        roadMap[45].setAdjacentRoadLocs(new int[]{36, 44, 46, 52});
+        roadMap[46].setAdjacentRoadLocs(new int[]{37, 45, 47, 52});
+        roadMap[47].setAdjacentRoadLocs(new int[]{37, 46, 48, 53});
+        roadMap[48].setAdjacentRoadLocs(new int[]{38, 47, 53});
+        roadMap[49].setAdjacentRoadLocs(new int[]{39, 40, 54});
+        roadMap[50].setAdjacentRoadLocs(new int[]{41, 42, 55, 56});
+        roadMap[51].setAdjacentRoadLocs(new int[]{43, 44, 57, 58});
+        roadMap[52].setAdjacentRoadLocs(new int[]{45, 46, 59, 60});
+        roadMap[53].setAdjacentRoadLocs(new int[]{47, 48, 61});
+        roadMap[54].setAdjacentRoadLocs(new int[]{49, 55, 62});
+        roadMap[55].setAdjacentRoadLocs(new int[]{50, 54, 56, 62});
+        roadMap[56].setAdjacentRoadLocs(new int[]{50, 55, 57, 63});
+        roadMap[57].setAdjacentRoadLocs(new int[]{51, 56, 58, 63});
+        roadMap[58].setAdjacentRoadLocs(new int[]{51, 57, 59, 64});
+        roadMap[59].setAdjacentRoadLocs(new int[]{52, 58, 60, 64});
+        roadMap[60].setAdjacentRoadLocs(new int[]{52, 59, 61, 65});
+        roadMap[61].setAdjacentRoadLocs(new int[]{53, 60, 65});
+        roadMap[62].setAdjacentRoadLocs(new int[]{54, 55, 66});
+        roadMap[63].setAdjacentRoadLocs(new int[]{56, 57, 67, 68});
+        roadMap[64].setAdjacentRoadLocs(new int[]{58, 59, 69, 70});
+        roadMap[65].setAdjacentRoadLocs(new int[]{60, 61, 71});
+        roadMap[66].setAdjacentRoadLocs(new int[]{62, 67});
+        roadMap[67].setAdjacentRoadLocs(new int[]{66, 63, 68});
+        roadMap[68].setAdjacentRoadLocs(new int[]{63, 67, 69});
+        roadMap[69].setAdjacentRoadLocs(new int[]{64, 68, 70});
+        roadMap[70].setAdjacentRoadLocs(new int[]{64, 69, 71});
+        roadMap[71].setAdjacentRoadLocs(new int[]{65, 70});
         //Set the adjacent corner locations for each road
         int i;
         for (i = 0; i < 6; i++) {

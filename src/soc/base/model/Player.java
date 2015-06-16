@@ -2,7 +2,10 @@ package soc.base.model;
 
 import soc.base.GameController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
  * Represents a player in a game of Settlers of Catan.
@@ -14,7 +17,6 @@ public class Player {
     private int[] resourceCards;
     private ArrayList<DevelopmentCard> devCards;
     private LinkedList<Integer> settlementLocs;//Locations of settlements and cities owned by this player
-    private HashMap<Integer, LinkedList<Integer>> roadMap;//Locations of the roads owned by this player
     private HashSet<String> harbors;//All types of harbors that this player can access
     private int sumResourceCards, victoryPoints, longestRoadLength, numKnightCardsPlayed;
     private boolean longestRoad, largestArmy;//Whether or not this player has Longest Road or Largest Army, respectively
@@ -35,7 +37,6 @@ public class Player {
         numRemainingRoads = 15;
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
-        roadMap = new HashMap<Integer, LinkedList<Integer>>();
         harbors = new HashSet<String>();
         victoryPoints = 0;
         longestRoadLength = 0;
@@ -61,7 +62,6 @@ public class Player {
         numRemainingRoads = 15;
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
-        roadMap = new HashMap<Integer, LinkedList<Integer>>();
         harbors = new HashSet<String>();
         victoryPoints = 0;
         longestRoadLength = 0;
@@ -88,7 +88,6 @@ public class Player {
         numRemainingRoads = 15;
         devCards = new ArrayList<DevelopmentCard>();
         settlementLocs = new LinkedList<Integer>();
-        roadMap = new HashMap<Integer, LinkedList<Integer>>();
         harbors = new HashSet<String>();
         victoryPoints = 0;
         longestRoadLength = 0;
@@ -114,7 +113,6 @@ public class Player {
         numRemainingRoads = player.numRemainingRoads;
         devCards = new ArrayList<DevelopmentCard>(player.devCards);
         settlementLocs = new LinkedList<Integer>(player.settlementLocs);
-        roadMap = new HashMap<Integer, LinkedList<Integer>>(player.roadMap);
         harbors = new HashSet<String>(player.harbors);
         victoryPoints = player.victoryPoints;
         longestRoadLength = player.longestRoadLength;
@@ -258,57 +256,10 @@ public class Player {
     }
 
     /**
-     * Adds the specified road location to the list of roads this player has on
-     * the board.
-     * @param roadLoc the location of the new road
+     * Decrements the number of roads this player has left to place.
      */
-    public void addRoad(int roadLoc, Road road) {
-        roadMap.put(roadLoc, new LinkedList<Integer>());
+    public void decrementNumRoads() {
         numRemainingRoads--;
-        //Update the edges in roadMap
-        for (int adjacentRoadLoc : road.getAdjacentRoadLocs()) {
-            if (roadMap.containsKey(adjacentRoadLoc)) {
-                roadMap.get(roadLoc).add(adjacentRoadLoc);
-                roadMap.get(adjacentRoadLoc).add(roadLoc);
-            }
-        }
-        //Re-calculate longestRoadLength
-        ArrayList<Integer> visited;
-        int tempLength;
-        for (int start : roadMap.keySet()) {
-            visited = new ArrayList<Integer>(roadMap.size());
-            visited.add(start);
-            tempLength = calcLongestRoadLength(start, visited);
-            if (tempLength > longestRoadLength) {
-                longestRoadLength = tempLength;
-            }
-            visited.remove(new Integer(start));
-        }
-    }
-
-    /**
-     * Recursive method that explores every possible path starting from the
-     * specified location that does not include any locations in the specified
-     * list of locations that have already been visited.
-     * @param start   the starting location
-     * @param visited the locations that have already been visited
-     * @return the length of the longest path
-     */
-    private int calcLongestRoadLength(int start, Collection<Integer> visited) {
-        //TODO: Make sure there isn't another player's settlement between the road at start and the next road
-        int currentLength = 0;
-        int tempLength;
-        for (int adjacentRoadLoc : roadMap.get(start)) {
-            if (!visited.contains(adjacentRoadLoc)) {
-                visited.add(adjacentRoadLoc);
-                tempLength = calcLongestRoadLength(start, visited);
-                if (tempLength > currentLength) {
-                    currentLength = tempLength;
-                }
-                visited.remove(adjacentRoadLoc);
-            }
-        }
-        return currentLength + 1;
     }
 
     /**
@@ -321,6 +272,19 @@ public class Player {
             harbors.add(type);
         } else {
             throw new IllegalArgumentException("Invalid harbor type");
+        }
+    }
+
+    /**
+     * Stores the length of this player's longest road.
+     * @param length the length of this player's longest road
+     * @throws IllegalArgumentException if the specified length is less than 1
+     */
+    public void setLongestRoadLength(int length) {
+        if (length < 1) {
+            throw new IllegalArgumentException("The length of a player's longest road can never be less than 1");
+        } else {
+            longestRoadLength = 1;
         }
     }
 
@@ -429,14 +393,6 @@ public class Player {
      */
     public LinkedList<Integer> getSettlementLocs() {
         return new LinkedList<Integer>(settlementLocs);
-    }
-
-    /**
-     * Returns a list of the locations of this player's roads.
-     * @return a list of the locations of this player's roads
-     */
-    public Set<Integer> getRoadLocs() {
-        return new HashSet<Integer>(roadMap.keySet());
     }
 
     /**

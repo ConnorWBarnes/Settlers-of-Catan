@@ -364,9 +364,9 @@ public class GameController {
      */
     private HashSet<Integer> getValidRoadLocs() {
         HashSet<Integer> validRoadLocs = new HashSet<Integer>();
-        for (int playerRoadLoc : currentPlayer.getRoadLocs()) {
+        for (int playerRoadLoc : gameBoard.getRoadLocs(currentPlayer.getColor())) {
             for (int adjacentRoadLoc : gameBoard.getRoad(playerRoadLoc).getAdjacentRoadLocs()) {
-                if (gameBoard.getRoad(adjacentRoadLoc).isEmpty()) {
+                if (!gameBoard.getRoad(adjacentRoadLoc).hasToken()) {
                     //Make sure that there is not another player's settlement between this location and the current player's road
                     for (int cornerLoc : gameBoard.getRoad(playerRoadLoc).getAdjacentCornerLocs()) {
                         if (gameBoard.getCorner(cornerLoc).getAdjacentRoadLocs().contains(adjacentRoadLoc)) {//cornerLoc is the location of the corner in between playerRoadLoc and adjacentRoadLoc
@@ -511,7 +511,7 @@ public class GameController {
                 } else {
                     //Construct a list of all the valid locations at which the current player can place a settlement
                     ArrayList<Integer> validCornerLocs = new ArrayList<Integer>();
-                    for (int roadLoc : currentPlayer.getRoadLocs()) {
+                    for (int roadLoc : gameBoard.getRoadLocs(currentPlayer.getColor())) {
                         for (int cornerLoc : gameBoard.getRoad(roadLoc).getAdjacentCornerLocs()) {
                             if (!gameBoard.getCorner(cornerLoc).hasSettlement()) {
                                 boolean locIsValid = true;
@@ -762,7 +762,7 @@ public class GameController {
         public void locationSelected(int roadLoc) {
             //Add the road to the board
             gameBoard.addRoad(roadLoc, currentPlayer.getColor());
-            currentPlayer.addRoad(roadLoc, gameBoard.getRoad(roadLoc));
+            currentPlayer.decrementNumRoads();
             boardPane.addRoad(roadLoc, currentPlayer.getColor());
             playerInfoPanelMap.get(currentPlayer).setNumRoads(currentPlayer.getNumRemainingRoads());
             //Let the next player take their turn
@@ -874,7 +874,9 @@ public class GameController {
                 currentPlayer.takeResource(BRICK, 1);
                 currentPlayer.takeResource(LUMBER, 1);
                 gameBoard.addRoad(roadLoc, currentPlayer.getColor());
-                currentPlayer.addRoad(roadLoc, gameBoard.getRoad(roadLoc));
+                currentPlayer.decrementNumRoads();
+                currentPlayer.setLongestRoadLength(gameBoard.calcLongestRoadLength(currentPlayer.getColor()));
+                checkLongestRoad();
                 //Update the view
                 boardPane.addRoad(roadLoc, currentPlayer.getColor());
                 playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
@@ -905,6 +907,18 @@ public class GameController {
                 currentPlayer.takeResource(WOOL, 1);
                 gameBoard.addSettlement(settlementLoc, currentPlayer.getColor());
                 currentPlayer.addSettlement(settlementLoc);
+                //If the new settlement is in between two of another player's roads, update that player's longest road length
+                String playerColor = null;
+                for (int roadLoc : gameBoard.getCorner(settlementLoc).getAdjacentRoadLocs()) {
+                    if (gameBoard.getRoad(roadLoc).hasToken() && !gameBoard.getRoad(roadLoc).getColor().equals(currentPlayer.getColor())) {
+                        if (playerColor == null) {//Only one road of a different color has been found
+                            playerColor = gameBoard.getRoad(roadLoc).getColor();
+                        } else if (gameBoard.getRoad(roadLoc).getColor().equals(playerColor)) {
+                            playerColorMap.get(gameBoard.getRoad(roadLoc).getColor()).setLongestRoadLength(gameBoard.calcLongestRoadLength(gameBoard.getRoad(roadLoc).getColor()));
+                            checkLongestRoad();
+                        }
+                    }
+                }
                 //Update the view
                 boardPane.addSettlement(settlementLoc, currentPlayer.getColor());
                 playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
@@ -968,7 +982,8 @@ public class GameController {
             if (roadLoc > -1) {//User did not cancel
                 //Update the model
                 gameBoard.addRoad(roadLoc, currentPlayer.getColor());
-                currentPlayer.addRoad(roadLoc, gameBoard.getRoad(roadLoc));
+                currentPlayer.decrementNumRoads();
+                checkLongestRoad();
                 //Update the view
                 boardPane.addRoad(roadLoc, currentPlayer.getColor());
                 playerInfoPanelMap.get(currentPlayer).setNumRoads(currentPlayer.getNumRemainingRoads());
