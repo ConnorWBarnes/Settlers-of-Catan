@@ -30,6 +30,14 @@ public class Board {
     }
 
     /**
+     * Returns the total number of tiles on the board.
+     * @return the total number of tiles on the board
+     */
+    public int getNumTiles() {
+        return tileMap.length;
+    }
+
+    /**
      * Returns a copy of the tile at the specified location.
      * @param tileLoc the location of the tile
      * @return the tile at the specified location
@@ -62,27 +70,11 @@ public class Board {
     }
 
     /**
-     * Returns the total number of tiles on the board.
-     * @return the total number of tiles on the board
-     */
-    public int getNumTiles() {
-        return tileMap.length;
-    }
-
-    /**
      * Returns the total number of corners on the board.
      * @return the total number of corners on the board
      */
     public int getNumCorners() {
         return cornerMap.length;
-    }
-
-    /**
-     * Returns the total number of roads on the board.
-     * @return the total number of roads on the board
-     */
-    public int getNumRoads() {
-        return roadMap.length;
     }
 
     /**
@@ -92,6 +84,44 @@ public class Board {
      */
     public Corner getCorner(int cornerLoc) {
         return new Corner(cornerMap[cornerLoc]);
+    }
+
+    /**
+     * Adds a settlement of the specified color to the board at the specified
+     * location.
+     * @param cornerLoc the location of the new settlement
+     * @param color     the color of the new settlement
+     */
+    public void addSettlement(int cornerLoc, String color) {
+        //Error checking occurs in controller
+        cornerMap[cornerLoc].addSettlement(color);
+        for (Integer tileLoc : cornerMap[cornerLoc].getAdjacentTileLocs()) {
+            tileMap[tileLoc].addSettlementLoc(cornerLoc);
+        }
+    }
+
+    /**
+     * Upgrades the settlement at the specified location to a city.
+     * @param cornerLoc the location of the settlement
+     * @throws RuntimeException if there is no settlement or there is a city
+     *                          already at the specified location
+     */
+    public void upgradeSettlement(int cornerLoc) {
+        if (!cornerMap[cornerLoc].hasSettlement()) {
+            throw new RuntimeException("Cannot upgrade a nonexistent settlement");
+        } else if (cornerMap[cornerLoc].hasCity()) {
+            throw new RuntimeException("Cannot upgrade a city");
+        } else {
+            cornerMap[cornerLoc].upgradeSettlement();
+        }
+    }
+
+    /**
+     * Returns the total number of roads on the board.
+     * @return the total number of roads on the board
+     */
+    public int getNumRoads() {
+        return roadMap.length;
     }
 
     /**
@@ -117,37 +147,6 @@ public class Board {
     }
 
     /**
-     * Returns the location of the tile that the robber currently occupies.
-     * @return the location of the tile that the robber currently occupies
-     */
-    public int getRobberLoc() {
-        return robberLoc;
-    }
-
-    /**
-     * Adds a settlement of the specified color to the board at the specified
-     * location.
-     * @param cornerLoc the location of the new settlement
-     * @param color     the color of the new settlement
-     */
-    public void addSettlement(int cornerLoc, String color) {
-        //Error checking occurs in controller
-        cornerMap[cornerLoc].addSettlement(color);
-        for (Integer tileLoc : cornerMap[cornerLoc].getAdjacentTileLocs()) {
-            tileMap[tileLoc].addSettlementLoc(cornerLoc);
-        }
-    }
-
-    /**
-     * Upgrades the settlement at the specified location to a city.
-     * @param cornerLoc the location of the settlement
-     */
-    public void upgradeSettlement(int cornerLoc) {
-        //Error checking occurs in controller
-        cornerMap[cornerLoc].upgradeSettlement();
-    }
-
-    /**
      * Adds a road of the specified color to the board at the specified
      * location.
      * @param roadLoc the location of the new road
@@ -160,16 +159,6 @@ public class Board {
             playerRoadMap.put(color, new ArrayList<Integer>());
         }
         playerRoadMap.get(color).add(roadLoc);
-    }
-
-    /**
-     * Moves the robber to the tile at the specified location.
-     * @param tileLoc the location of the tile that the robber now occupies
-     */
-    public void moveRobber(int tileLoc) {
-        tileMap[robberLoc].setRobberStatus(false);
-        robberLoc = tileLoc;
-        tileMap[robberLoc].setRobberStatus(true);
     }
 
     /**
@@ -225,6 +214,24 @@ public class Board {
             }
         }
         return currentLength + 1;
+    }
+
+    /**
+     * Returns the location of the tile that the robber currently occupies.
+     * @return the location of the tile that the robber currently occupies
+     */
+    public int getRobberLoc() {
+        return robberLoc;
+    }
+
+    /**
+     * Moves the robber to the tile at the specified location.
+     * @param tileLoc the location of the tile that the robber now occupies
+     */
+    public void moveRobber(int tileLoc) {
+        tileMap[robberLoc].setRobberStatus(false);
+        robberLoc = tileLoc;
+        tileMap[robberLoc].setRobberStatus(true);
     }
 
     /**

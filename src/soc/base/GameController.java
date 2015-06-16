@@ -500,7 +500,6 @@ public class GameController {
                     }
                 }
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.BUILD_SETTLEMENT)) {
-                //TODO: Check to see if new settlement reduces another player's longest road length
                 if (currentPlayer.getNumRemainingSettlements() < 1) {
                     JOptionPane.showMessageDialog(mainFrame, "You do not have any remaining settlement tokens", mainFrame.getTitle(), JOptionPane.ERROR_MESSAGE);
                 } else if (currentPlayer.getNumResourceCards(BRICK) < 1
