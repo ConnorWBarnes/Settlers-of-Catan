@@ -1,5 +1,6 @@
 package soc.base.gui;
 
+import soc.base.model.DevelopmentCard;
 import soc.base.model.Player;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class PlayerInfoPanel extends JPanel {
     public static boolean BOTTOM_CORNER = false;
 
     private GameIcons icons;
-    private JLabel roadsLabel, settlementsLabel, citiesLabel, resourcesLabel, devCardsLabel;
+    private JLabel roadsLabel, settlementsLabel, citiesLabel, resourcesLabel, devCardsLabel, knightCardsPlayedLabel;
     private JLabel longestRoadLabel, largestArmyLabel;
 
     /**
@@ -92,6 +93,17 @@ public class PlayerInfoPanel extends JPanel {
     }
 
     /**
+     * Sets the number of Knight cards played displayed to the specified
+     * number.
+     * @param numKnightCardsPlayed The number of Knight cards the player has
+     *                             played
+     */
+    public void setNumKnightCardsPlayed(int numKnightCardsPlayed) {
+        knightCardsPlayedLabel.setText(String.valueOf(numKnightCardsPlayed));
+        repaint();
+    }
+
+    /**
      * Displays or hides the Longest Road icon if hasLongestRoad is true or
      * false, respectively.
      * @param hasLongestRoad true if the player has Longest Road; otherwise,
@@ -151,14 +163,17 @@ public class PlayerInfoPanel extends JPanel {
     private JPanel buildCardPanel(Player player) {
         //Create the contents of the panel
         //TODO: Show number of Knight cards played
-        resourcesLabel = new JLabel(String.valueOf(player.getSumResourceCards()), new ImageIcon(icons.getResourceIcon(GameIcons.CARD_BACK).getImage().getScaledInstance(GameIcons.CARD_WIDTH / 2, GameIcons.CARD_HEIGHT / 2, Image.SCALE_SMOOTH)), JLabel.CENTER);
+        resourcesLabel = new JLabel(String.valueOf(player.getSumResourceCards()), new ImageIcon(icons.getResourceIcon(GameIcons.CARD_BACK).getImage().getScaledInstance(GameIcons.CARD_WIDTH / 3, GameIcons.CARD_HEIGHT / 3, Image.SCALE_SMOOTH)), JLabel.CENTER);
         resourcesLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-        devCardsLabel = new JLabel(String.valueOf(player.getSumDevCards()), new ImageIcon(icons.getDevCardIcon(GameIcons.CARD_BACK).getImage().getScaledInstance(GameIcons.CARD_WIDTH / 2, GameIcons.CARD_HEIGHT / 2, Image.SCALE_SMOOTH)), JLabel.CENTER);
+        devCardsLabel = new JLabel(String.valueOf(player.getSumDevCards()), new ImageIcon(icons.getDevCardIcon(GameIcons.CARD_BACK).getImage().getScaledInstance(GameIcons.CARD_WIDTH / 3, GameIcons.CARD_HEIGHT / 3, Image.SCALE_SMOOTH)), JLabel.CENTER);
         devCardsLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        knightCardsPlayedLabel = new JLabel(String.valueOf(player.getNumKnightCardsPlayed()), new ImageIcon(icons.getDevCardIcon(DevelopmentCard.KNIGHT).getImage().getScaledInstance(GameIcons.CARD_WIDTH / 3, GameIcons.CARD_HEIGHT / 3, Image.SCALE_SMOOTH)), JLabel.CENTER);
+        knightCardsPlayedLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         //Add the contents to the panel
-        JPanel cardPanel = new JPanel(new GridLayout(1, 2, -1, -1));
+        JPanel cardPanel = new JPanel(new GridLayout(1, 3, -1, -1));
         cardPanel.add(resourcesLabel);
         cardPanel.add(devCardsLabel);
+        cardPanel.add(knightCardsPlayedLabel);
         return cardPanel;
     }
 

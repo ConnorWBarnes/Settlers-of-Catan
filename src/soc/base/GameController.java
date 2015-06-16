@@ -605,6 +605,7 @@ public class GameController {
                         mainFrame.toFront();
                         mainFrame.requestFocus();
                         if (chosenDevCard.getTitle().equals(DevelopmentCard.KNIGHT)) {
+                            playerInfoPanelMap.get(currentPlayer).setNumKnightCardsPlayed(currentPlayer.getNumKnightCardsPlayed());
                             //Check to see if the current player just earned Largest Army
                             if (currentPlayer.getNumKnightCardsPlayed() >= 3) {
                                 if (largestArmyPlayer == null || currentPlayer.getNumKnightCardsPlayed() > largestArmyPlayer.getNumKnightCardsPlayed()) {

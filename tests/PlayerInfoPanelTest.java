@@ -23,7 +23,7 @@ public class PlayerInfoPanelTest {
         }
         player.setLongestRoadStatus(true);
         player.setLargestArmyStatus(true);
-        PlayerInfoPanel playerInfoPanel = new PlayerInfoPanel(new GameIcons(), player, PlayerInfoPanel.BOTTOM_CORNER);
+        PlayerInfoPanel playerInfoPanel = new PlayerInfoPanel(new GameIcons(), player, PlayerInfoPanel.TOP_CORNER);
         //Use the player to create and display a PlayerInfoPanel
         JFrame frame = new JFrame("PlayerInfoPanel Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,6 +36,7 @@ public class PlayerInfoPanelTest {
         playerInfoPanel.setNumCities(3);
         playerInfoPanel.setNumResourceCards(7);
         playerInfoPanel.setNumDevCards(1);
+        playerInfoPanel.setNumKnightCardsPlayed(2);
         playerInfoPanel.setLargestArmy(false);
     }
 }

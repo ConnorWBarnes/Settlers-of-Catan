@@ -189,8 +189,6 @@ public class LongestRoadTest {
         }
     }
 
-    //TODO: Move the following methods into the Board class?
-
     /**
      * Creates and returns the set of locations at which the player of the
      * specified color can place a new road.

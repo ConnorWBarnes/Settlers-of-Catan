@@ -50,7 +50,6 @@ public class GameIcons {
     private ImageIcon tokenStarIcon, robberStarIcon, cancelIcon;
 
     public GameIcons() {
-        //TODO: Create scaled instances of icons (when necessary)
         tileIcons = new HashMap<String, ImageIcon>();
         numberTokenIcons = new HashMap<Character, ImageIcon>();
         settlementIcons = new HashMap<String, ImageIcon>();
