@@ -334,88 +334,87 @@ public class Board {
             cornerMap[i] = new Corner();
         }
         //Set the adjacent corner locations for each corner
-        cornerMap[0].setAdjacentCornerLocs(1, 8);
-        cornerMap[1].setAdjacentCornerLocs(0, 2);
-        cornerMap[2].setAdjacentCornerLocs(1, 3, 10);
-        cornerMap[3].setAdjacentCornerLocs(2, 4);
-        cornerMap[4].setAdjacentCornerLocs(3, 5, 12);
-        cornerMap[5].setAdjacentCornerLocs(4, 6);
-        cornerMap[6].setAdjacentCornerLocs(5, 14);
-        cornerMap[7].setAdjacentCornerLocs(8, 17);
-        cornerMap[8].setAdjacentCornerLocs(0, 7, 9);
-        cornerMap[9].setAdjacentCornerLocs(8, 10, 19);
-        cornerMap[10].setAdjacentCornerLocs(2, 9, 11);
-        cornerMap[11].setAdjacentCornerLocs(10, 12, 21);
-        cornerMap[12].setAdjacentCornerLocs(4, 11, 13);
-        cornerMap[13].setAdjacentCornerLocs(12, 14, 23);
-        cornerMap[14].setAdjacentCornerLocs(6, 13, 15);
-        cornerMap[15].setAdjacentCornerLocs(14, 25);
-        cornerMap[16].setAdjacentCornerLocs(17, 27);
-        cornerMap[17].setAdjacentCornerLocs(7, 16, 18);
-        cornerMap[18].setAdjacentCornerLocs(17, 19, 29);
-        cornerMap[19].setAdjacentCornerLocs(9, 18, 20);
-        cornerMap[20].setAdjacentCornerLocs(19, 21, 31);
-        cornerMap[21].setAdjacentCornerLocs(11, 20, 22);
-        cornerMap[22].setAdjacentCornerLocs(21, 23, 33);
-        cornerMap[23].setAdjacentCornerLocs(13, 22, 24);
-        cornerMap[24].setAdjacentCornerLocs(23, 25, 35);
-        cornerMap[25].setAdjacentCornerLocs(15, 24, 26);
-        cornerMap[26].setAdjacentCornerLocs(25, 37);
-        cornerMap[27].setAdjacentCornerLocs(16, 28);
-        cornerMap[28].setAdjacentCornerLocs(27, 29, 38);
-        cornerMap[29].setAdjacentCornerLocs(18, 28, 30);
-        cornerMap[30].setAdjacentCornerLocs(29, 31, 40);
-        cornerMap[31].setAdjacentCornerLocs(20, 30, 32);
-        cornerMap[32].setAdjacentCornerLocs(31, 33, 42);
-        cornerMap[33].setAdjacentCornerLocs(22, 32, 34);
-        cornerMap[34].setAdjacentCornerLocs(33, 35, 44);
-        cornerMap[35].setAdjacentCornerLocs(24, 34, 36);
-        cornerMap[36].setAdjacentCornerLocs(35, 37, 46);
-        cornerMap[37].setAdjacentCornerLocs(26, 36);
-        cornerMap[38].setAdjacentCornerLocs(28, 39);
-        cornerMap[39].setAdjacentCornerLocs(38, 40, 47);
-        cornerMap[40].setAdjacentCornerLocs(30, 39, 41);
-        cornerMap[41].setAdjacentCornerLocs(40, 42, 49);
-        cornerMap[42].setAdjacentCornerLocs(32, 41, 43);
-        cornerMap[43].setAdjacentCornerLocs(42, 44, 51);
-        cornerMap[44].setAdjacentCornerLocs(34, 43, 45);
-        cornerMap[45].setAdjacentCornerLocs(44, 46, 53);
-        cornerMap[46].setAdjacentCornerLocs(36, 45);
-        cornerMap[47].setAdjacentCornerLocs(39, 48);
-        cornerMap[48].setAdjacentCornerLocs(47, 49);
-        cornerMap[49].setAdjacentCornerLocs(41, 48, 50);
-        cornerMap[50].setAdjacentCornerLocs(49, 51);
-        cornerMap[51].setAdjacentCornerLocs(43, 50, 52);
-        cornerMap[52].setAdjacentCornerLocs(51, 53);
-        cornerMap[53].setAdjacentCornerLocs(52, 45);
+        cornerMap[0].setAdjacentCornerLocs(new int[]{1, 8});
+        cornerMap[1].setAdjacentCornerLocs(new int[]{0, 2});
+        cornerMap[2].setAdjacentCornerLocs(new int[]{1, 3, 10});
+        cornerMap[3].setAdjacentCornerLocs(new int[]{2, 4});
+        cornerMap[4].setAdjacentCornerLocs(new int[]{3, 5, 12});
+        cornerMap[5].setAdjacentCornerLocs(new int[]{4, 6});
+        cornerMap[6].setAdjacentCornerLocs(new int[]{5, 14});
+        cornerMap[7].setAdjacentCornerLocs(new int[]{8, 17});
+        cornerMap[8].setAdjacentCornerLocs(new int[]{0, 7, 9});
+        cornerMap[9].setAdjacentCornerLocs(new int[]{8, 10, 19});
+        cornerMap[10].setAdjacentCornerLocs(new int[]{2, 9, 11});
+        cornerMap[11].setAdjacentCornerLocs(new int[]{10, 12, 21});
+        cornerMap[12].setAdjacentCornerLocs(new int[]{4, 11, 13});
+        cornerMap[13].setAdjacentCornerLocs(new int[]{12, 14, 23});
+        cornerMap[14].setAdjacentCornerLocs(new int[]{6, 13, 15});
+        cornerMap[15].setAdjacentCornerLocs(new int[]{14, 25});
+        cornerMap[16].setAdjacentCornerLocs(new int[]{17, 27});
+        cornerMap[17].setAdjacentCornerLocs(new int[]{7, 16, 18});
+        cornerMap[18].setAdjacentCornerLocs(new int[]{17, 19, 29});
+        cornerMap[19].setAdjacentCornerLocs(new int[]{9, 18, 20});
+        cornerMap[20].setAdjacentCornerLocs(new int[]{19, 21, 31});
+        cornerMap[21].setAdjacentCornerLocs(new int[]{11, 20, 22});
+        cornerMap[22].setAdjacentCornerLocs(new int[]{21, 23, 33});
+        cornerMap[23].setAdjacentCornerLocs(new int[]{13, 22, 24});
+        cornerMap[24].setAdjacentCornerLocs(new int[]{23, 25, 35});
+        cornerMap[25].setAdjacentCornerLocs(new int[]{15, 24, 26});
+        cornerMap[26].setAdjacentCornerLocs(new int[]{25, 37});
+        cornerMap[27].setAdjacentCornerLocs(new int[]{16, 28});
+        cornerMap[28].setAdjacentCornerLocs(new int[]{27, 29, 38});
+        cornerMap[29].setAdjacentCornerLocs(new int[]{18, 28, 30});
+        cornerMap[30].setAdjacentCornerLocs(new int[]{29, 31, 40});
+        cornerMap[31].setAdjacentCornerLocs(new int[]{20, 30, 32});
+        cornerMap[32].setAdjacentCornerLocs(new int[]{31, 33, 42});
+        cornerMap[33].setAdjacentCornerLocs(new int[]{22, 32, 34});
+        cornerMap[34].setAdjacentCornerLocs(new int[]{33, 35, 44});
+        cornerMap[35].setAdjacentCornerLocs(new int[]{24, 34, 36});
+        cornerMap[36].setAdjacentCornerLocs(new int[]{35, 37, 46});
+        cornerMap[37].setAdjacentCornerLocs(new int[]{26, 36});
+        cornerMap[38].setAdjacentCornerLocs(new int[]{28, 39});
+        cornerMap[39].setAdjacentCornerLocs(new int[]{38, 40, 47});
+        cornerMap[40].setAdjacentCornerLocs(new int[]{30, 39, 41});
+        cornerMap[41].setAdjacentCornerLocs(new int[]{40, 42, 49});
+        cornerMap[42].setAdjacentCornerLocs(new int[]{32, 41, 43});
+        cornerMap[43].setAdjacentCornerLocs(new int[]{42, 44, 51});
+        cornerMap[44].setAdjacentCornerLocs(new int[]{34, 43, 45});
+        cornerMap[45].setAdjacentCornerLocs(new int[]{44, 46, 53});
+        cornerMap[46].setAdjacentCornerLocs(new int[]{36, 45});
+        cornerMap[47].setAdjacentCornerLocs(new int[]{39, 48});
+        cornerMap[48].setAdjacentCornerLocs(new int[]{47, 49});
+        cornerMap[49].setAdjacentCornerLocs(new int[]{41, 48, 50});
+        cornerMap[50].setAdjacentCornerLocs(new int[]{49, 51});
+        cornerMap[51].setAdjacentCornerLocs(new int[]{43, 50, 52});
+        cornerMap[52].setAdjacentCornerLocs(new int[]{51, 53});
+        cornerMap[53].setAdjacentCornerLocs(new int[]{52, 45});
         //Set the adjacent tile locations for each corner
-        int tileLoc, cornerLoc;
-        for (tileLoc = 0; tileLoc < 3; tileLoc++) { //First row
-            for (cornerLoc = (tileLoc * 2); cornerLoc < (tileLoc * 2 + 3); cornerLoc++) {
+        for (int tileLoc = 0; tileLoc < 3; tileLoc++) { //First row
+            for (int cornerLoc = (tileLoc * 2); cornerLoc < (tileLoc * 2 + 3); cornerLoc++) {
                 cornerMap[cornerLoc].addAdjacentTileLoc(tileLoc);
                 cornerMap[cornerLoc + 8].addAdjacentTileLoc(tileLoc);
             }
         }
-        for (tileLoc = 3; tileLoc < 7; tileLoc++) { //Second row
-            for (cornerLoc = (tileLoc * 2 + 1); cornerLoc < (tileLoc * 2 + 1 + 3); cornerLoc++) {
+        for (int tileLoc = 3; tileLoc < 7; tileLoc++) { //Second row
+            for (int cornerLoc = (tileLoc * 2 + 1); cornerLoc < (tileLoc * 2 + 1 + 3); cornerLoc++) {
                 cornerMap[cornerLoc].addAdjacentTileLoc(tileLoc);
                 cornerMap[cornerLoc + 10].addAdjacentTileLoc(tileLoc);
             }
         }
-        for (tileLoc = 7; tileLoc < 12; tileLoc++) { //Third row
-            for (cornerLoc = (tileLoc * 2 + 2); cornerLoc < (tileLoc * 2 + 2 + 3); cornerLoc++) {
+        for (int tileLoc = 7; tileLoc < 12; tileLoc++) { //Third row
+            for (int cornerLoc = (tileLoc * 2 + 2); cornerLoc < (tileLoc * 2 + 2 + 3); cornerLoc++) {
                 cornerMap[cornerLoc].addAdjacentTileLoc(tileLoc);
                 cornerMap[cornerLoc + 11].addAdjacentTileLoc(tileLoc);
             }
         }
-        for (tileLoc = 12; tileLoc < 16; tileLoc++) { //Fourth row
-            for (cornerLoc = (tileLoc * 2 + 4); cornerLoc < (tileLoc * 2 + 4 + 3); cornerLoc++) {
+        for (int tileLoc = 12; tileLoc < 16; tileLoc++) { //Fourth row
+            for (int cornerLoc = (tileLoc * 2 + 4); cornerLoc < (tileLoc * 2 + 4 + 3); cornerLoc++) {
                 cornerMap[cornerLoc].addAdjacentTileLoc(tileLoc);
                 cornerMap[cornerLoc + 10].addAdjacentTileLoc(tileLoc);
             }
         }
-        for (tileLoc = 16; tileLoc < 19; tileLoc++) { //Fifth row
-            for (cornerLoc = (tileLoc * 2 + 7); cornerLoc < (tileLoc * 2 + 7 + 3); cornerLoc++) {
+        for (int tileLoc = 16; tileLoc < 19; tileLoc++) { //Fifth row
+            for (int cornerLoc = (tileLoc * 2 + 7); cornerLoc < (tileLoc * 2 + 7 + 3); cornerLoc++) {
                 cornerMap[cornerLoc].addAdjacentTileLoc(tileLoc);
                 cornerMap[cornerLoc + 8].addAdjacentTileLoc(tileLoc);
             }
