@@ -739,6 +739,9 @@ public class GameController {
             //Add the settlement to the board
             gameBoard.addSettlement(settlementLoc, currentPlayer.getColor());
             currentPlayer.addSettlement(settlementLoc);
+            if (gameBoard.getCorner(settlementLoc).hasHarbor()) {
+                currentPlayer.addHarbor(gameBoard.getCorner(settlementLoc).getHarbor());
+            }
             boardPane.addSettlement(settlementLoc, currentPlayer.getColor());
             playerInfoPanelMap.get(currentPlayer).setNumSettlements(currentPlayer.getNumRemainingSettlements());
             //Update validSetupSettlementLocs
@@ -907,6 +910,9 @@ public class GameController {
                 currentPlayer.takeResource(WOOL, 1);
                 gameBoard.addSettlement(settlementLoc, currentPlayer.getColor());
                 currentPlayer.addSettlement(settlementLoc);
+                if (gameBoard.getCorner(settlementLoc).hasHarbor()) {
+                    currentPlayer.addHarbor(gameBoard.getCorner(settlementLoc).getHarbor());
+                }
                 //If the new settlement is in between two of another player's roads, update that player's longest road length
                 String playerColor = null;
                 for (int roadLoc : gameBoard.getCorner(settlementLoc).getAdjacentRoadLocs()) {
