@@ -414,7 +414,7 @@ public class GameController {
                     JPanel checkBoxPanel = new JPanel(new GridLayout(1, players.length - 1));
                     for (Player player : players) {
                         if (!player.getColor().equals(currentPlayer.getColor())) {
-                            recipients.add(new Checkbox(player.getColoredName(), true));
+                            recipients.add(new Checkbox(player.getName(), true));
                             recipients.get(recipients.size() - 1).setName(player.getColor());
                             JPanel tempPanel = new JPanel(new BorderLayout());
                             tempPanel.add(new JLabel(icons.getSettlementIcon(player.getColor()), JLabel.CENTER), BorderLayout.NORTH);
@@ -564,9 +564,15 @@ public class GameController {
                     currentPlayer.takeResource(GRAIN, 1);
                     currentPlayer.takeResource(ORE, 1);
                     currentPlayer.takeResource(WOOL, 1);
+                    StringBuilder labelText = new StringBuilder("Description: ");
+                    labelText.append(devCardDeck.peek().getDescription());
+                    int i = 0;
+                    while (i + 25 < labelText.length() && (i = labelText.lastIndexOf(" ", i + 25)) != -1) {
+                        labelText.replace(i, i + 1, "<br>");
+                    }
                     JPanel message = new JPanel(new BorderLayout());
                     message.add(new JLabel("Your new Development Card:", JLabel.CENTER), BorderLayout.NORTH);
-                    message.add(new JLabel(icons.getDevCardIcon(devCardDeck.peek().getTitle())), BorderLayout.CENTER);//TODO: Show larger version of development card
+                    message.add(new JLabel("<html><center>Title: " + devCardDeck.peek().getTitle() + "<br>" + labelText.toString(), icons.getDevCardIcon(devCardDeck.peek().getTitle()), JLabel.CENTER), BorderLayout.CENTER);
                     message.add(new JLabel("You will receive this card after your turn is over", JLabel.CENTER), BorderLayout.SOUTH);
                     JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
                     devCardsBuiltThisTurn.add(devCardDeck.pop());

@@ -1,6 +1,7 @@
 package soc.base.gui;
 
 import soc.base.GameController;
+import soc.base.model.DevelopmentCard;
 import soc.base.model.Tile;
 
 import javax.swing.*;
@@ -103,7 +104,10 @@ public class GameIcons {
 
         //Populate devCardIcons
         filePath = "Images/Development Cards/";
-        String[] devCards = {"Chapel", "Knight", "Library", "Market", "Monopoly", "Palace", "Road Building", "University", "Year of Plenty"};
+        String[] devCards = new String[DevelopmentCard.PROGRESS_CARDS.length + DevelopmentCard.VICTORY_POINT_CARDS.length + 1];
+        System.arraycopy(DevelopmentCard.PROGRESS_CARDS, 0, devCards, 0, DevelopmentCard.PROGRESS_CARDS.length);
+        System.arraycopy(DevelopmentCard.VICTORY_POINT_CARDS, 0, devCards, DevelopmentCard.PROGRESS_CARDS.length, DevelopmentCard.VICTORY_POINT_CARDS.length);
+        devCards[devCards.length - 1] = DevelopmentCard.KNIGHT;
         for (String devCard : devCards) {
             devCardIcons.put(devCard, createImageIcon(filePath + devCard + ".png", devCard));
         }
