@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -57,6 +56,7 @@ public class ChooseDevCard {
             tempButton.setHorizontalAlignment(JRadioButton.CENTER);
             buttonGroup.add(tempButton);
             tempLabel = new JLabel(icons.getDevCardIcon(card.getTitle()));
+            tempLabel.setToolTipText(card.getTitle() + ": " + card.getDescription());
             tempLabel.addMouseListener(new LabelListener(tempButton));
             labelPanel = new JPanel(new BorderLayout());
             labelPanel.add(tempLabel, BorderLayout.NORTH);
@@ -73,7 +73,6 @@ public class ChooseDevCard {
             }
         });
         playButton.setEnabled(false);
-        //TODO: Add button to view larger version of selected card
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             @Override

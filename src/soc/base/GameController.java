@@ -564,15 +564,11 @@ public class GameController {
                     currentPlayer.takeResource(GRAIN, 1);
                     currentPlayer.takeResource(ORE, 1);
                     currentPlayer.takeResource(WOOL, 1);
-                    StringBuilder labelText = new StringBuilder("Description: ");
-                    labelText.append(devCardDeck.peek().getDescription());
-                    int i = 0;
-                    while (i + 25 < labelText.length() && (i = labelText.lastIndexOf(" ", i + 25)) != -1) {
-                        labelText.replace(i, i + 1, "<br>");
-                    }
+                    JLabel cardLabel = new JLabel(icons.getDevCardIcon(devCardDeck.peek().getTitle()), JLabel.CENTER);
+                    cardLabel.setToolTipText(devCardDeck.peek().getTitle() + ": " + devCardDeck.peek().getDescription());
                     JPanel message = new JPanel(new BorderLayout());
                     message.add(new JLabel("Your new Development Card:", JLabel.CENTER), BorderLayout.NORTH);
-                    message.add(new JLabel("<html><center>Title: " + devCardDeck.peek().getTitle() + "<br>" + labelText.toString(), icons.getDevCardIcon(devCardDeck.peek().getTitle()), JLabel.CENTER), BorderLayout.CENTER);
+                    message.add(cardLabel, BorderLayout.CENTER);
                     message.add(new JLabel("You will receive this card after your turn is over", JLabel.CENTER), BorderLayout.SOUTH);
                     JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE);
                     devCardsBuiltThisTurn.add(devCardDeck.pop());
