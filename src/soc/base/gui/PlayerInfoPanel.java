@@ -162,7 +162,6 @@ public class PlayerInfoPanel extends JPanel {
      */
     private JPanel buildCardPanel(Player player) {
         //Create the contents of the panel
-        //TODO: Show number of Knight cards played
         resourcesLabel = new JLabel(String.valueOf(player.getSumResourceCards()), new ImageIcon(icons.getResourceIcon(GameIcons.CARD_BACK).getImage().getScaledInstance(GameIcons.CARD_WIDTH / 3, GameIcons.CARD_HEIGHT / 3, Image.SCALE_SMOOTH)), JLabel.CENTER);
         resourcesLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         devCardsLabel = new JLabel(String.valueOf(player.getSumDevCards()), new ImageIcon(icons.getDevCardIcon(GameIcons.CARD_BACK).getImage().getScaledInstance(GameIcons.CARD_WIDTH / 3, GameIcons.CARD_HEIGHT / 3, Image.SCALE_SMOOTH)), JLabel.CENTER);

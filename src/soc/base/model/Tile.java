@@ -31,10 +31,18 @@ public class Tile {
      * Constructs a tile with the specified terrain. The number token for this
      * tile is zero and is not occupied by the robber.
      * @param terrain the terrain of the tile
+     * @throws IllegalArgumentException if the specified terrain is not found in TERRAIN_TYPES
      */
     public Tile(String terrain) {
-        //TODO: Throw InvalidTerrainException?
-        this.terrain = terrain;
+        for (String terrainType : TERRAIN_TYPES) {
+            if (terrainType.equals(terrain)) {
+                this.terrain = terrain;
+                break;
+            }
+        }
+        if (this.terrain == null) {//terrain could not be found in TERRAIN_TYPES
+            throw new IllegalArgumentException("Invalid tile terrain");
+        }
         numberToken = null;
         hasRobber = false;
         settlementLocs = new LinkedList<Integer>();
@@ -45,12 +53,19 @@ public class Tile {
      * robber if the robberStatus argument is true (otherwise not). The number
      * token for this tile is zero.
      * @param terrain the terrain of the tile
-     * @param robberStatus the robber occupies this tile if robberStatus is
-     *                     true (otherwise not).
+     * @param robberStatus whether or not the robber occupies this tile
+     * @throws IllegalArgumentException if the specified terrain is not found in TERRAIN_TYPES
      */
     public Tile(String terrain, boolean robberStatus) {
-        //TODO: Throw InvalidTerrainException?
-        this.terrain = terrain;
+        for (String terrainType : TERRAIN_TYPES) {
+            if (terrainType.equals(terrain)) {
+                this.terrain = terrain;
+                break;
+            }
+        }
+        if (this.terrain == null) {//terrain could not be found in TERRAIN_TYPES
+            throw new IllegalArgumentException("Invalid tile terrain");
+        }
         numberToken = null;
         hasRobber = robberStatus;
         settlementLocs = new LinkedList<Integer>();
@@ -58,13 +73,13 @@ public class Tile {
 
     /**
      * Constructs a deep copy of the specified tile.
-     * @param inTile the tile to copy
+     * @param tile the tile to copy
      */
-	public Tile(Tile inTile) {
-		terrain = inTile.terrain;
-		numberToken = inTile.numberToken;
-        hasRobber = inTile.hasRobber;
-        settlementLocs = new LinkedList<Integer>(inTile.settlementLocs);
+    public Tile(Tile tile) {
+        terrain = tile.terrain;
+        numberToken = tile.numberToken;
+        hasRobber = tile.hasRobber;
+        settlementLocs = new LinkedList<Integer>(tile.settlementLocs);
     }
 
     /**

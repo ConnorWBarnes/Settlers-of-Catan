@@ -264,13 +264,12 @@ public class Board {
             numberTokenMap.put(i + 6, new LinkedList<Tile>());
         }
         //Determine the order in which the number tokens will be added to the board
-        int[] numberTokenNumbers = {5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11};
         LinkedList<NumberToken> numberTokens = new LinkedList<NumberToken>();
-        for (int i = 0; i < numberTokenNumbers.length; i++) {
-            numberTokens.add(new NumberToken(numberTokenNumbers[i], (char) (i + 65)));
+        for (int i = 0; i < NumberToken.NUMBERS.length; i++) {
+            numberTokens.add(new NumberToken(NumberToken.NUMBERS[i], (char) (i + 65)));
         }
-        int[] outerTiles = {0, 3, 7, 12, 16, 17, 18, 15, 11, 6, 2, 1};
-        int[] innerTiles = {4, 8, 13, 14, 10, 5};
+        int[] outerTileLocs = {0, 3, 7, 12, 16, 17, 18, 15, 11, 6, 2, 1};
+        int[] innerTileLocs = {4, 8, 13, 14, 10, 5};
         int startingOuterIndex, startingInnerIndex;
         int startingPoint = (int) (Math.random() * 4);//Randomly pick a corner to start in
         if (startingPoint == 0) {
@@ -287,37 +286,37 @@ public class Board {
             startingInnerIndex = 3;
         }
         //Add number tokens to the outer tiles
-        for (int i = startingOuterIndex; i < outerTiles.length; i++) {
-            if (tileMap[outerTiles[i]].hasRobber()) {
-                robberLoc = outerTiles[i];
+        for (int i = startingOuterIndex; i < outerTileLocs.length; i++) {
+            if (tileMap[outerTileLocs[i]].hasRobber()) {
+                robberLoc = outerTileLocs[i];
             } else {
-                tileMap[outerTiles[i]].setNumberToken(numberTokens.getFirst());
-                numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[outerTiles[i]]);
+                tileMap[outerTileLocs[i]].setNumberToken(numberTokens.getFirst());
+                numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[outerTileLocs[i]]);
             }
         }
         for (int i = 0; i < startingOuterIndex; i++) {
-            if (tileMap[outerTiles[i]].hasRobber()) {
-                robberLoc = outerTiles[i];
+            if (tileMap[outerTileLocs[i]].hasRobber()) {
+                robberLoc = outerTileLocs[i];
             } else {
-                tileMap[outerTiles[i]].setNumberToken(numberTokens.getFirst());
-                numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[outerTiles[i]]);
+                tileMap[outerTileLocs[i]].setNumberToken(numberTokens.getFirst());
+                numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[outerTileLocs[i]]);
             }
         }
         //Add number tokens to the inner tiles
-        for (int i = startingInnerIndex; i < innerTiles.length; i++) {
-            if (tileMap[innerTiles[i]].hasRobber()) {
-                robberLoc = innerTiles[i];
+        for (int i = startingInnerIndex; i < innerTileLocs.length; i++) {
+            if (tileMap[innerTileLocs[i]].hasRobber()) {
+                robberLoc = innerTileLocs[i];
             } else {
-                tileMap[innerTiles[i]].setNumberToken(numberTokens.getFirst());
-                numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[innerTiles[i]]);
+                tileMap[innerTileLocs[i]].setNumberToken(numberTokens.getFirst());
+                numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[innerTileLocs[i]]);
             }
         }
         for (int i = 0; i < startingInnerIndex; i++) {
-            if (tileMap[innerTiles[i]].hasRobber()) {
-                robberLoc = innerTiles[i];
+            if (tileMap[innerTileLocs[i]].hasRobber()) {
+                robberLoc = innerTileLocs[i];
             } else {
-                tileMap[innerTiles[i]].setNumberToken(numberTokens.getFirst());
-                numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[innerTiles[i]]);
+                tileMap[innerTileLocs[i]].setNumberToken(numberTokens.getFirst());
+                numberTokenMap.get(numberTokens.removeFirst().getNumber()).add(tileMap[innerTileLocs[i]]);
             }
         }
         //Add a number token to the center tile

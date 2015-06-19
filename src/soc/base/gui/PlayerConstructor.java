@@ -65,23 +65,20 @@ public class PlayerConstructor {
                     dialog.pack();
                     optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
                 } else {
-                    //Make sure each player has a different color
-                    for (int i = 0; i < colors.size(); i++) {
-                        for (int j = i + 1; j < colors.size(); j++) {
-                            if (colors.get(i).equals(colors.get(j))) {
-                                playerConstructorPanel.addErrorMessage("Every player must have a unique color");
+                    //Make sure each player has a unique name and color
+                    for (int i = 0; i < names.size(); i++) {
+                        for (int j = i + 1; j < names.size(); j++) {
+                            if (names.get(i).equals(names.get(j)) || colors.get(i).equals(colors.get(j))) {
+                                playerConstructorPanel.addErrorMessage("Every player must have a unique name and color");
                                 dialog.pack();
                                 optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
                                 return;
                             }
                         }
                     }
-                    //TODO: Make sure each player has a different name?
                     if (names.size() < 3) {
-                        JPanel warning = new JPanel(new BorderLayout());
-                        warning.add(new JLabel("Settlers of Catan is best played with 3 or more people.", JLabel.CENTER), BorderLayout.NORTH);
-                        warning.add(new JLabel("Are you sure you want to continue?", JLabel.CENTER), BorderLayout.CENTER);
-                        if (JOptionPane.showConfirmDialog(null, warning, "Warning!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) {
+                        String message = "<html><center>Settlers of Catan is best played with 3 or more people.<br>Are you sure you want to continue?</center></html>";
+                        if (JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(null, message, "Warning!", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE)) {
                             optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
                             return;
                         }
@@ -164,7 +161,7 @@ public class PlayerConstructor {
                     names.add(textField.getText());
                 }
             }
-            return new ArrayList<String>(names);
+            return names;
         }
 
         /**
@@ -178,7 +175,7 @@ public class PlayerConstructor {
                     colors.add(playerColors[colorBoxes[i].getSelectedIndex()]);
                 }
             }
-            return new ArrayList<String>(colors);
+            return colors;
         }
 
         /**
