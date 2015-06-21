@@ -1,14 +1,13 @@
 package soc.base.gui;
 
 import soc.base.GameController;
-import soc.base.model.Player;
 import soc.base.model.DevelopmentCard;
+import soc.base.model.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.Collection;
 
 /**
  * Represents the frame that shows a player's resource cards and development
@@ -16,13 +15,10 @@ import java.util.Comparator;
  * @author Connor Barnes
  */
 public class CardsFrame extends JFrame {
-    private final String EMPTY = "Empty";
+    private static final String EMPTY = "Empty";
 
     private GameIcons icons;
-    private Player player;
-    private CardPane resourceCardsPane;
-    private DevelopmentCard[] devCards;
-    private JPanel devCardsPanel;
+    private CardPane resourceCardsPane, devCardsPane;
 
     /**
      * Constructs a new CardsFrame that shows what the specified player has.
@@ -30,15 +26,23 @@ public class CardsFrame extends JFrame {
      * @param player the information to display
      */
     public CardsFrame(GameIcons icons, Player player) {
-        super(player.getName() + "'s Resource and Development Cards");
+        super(player.getName() + "'s Resource and DevelopmentCards");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.icons = icons;
-        this.player = player;
-        devCards = this.player.getDevCards().toArray(new DevelopmentCard[player.getSumDevCards()]);
-        buildDevCardsPanel();
+        //Create the contents of the frame
+        resourceCardsPane = buildResourceCardsPane(icons, player);
+        JPanel resourceCardsPanel = new JPanel();
+        resourceCardsPanel.setBorder(BorderFactory.createTitledBorder("Resource Cards"));
+        resourceCardsPanel.add(resourceCardsPane);
+        devCardsPane = buildDevCardsPane(icons, player.getDevCards());
+        JPanel devCardsPanel = new JPanel();
+        devCardsPanel.setBorder(BorderFactory.createTitledBorder("DevelopmentCards"));
+        devCardsPanel.add(devCardsPane);
+        //Add the contents to the frame
         setLayout(new BorderLayout());
-        add(buildResourceCardsPanel(), BorderLayout.NORTH);
+        add(resourceCardsPanel, BorderLayout.NORTH);
         add(devCardsPanel, BorderLayout.CENTER);
+        //Display the frame
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -76,107 +80,90 @@ public class CardsFrame extends JFrame {
      * @param devCard the development card to add
      */
     public void addDevCard(DevelopmentCard devCard) {
-        devCards = Arrays.copyOf(devCards, devCards.length + 1);
-        devCards[devCards.length - 1] = devCard;
-        remove(devCardsPanel);
-        buildDevCardsPanel();
-        add(devCardsPanel, BorderLayout.CENTER);
+        devCardsPane.removeCard(EMPTY);
+        JLabel tempLabel = new JLabel(icons.getDevCardIcon(devCard.getTitle()));
+        tempLabel.setName(getDevCardLabelName(devCard.getTitle()));
+        devCardsPane.add(tempLabel);
         pack();
     }
 
     /**
-     * Removes the specified development card from the development card panel
+     * Removes a development card with the specified title from the development card panel
      * (if one exists).
-     * @param devCard the development card to remove
+     * @param devCardTitle the title of the DevelopmentCard to remove
      */
-    public void removeDevCard(String devCard) {
-        for (int i = 0; i < devCards.length; i++) {
-            if (devCards[i].getTitle().equals(devCard)) {
-                DevelopmentCard[] temp = new DevelopmentCard[devCards.length - 1];
-                System.arraycopy(devCards, 0, temp, 0, i);
-                System.arraycopy(devCards, i + 1, temp, i, devCards.length - i - 1);
-                devCards = temp;
-                remove(devCardsPanel);
-                buildDevCardsPanel();
-                add(devCardsPanel, BorderLayout.CENTER);
-                pack();
-            }
+    public void removeDevCard(String devCardTitle) {
+        devCardsPane.removeCard(devCardTitle);
+        if (devCardsPane.getComponentCount() == 0) {
+            JLabel tempLabel = new JLabel("You do not have any development cards");
+            tempLabel.setName(EMPTY);
+            devCardsPane.addCard(tempLabel);
         }
+        pack();
     }
 
     /**
-     * Constructs and returns a JPanel containing a CardPane of the player's
-     * resource cards.
-     * @return a JPanel containing a CardPane of the player's resource cards
+     * Creates and returns a CardPane containing the specified player's resource cards.
+     * @param icons the icons to use to display the resource cards
+     * @param player the player whose resource cards are to be displayed
+     * @return a CardPane containing a CardPane of the specified player's resource cards
      */
-    private JPanel buildResourceCardsPanel() {
+    public static CardPane buildResourceCardsPane(GameIcons icons, Player player) {
         ArrayList<JLabel> cards = new ArrayList<JLabel>(player.getSumResourceCards());
-        JLabel tempLabel;
         if (player.getSumResourceCards() == 0) {
-            tempLabel = new JLabel("You do not have any resource cards");
+            JLabel tempLabel = new JLabel("You do not have any resource cards");
             tempLabel.setName(EMPTY);
             cards.add(tempLabel);
         } else {
             for (String resource : GameController.RESOURCE_TYPES) {
                 for (int j = 0; j < player.getNumResourceCards(resource); j++) {
-                    tempLabel = new JLabel(icons.getResourceIcon(resource));
+                    JLabel tempLabel = new JLabel(icons.getResourceIcon(resource));
                     tempLabel.setName(resource);
                     cards.add(tempLabel);
                 }
             }
         }
-        resourceCardsPane = new CardPane(cards, GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
-        JPanel resourceCardsPanel = new JPanel();
-        resourceCardsPanel.setBorder(BorderFactory.createTitledBorder("Resource Cards"));
-        resourceCardsPanel.add(resourceCardsPane);
-        return resourceCardsPanel;
+        return new CardPane(cards, GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
     }
 
     /**
-     * Constructs the JPanel containing a CardPane of the player's
-     * development cards.
+     * Creates and returns a CardPane containing the specified DevelopmentCards.
+     * @param icons the icons to use to display the DevelopmentCards
+     * @param devCards the DevelopmentCards to display
+     * @return a CardPane containing the specified DevelopmentCards
      */
-    private void buildDevCardsPanel() {
-        //Display the development cards in order
-        Arrays.sort(devCards, new DevCardComparator());
-        ArrayList<JLabel> devCardLabels = new ArrayList<JLabel>(devCards.length);
-        if (devCards.length == 0) {
+    public static CardPane buildDevCardsPane(GameIcons icons, Collection<DevelopmentCard> devCards) {
+        ArrayList<JLabel> devCardLabels = new ArrayList<JLabel>(devCards.size());
+        if (devCards.isEmpty()) {
             devCardLabels.add(new JLabel("You do not have any development cards"));
         } else {
             for (DevelopmentCard card : devCards) {
-                devCardLabels.add(new JLabel(icons.getDevCardIcon(card.getTitle())));
+                JLabel tempLabel = new JLabel(icons.getDevCardIcon(card.getTitle()));
+                tempLabel.setName(getDevCardLabelName(card.getTitle()));
+                devCardLabels.add(tempLabel);
             }
         }
-        devCardsPanel = new JPanel();
-        devCardsPanel.setBorder(BorderFactory.createTitledBorder("Development Cards"));
-        devCardsPanel.add(new CardPane(devCardLabels, GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT));
+        return new CardPane(devCardLabels, GameIcons.BOARD_WIDTH, GameIcons.CARD_HEIGHT);
     }
 
-    private class DevCardComparator implements Comparator<DevelopmentCard> {
-        private final DevelopmentCard VICTORY_POINT_CARD = new DevelopmentCard(DevelopmentCard.VICTORY_POINT_CARDS[0]);
-
-        /**
-         * Compares the specified Development Cards. Victory point cards come
-         * before all other development cards
-         * @param o1 the first DevelopmentCard to be compared
-         * @param o2 the second DevelopmentCard to be compared
-         * @return if both cards are victory point cards, the comparison of their
-         * titles is returned. Otherwise, the comparison of their descriptions is
-         * returned.
-         */
-        @Override
-        public int compare(DevelopmentCard o1, DevelopmentCard o2) {
-            if (o1.getDescription().equals(VICTORY_POINT_CARD.getDescription())) {
-                if (o2.getDescription().equals(VICTORY_POINT_CARD.getDescription())) {
-                    return o1.getTitle().compareTo(o2.getTitle());
-                } else {
-                    return -1;
-                }
-            } else if (o2.getDescription().equals(VICTORY_POINT_CARD.getDescription())) {
-                return 1;
-            } else {//Neither card is a victory point card
-                return o1.getTitle().compareTo(o2.getTitle());
+    /**
+     * Returns the name of a JLabel that represents a DevelopmentCard with the specified title.
+     * The names returned sort DevelopmentCards by type (i.e. victory point card or progress card) and then title.
+     * DevelopmentCards with invalid names come before ones with valid names.
+     * @param devCardTitle the title of the DevelopmentCard
+     * @return the name of a JLabel that represents a DevelopmentCard with the specified title
+     */
+    public static String getDevCardLabelName(String devCardTitle) {
+        for (int i = 0; i < DevelopmentCard.VICTORY_POINT_CARDS.length; i++) {
+            if (devCardTitle.equals(DevelopmentCard.VICTORY_POINT_CARDS[i])) {
+                return String.valueOf(i);
             }
         }
+        for (int i = 0; i < DevelopmentCard.PROGRESS_CARDS.length; i++) {
+            if (devCardTitle.equals(DevelopmentCard.PROGRESS_CARDS[i])) {
+                return String.valueOf(i + DevelopmentCard.VICTORY_POINT_CARDS.length);
+            }
+        }
+        return String.valueOf(-1);
     }
 }

@@ -14,8 +14,9 @@ public class DevelopmentCard {
     public static final String MARKET = "Market";
     public static final String PALACE = "Palace";
     public static final String UNIVERSITY = "University";
-    public static final String[] PROGRESS_CARDS = {MONOPOLY, ROAD_BUILDING, YEAR_OF_PLENTY};
+    public static final String[] PROGRESS_CARDS = {KNIGHT, MONOPOLY, ROAD_BUILDING, YEAR_OF_PLENTY};
     public static final String[] VICTORY_POINT_CARDS = {CHAPEL, LIBRARY, MARKET, PALACE, UNIVERSITY};
+    public static final String VICTORY_POINT_CARD_DESCRIPTION = "1 Victory Point!";
 
     private String title, description;
 
@@ -46,7 +47,7 @@ public class DevelopmentCard {
     }
 
     /**
-     * Sets the description based on the title of this card
+     * Sets the description based on the title of this card.
      */
     private void setDescription() {
         if (title.equals(KNIGHT)) {
@@ -58,7 +59,7 @@ public class DevelopmentCard {
         } else if (title.equals(YEAR_OF_PLENTY)) {
             description = "Take any 2 resources from the bank. Add them to your hand. They can be 2 of the same resource or 2 different resources.";
         } else {
-            description = "1 Victory Point!";
+            description = VICTORY_POINT_CARD_DESCRIPTION;
         }
     }
 }

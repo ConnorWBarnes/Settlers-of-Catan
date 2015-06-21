@@ -115,13 +115,13 @@ public class GameController {
         final int NUM_PROGRESS_CARDS = 2;
         //Construct all the development cards
         ArrayList<DevelopmentCard> devCards = new ArrayList<DevelopmentCard>();
-        for (int i = 0; i < NUM_KNIGHT_CARDS; i++) {
-            devCards.add(new DevelopmentCard(DevelopmentCard.KNIGHT));
-        }
         for (int i = 0; i < NUM_PROGRESS_CARDS; i++) {
             for (String progressCard : DevelopmentCard.PROGRESS_CARDS) {
                 devCards.add(new DevelopmentCard(progressCard));
             }
+        }
+        for (int i = 0; i < NUM_KNIGHT_CARDS - 2; i++) {//Add 12 Knight cards because 2 were already added
+            devCards.add(new DevelopmentCard(DevelopmentCard.KNIGHT));
         }
         for (String victoryPointCard : DevelopmentCard.VICTORY_POINT_CARDS) {
             devCards.add(new DevelopmentCard(victoryPointCard));

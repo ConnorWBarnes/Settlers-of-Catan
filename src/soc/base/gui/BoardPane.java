@@ -92,7 +92,7 @@ public class BoardPane extends JLayeredPane {
      */
     public void showValidLocs(Collection<Integer> validLocs, LocationListener locListener, int locType, boolean cancelOption) {
         this.locListener = locListener;
-        if (cancelOption) {
+        if (cancelOption) {//TODO: Move cancel button
             //Create and add the cancel option
             JLabel cancelLabel = new JLabel(icons.getCancelIcon());
             cancelLabel.setName(String.valueOf(-1));

@@ -30,16 +30,16 @@ public class CardsFrameTest {
         cardsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Scanner keyboard = new Scanner(System.in);
-        System.out.print("Press enter to add a resource card");
+        System.out.print("Press enter to add a \"" + GameController.LUMBER + "\" resource card");
         keyboard.nextLine();
         cardsFrame.addResourceCard(GameController.LUMBER);
-        System.out.print("Press enter to remove a resource card");
+        System.out.print("Press enter to remove a \"" + GameController.GRAIN + "\" resource card");
         keyboard.nextLine();
         cardsFrame.removeResourceCard(GameController.GRAIN);
-        System.out.print("Press enter to add a development card");
+        System.out.print("Press enter to add a \"" + DevelopmentCard.ROAD_BUILDING + "\" development card");
         keyboard.nextLine();
         cardsFrame.addDevCard(new DevelopmentCard(DevelopmentCard.ROAD_BUILDING));
-        System.out.print("Press enter to remove a development card");
+        System.out.print("Press enter to remove \"" + DevelopmentCard.KNIGHT + "\" a development card");
         keyboard.nextLine();
         cardsFrame.removeDevCard(DevelopmentCard.KNIGHT);
     }

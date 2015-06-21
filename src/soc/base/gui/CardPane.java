@@ -3,7 +3,7 @@ package soc.base.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Displays the specified JLabels in a row such that they are all spaced evenly.
@@ -30,10 +30,10 @@ public class CardPane extends JLayeredPane {
      * @param labels the JLabels to display
      * @param maxWidth the maxWidth of the pane
      */
-    public CardPane(Collection<JLabel> labels, int maxWidth, int height) {
+    public CardPane(List<JLabel> labels, int maxWidth, int height) {
         super();
-        this.labels = new ArrayList<JLabel>(labels);
-        for (JLabel label : labels) {
+        this.labels = new ArrayList<JLabel>(labels);//Ensures labels can only be modified by this class
+        for (JLabel label : this.labels) {
             label.setSize(label.getPreferredSize());
         }
         this.maxWidth = maxWidth;
