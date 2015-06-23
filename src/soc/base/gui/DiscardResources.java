@@ -6,8 +6,6 @@ import soc.base.model.Player;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +29,6 @@ public class DiscardResources {
     //GUI variables
     private GameIcons icons;
     private JDialog dialog;
-    private JOptionPane optionPane;
     private DiscardPanel discardPanel;
 
     /**
@@ -58,9 +55,10 @@ public class DiscardResources {
         this.icons = icons;
         this.player = player;
         discardPanel = new DiscardPanel();
-        String[] options = {"Discard"};
-        optionPane = new JOptionPane(discardPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options);
-        optionPane.addPropertyChangeListener(new DiscardListener());
+        JButton viewDevCards = new JButton("View Development Cards");
+        viewDevCards.addActionListener(new ViewDevCardsListener());
+        JButton discard = new JButton("Discard");
+        discard.addActionListener(new DiscardListener());
         dialog = new JDialog((JDialog) null, "Discard Resources", true);
         dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         dialog.addWindowListener(new WindowAdapter() {
@@ -69,7 +67,7 @@ public class DiscardResources {
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
-        dialog.setContentPane(optionPane);
+        dialog.setContentPane(new JOptionPane(discardPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new JButton[]{viewDevCards, discard}));
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
@@ -79,31 +77,26 @@ public class DiscardResources {
      * Ensures that the player selected enough cards to discard and asks for
      * confirmation before closing the dialog.
      */
-    private class DiscardListener implements PropertyChangeListener {
+    private class DiscardListener implements ActionListener {
         @Override
-        public void propertyChange(PropertyChangeEvent event) {
-            if (optionPane.isVisible() && (event.getSource() == optionPane) && (event.getPropertyName().equals(JOptionPane.VALUE_PROPERTY)) && !optionPane.getValue().equals(JOptionPane.UNINITIALIZED_VALUE)) {
-                Component[] discardLabels = discardPanel.discardPane.getComponents();
-                if (discardLabels.length < (player.getSumResourceCards() / 2)) {
-                    JOptionPane.showMessageDialog(null, "You must discard at least " + (player.getSumResourceCards() / 2)
-                            + " resource cards", "Error", JOptionPane.ERROR_MESSAGE);
-                    optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
+        public void actionPerformed(ActionEvent actionEvent) {
+            Component[] discardLabels = discardPanel.discardPane.getComponents();
+            if (discardLabels.length < (player.getSumResourceCards() / 2)) {
+                JOptionPane.showMessageDialog(null, "You must discard at least " + (player.getSumResourceCards() / 2)
+                        + " resource cards", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JPanel confirmMessage = new JPanel(new BorderLayout());
+                if ((discardLabels.length > (player.getSumResourceCards() / 2))) {
+                    confirmMessage.add(new JLabel("You are about to discard more resource cards than is needed.", JLabel.CENTER), BorderLayout.NORTH);
+                    confirmMessage.add(new JLabel("Are you sure you want to do this?", JLabel.CENTER), BorderLayout.CENTER);
                 } else {
-                    JPanel confirmMessage = new JPanel(new BorderLayout());
-                    if ((discardLabels.length > (player.getSumResourceCards() / 2))) {
-                        confirmMessage.add(new JLabel("You are about to discard more resource cards than is needed.", JLabel.CENTER), BorderLayout.NORTH);
-                        confirmMessage.add(new JLabel("Are you sure you want to do this?", JLabel.CENTER), BorderLayout.CENTER);
-                    } else {
-                        confirmMessage.add(new JLabel("Are you sure these are the cards you want to discard?"), BorderLayout.CENTER);
+                    confirmMessage.add(new JLabel("Are you sure these are the cards you want to discard?"), BorderLayout.CENTER);
+                }
+                if (JOptionPane.showConfirmDialog(null, confirmMessage, "Warning!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+                    for (Component label : discardLabels) {
+                        discardedResources[Integer.parseInt(label.getName())]++;
                     }
-                    if (JOptionPane.showConfirmDialog(null, confirmMessage, "Warning!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
-                        for (Component label : discardLabels) {
-                            discardedResources[Integer.parseInt(label.getName())]++;
-                        }
-                        dialog.dispose();
-                    } else {
-                        optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
-                    }
+                    dialog.dispose();
                 }
             }
         }
@@ -137,7 +130,6 @@ public class DiscardResources {
             cardPanel.add(discardPane);
             tempPanel.add(cardPanel, BorderLayout.CENTER);
             add(tempPanel, BorderLayout.CENTER);
-            //TODO: Add button to view development cards?
         }
 
         /**
@@ -195,6 +187,20 @@ public class DiscardResources {
                 revalidate();
                 repaint();
             }
+        }
+    }
+
+    /**
+     * Creates and displays a dialog window containing the specified player's
+     * development cards.
+     */
+    private class ViewDevCardsListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            JPanel message = new JPanel();
+            message.setBorder(BorderFactory.createTitledBorder("Development Cards"));
+            message.add(CardsFrame.buildDevCardsPane(icons, player.getDevCards()));
+            JOptionPane.showMessageDialog(null, message, player.getName() + "' Development Cards", JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
         }
     }
 }

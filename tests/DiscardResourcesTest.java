@@ -7,7 +7,7 @@ import soc.base.model.Player;
  * Tests the ResourceDiscard class.
  * @author Connor Barnes
  */
-public class ResourceDiscardTest {
+public class DiscardResourcesTest {
     /**
      * Constructs a new player and gives them two resource cards of each type
      * (except Lumber) and then forces said player to discard half of their
