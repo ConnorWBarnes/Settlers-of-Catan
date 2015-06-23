@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Represents the frame that shows a player's resource cards and development
- * cards (both played and not played).
+ * Represents the frame that shows a player's resource and development cards. Also contains static methods for
+ * creating just a CardPane of resource or development cards (for situations in which only one or the other is needed).
  * @author Connor Barnes
  */
 public class CardsFrame extends JFrame {
@@ -153,7 +153,7 @@ public class CardsFrame extends JFrame {
      * @param devCardTitle the title of the DevelopmentCard
      * @return the name of a JLabel that represents a DevelopmentCard with the specified title
      */
-    public static String getDevCardLabelName(String devCardTitle) {
+    private static String getDevCardLabelName(String devCardTitle) {
         for (int i = 0; i < DevelopmentCard.VICTORY_POINT_CARDS.length; i++) {
             if (devCardTitle.equals(DevelopmentCard.VICTORY_POINT_CARDS[i])) {
                 return String.valueOf(i);

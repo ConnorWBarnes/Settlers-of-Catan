@@ -3,6 +3,8 @@ package soc.base.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -33,6 +35,12 @@ public class CardPane extends JLayeredPane {
     public CardPane(List<JLabel> labels, int maxWidth, int height) {
         super();
         this.labels = new ArrayList<JLabel>(labels);//Ensures labels can only be modified by this class
+        Collections.sort(this.labels, new Comparator<JLabel>() {//Sort the labels by name
+            @Override
+            public int compare(JLabel labelA, JLabel labelB) {
+                return labelA.getName().compareTo(labelB.getName());
+            }
+        });
         for (JLabel label : this.labels) {
             label.setSize(label.getPreferredSize());
         }

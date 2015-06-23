@@ -104,7 +104,7 @@ public class GameIcons {
 
         //Populate devCardIcons
         filePath = "Images/Development Cards/";
-        String[] devCards = new String[DevelopmentCard.PROGRESS_CARDS.length + DevelopmentCard.VICTORY_POINT_CARDS.length + 1];
+        String[] devCards = new String[DevelopmentCard.PROGRESS_CARDS.length + DevelopmentCard.VICTORY_POINT_CARDS.length];
         System.arraycopy(DevelopmentCard.PROGRESS_CARDS, 0, devCards, 0, DevelopmentCard.PROGRESS_CARDS.length);
         System.arraycopy(DevelopmentCard.VICTORY_POINT_CARDS, 0, devCards, DevelopmentCard.PROGRESS_CARDS.length, DevelopmentCard.VICTORY_POINT_CARDS.length);
         for (String devCard : devCards) {

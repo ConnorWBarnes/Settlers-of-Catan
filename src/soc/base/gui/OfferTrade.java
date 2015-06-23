@@ -263,6 +263,7 @@ public class OfferTrade {
      * @param recipient   The player receiving the offer
      */
     private OfferTrade(GameIcons icons, Trade trade, Player offerer, Player recipient) {
+        this.icons = icons;
         player = recipient;
         offerAccepted = false;
         this.trade = trade;
@@ -291,9 +292,11 @@ public class OfferTrade {
         tempPanel.setBorder(BorderFactory.createTitledBorder("Give"));
         tempPanel.add(tempPane);
         message.add(tempPanel, BorderLayout.SOUTH);
-        //Build the "Accept" and "Decline" buttons
+        //Build the "Accept", "View Cards", and "Decline" buttons
         JButton accept = new JButton("Accept");
         accept.addActionListener(new AcceptTradeListener());
+        JButton viewCards = new JButton("View Cards");
+        viewCards.addActionListener(new ViewCardsListener(recipient));
         JButton decline = new JButton("Decline");
         decline.addActionListener(new ActionListener() {
             @Override
@@ -301,9 +304,10 @@ public class OfferTrade {
                 dialog.dispose();
             }
         });
+        //Add the contents to the dialog window and display it
         dialog = new JDialog((JDialog) null, "Offer Trade", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{accept, decline}));
+        dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{accept, viewCards, decline}));
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
@@ -332,6 +336,42 @@ public class OfferTrade {
             } else {
                 JOptionPane.showMessageDialog(null, "You do not have the resource cards that the offerer wants", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+
+    /**
+     * Represents the ActionListener that is added to the "View Cards" button.
+     */
+    private class ViewCardsListener implements ActionListener {
+        private Player player;//The player receiving the offer
+
+        /**
+         * Constructs a new ViewCardsListener that will display the specified
+         * player's resource and development cards.
+         * @param player the player whose resource and development cards will be
+         *               displayed
+         */
+        private ViewCardsListener(Player player) {
+            this.player = player;
+        }
+
+        /**
+         * Creates and displays a dialog window containing the specified
+         * player's resource and development cards.
+         * @param actionEvent the event fired by the source component
+         */
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            JPanel resourcePanel = new JPanel();
+            resourcePanel.setBorder(BorderFactory.createTitledBorder("Resource Cards"));
+            resourcePanel.add(CardsFrame.buildResourceCardsPane(icons, player));
+            JPanel devCardPanel = new JPanel();
+            devCardPanel.setBorder(BorderFactory.createTitledBorder("Development Cards"));
+            devCardPanel.add(CardsFrame.buildDevCardsPane(icons, player.getDevCards()));
+            JPanel message = new JPanel(new BorderLayout());
+            message.add(resourcePanel, BorderLayout.NORTH);
+            message.add(devCardPanel, BorderLayout.CENTER);
+            JOptionPane.showMessageDialog(null, message, player.getName() + "'s Resource and Development Cards", JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
         }
     }
 }
