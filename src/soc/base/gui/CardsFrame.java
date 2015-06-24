@@ -82,7 +82,7 @@ public class CardsFrame extends JFrame {
     public void addDevCard(DevelopmentCard devCard) {
         devCardsPane.removeCard(EMPTY);
         JLabel tempLabel = new JLabel(icons.getDevCardIcon(devCard.getTitle()));
-        tempLabel.setName(getDevCardLabelName(devCard.getTitle()));
+        tempLabel.setName(String.valueOf(getDevCardOrderIndex(devCard.getTitle())));
         devCardsPane.add(tempLabel);
         pack();
     }
@@ -139,7 +139,7 @@ public class CardsFrame extends JFrame {
         } else {
             for (DevelopmentCard card : devCards) {
                 JLabel tempLabel = new JLabel(icons.getDevCardIcon(card.getTitle()));
-                tempLabel.setName(getDevCardLabelName(card.getTitle()));
+                tempLabel.setName(String.valueOf(getDevCardOrderIndex(card.getTitle())));
                 devCardLabels.add(tempLabel);
             }
         }
@@ -147,23 +147,22 @@ public class CardsFrame extends JFrame {
     }
 
     /**
-     * Returns the name of a JLabel that represents a DevelopmentCard with the specified title.
-     * The names returned sort DevelopmentCards by type (i.e. victory point card or progress card) and then title.
-     * DevelopmentCards with invalid names come before ones with valid names.
+     * Returns the position of the DevelopmentCard with the specified title in a list of all DevelopmentCards that is
+     * sorted by type (i.e. victory point card or progress card) and then title. DevelopmentCards with invalid names come before ones with valid names.
      * @param devCardTitle the title of the DevelopmentCard
-     * @return the name of a JLabel that represents a DevelopmentCard with the specified title
+     * @return the position of the DevelopmentCard with the specified title in the list described above
      */
-    private static String getDevCardLabelName(String devCardTitle) {
+    public static int getDevCardOrderIndex(String devCardTitle) {
         for (int i = 0; i < DevelopmentCard.VICTORY_POINT_CARDS.length; i++) {
             if (devCardTitle.equals(DevelopmentCard.VICTORY_POINT_CARDS[i])) {
-                return String.valueOf(i);
+                return i;
             }
         }
         for (int i = 0; i < DevelopmentCard.PROGRESS_CARDS.length; i++) {
             if (devCardTitle.equals(DevelopmentCard.PROGRESS_CARDS[i])) {
-                return String.valueOf(i + DevelopmentCard.VICTORY_POINT_CARDS.length);
+                return i + DevelopmentCard.VICTORY_POINT_CARDS.length;
             }
         }
-        return String.valueOf(-1);
+        return -1;
     }
 }

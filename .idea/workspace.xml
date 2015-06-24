@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Updated class description in the CardsFrame class.&#10;Added code to the CardPane constructor with the list of JLabels as an argument to sort the list by name.&#10;Added a &quot;View Cards&quot; button to the dialog that displays a trade offer so that the recipient can review their cards before making a decision.">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/CardPane.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/CardPane.java" />
+    <list default="true" id="05d2fe38-7444-409c-8b45-71c4454ffe1a" name="Default" comment="Added button to view development cards in the DiscardResources class.&#10;Renamed &quot;ResourceDiscardTest&quot; to &quot;DiscardResourcesTest&quot;">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/CardsFrame.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/CardsFrame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/OfferTrade.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/OfferTrade.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/soc/base/gui/ChooseDevCard.java" afterPath="$PROJECT_DIR$/src/soc/base/gui/ChooseDevCard.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Settlers of Catan.iws" />
@@ -49,36 +47,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CardsFrame.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CardsFrame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/soc/base/gui/CardsFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="119" column="0" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.8451613">
+              <caret line="165" column="17" selection-start-line="165" selection-start-column="17" selection-end-line="165" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OfferTrade.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/OfferTrade.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.5376756">
-              <caret line="265" column="27" selection-start-line="265" selection-start-column="27" selection-end-line="265" selection-end-column="27" />
-              <folding>
-                <element signature="e#13782#13951#0" expanded="true" />
-                <element signature="e#13950#13951#0" expanded="true" />
-                <element signature="e#16071#16072#0" expanded="true" />
-                <element signature="e#16115#16116#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/soc/base/model/Player.java">
+      <file leaf-file-name="ChooseDevCard.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/soc/base/gui/ChooseDevCard.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="154" column="0" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
+              <caret line="87" column="156" selection-start-line="87" selection-start-column="156" selection-end-line="87" selection-end-column="156" />
               <folding />
             </state>
           </provider>
@@ -110,7 +93,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/soc/base/model/Graph.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/GraphNode.java" />
         <option value="$PROJECT_DIR$/tests/BoardTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Road.java" />
@@ -128,13 +110,11 @@
         <option value="$PROJECT_DIR$/src/soc/base/gui/ResourceDiscarder.java" />
         <option value="$PROJECT_DIR$/tests/DiscardFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/PlayerConstructor.java" />
-        <option value="$PROJECT_DIR$/tests/ResourceDiscardTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/ResourceDiscard.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/StealResourceCardFrame.java" />
         <option value="$PROJECT_DIR$/tests/StealResourceCardFrameTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/PlayDevCardFrame.java" />
         <option value="$PROJECT_DIR$/tests/PlayDevCardFrameTest.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/ChooseDevCard.java" />
         <option value="$PROJECT_DIR$/tests/ChooseDevCardTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/TradeInFrame.java" />
         <option value="$PROJECT_DIR$/tests/TradeInFrameTest.java" />
@@ -150,7 +130,6 @@
         <option value="$PROJECT_DIR$/src/soc/base/gui/TradeInResourceCards.java" />
         <option value="$PROJECT_DIR$/src/soc/base/model/Player.java" />
         <option value="$PROJECT_DIR$/src/soc/base/GameController.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/StealResourceCard.java" />
         <option value="$PROJECT_DIR$/tests/PlayerPanelTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/LocationConverter.java" />
@@ -158,9 +137,13 @@
         <option value="$PROJECT_DIR$/src/soc/base/gui/PlayerPanel.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/GameIcons.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/CardPane.java" />
-        <option value="$PROJECT_DIR$/src/soc/base/gui/CardsFrame.java" />
         <option value="$PROJECT_DIR$/tests/OfferTradeTest.java" />
         <option value="$PROJECT_DIR$/src/soc/base/gui/OfferTrade.java" />
+        <option value="$PROJECT_DIR$/tests/ResourceDiscardTest.java" />
+        <option value="$PROJECT_DIR$/tests/DiscardResourcesTest.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/CardsFrame.java" />
+        <option value="$PROJECT_DIR$/src/soc/base/gui/ChooseDevCard.java" />
       </list>
     </option>
   </component>
@@ -240,7 +223,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -337,6 +319,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -388,30 +371,10 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.OfferTradeTest">
+  <component name="RunManager" selected="Application.DiscardResourcesTest">
     <configuration default="false" name="OfferTradeTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="OfferTradeTest" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="Settlers of Catan" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="false" name="GameController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="soc.base.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="MAIN_CLASS_NAME" value="soc.base.GameController" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -457,6 +420,21 @@
     <configuration default="false" name="CardsFrameTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="CardsFrameTest" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="Settlers of Catan" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="DiscardResourcesTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="DiscardResourcesTest" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -620,18 +598,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Application.OfferTradeTest" />
-      <item index="1" class="java.lang.String" itemvalue="Application.GameController" />
-      <item index="2" class="java.lang.String" itemvalue="Application.BoardPaneTest" />
-      <item index="3" class="java.lang.String" itemvalue="Application.PlayerPanelTest" />
-      <item index="4" class="java.lang.String" itemvalue="Application.CardsFrameTest" />
+      <item index="1" class="java.lang.String" itemvalue="Application.BoardPaneTest" />
+      <item index="2" class="java.lang.String" itemvalue="Application.PlayerPanelTest" />
+      <item index="3" class="java.lang.String" itemvalue="Application.CardsFrameTest" />
+      <item index="4" class="java.lang.String" itemvalue="Application.DiscardResourcesTest" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.OfferTradeTest" />
-        <item index="1" class="java.lang.String" itemvalue="Application.CardsFrameTest" />
-        <item index="2" class="java.lang.String" itemvalue="Application.PlayerPanelTest" />
-        <item index="3" class="java.lang.String" itemvalue="Application.BoardPaneTest" />
-        <item index="4" class="java.lang.String" itemvalue="Application.GameController" />
+        <item index="0" class="java.lang.String" itemvalue="Application.DiscardResourcesTest" />
+        <item index="1" class="java.lang.String" itemvalue="Application.OfferTradeTest" />
+        <item index="2" class="java.lang.String" itemvalue="Application.CardsFrameTest" />
+        <item index="3" class="java.lang.String" itemvalue="Application.PlayerPanelTest" />
+        <item index="4" class="java.lang.String" itemvalue="Application.BoardPaneTest" />
       </list>
     </recent_temporary>
   </component>
@@ -874,7 +852,19 @@
       <option name="project" value="LOCAL" />
       <updated>1433629484482</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Updated class description in the CardsFrame class.&#10;Added code to the CardPane constructor with the list of JLabels as an argument to sort the list by name.&#10;Added a &quot;View Cards&quot; button to the dialog that displays a trade offer so that the recipient can review their cards before making a decision.">
+      <created>1435097911530</created>
+      <option name="number" value="00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1435097911530</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Added button to view development cards in the DiscardResources class.&#10;Renamed &quot;ResourceDiscardTest&quot; to &quot;DiscardResourcesTest&quot;">
+      <created>1435099299578</created>
+      <option name="number" value="00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1435099299578</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -890,30 +880,30 @@
     <frame x="-1" y="0" width="1682" height="1050" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39602926" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.50238097" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32288402" sideWeight="0.49761903" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17380953" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15360501" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.50238097" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39602926" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32288402" sideWeight="0.49761903" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15360501" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -927,19 +917,19 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39692307" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.50238097" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32392895" sideWeight="0.50238097" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32288402" sideWeight="0.49761903" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3291536" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17559524" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15464994" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -955,8 +945,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Finished setup phase in GameController" />
-    <MESSAGE value="Reverted resource types to strings.&#10;Added methods to GameController to handle the event of a 7 being rolled. These methods still need to be tested." />
     <MESSAGE value="Commit before using graphs" />
     <MESSAGE value="Decided to only use graphs in Player class for calculating longest road length. The methods that calculate the longest road length need larger scale testing (i.e. more than two roads).&#10;LocationConverter now returns copies of its private members instead of the private members themselves.&#10;DiscardFrame will no longer automatically resize itself.&#10;Moved stars showing valid robber locations under the number tokens and enlarged these stars in order to keep them visible.&#10;CardPane now sets the size of it labels using the label's preferred size instead of the label's icon (since it may not have one).&#10;" />
     <MESSAGE value="Consolidated construction methods in Board class.&#10;Set the constructGameBoard() method to exit the program when the user closes the frame (instead of just constructing a new board)." />
@@ -980,20 +968,14 @@
     <MESSAGE value="Added method getColoredName() to Player class.&#10;Replaced all usages of getName() where it is used to display a player's name with getColoredName().&#10;Set the background color of PlayerPanel to Color.LIGHT_GRAY so the name of a Player whose color is white will be readable.&#10;Replaced offererName argument with an argument of type Player.&#10;Added documentation to PlayerPanelTest." />
     <MESSAGE value="Moved icon size variables from LocationConverter to GameIcons.&#10;Refactored as many static variables as possible in LocationConverter to local variables.&#10;Added documentation to LocationConverter.&#10;Shrank the width and height of each tile icon by 1 pixel so they fit better in the board frame." />
     <MESSAGE value="Replaced getScaledCostsCardIcon() and getUnscaledCostsCardIcon() in GameIcons with getCostsCardIcon() and manual image scaling when using the new method" />
-    <option name="LAST_COMMIT_MESSAGE" value="Replaced getScaledCostsCardIcon() and getUnscaledCostsCardIcon() in GameIcons with getCostsCardIcon() and manual image scaling when using the new method" />
+    <MESSAGE value="Updated class description in the CardsFrame class.&#10;Added code to the CardPane constructor with the list of JLabels as an argument to sort the list by name.&#10;Added a &quot;View Cards&quot; button to the dialog that displays a trade offer so that the recipient can review their cards before making a decision." />
+    <MESSAGE value="Added button to view development cards in the DiscardResources class.&#10;Renamed &quot;ResourceDiscardTest&quot; to &quot;DiscardResourcesTest&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added button to view development cards in the DiscardResources class.&#10;Renamed &quot;ResourceDiscardTest&quot; to &quot;DiscardResourcesTest&quot;" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/soc/base/gui/OfferTrade.java</url>
-          <line>363</line>
-          <properties />
-          <option name="timeStamp" value="31" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="32" />
     </breakpoint-manager>
     <watches-manager />
@@ -1191,13 +1173,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/model/DevelopmentCard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="57" column="46" selection-start-line="57" selection-start-column="46" selection-end-line="57" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/model/Tile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1209,13 +1184,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/ResourceDiscardTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13810742">
-          <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
         </state>
       </provider>
     </entry>
@@ -1261,13 +1229,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/ChooseDevCard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6329923">
-          <caret line="83" column="40" selection-start-line="83" selection-start-column="40" selection-end-line="83" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/PlayYearOfPlenty.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1275,24 +1236,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/BoardPane.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="97" column="52" selection-start-line="97" selection-start-column="52" selection-end-line="97" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/TradeInResourceCards.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="89" column="64" selection-start-line="89" selection-start-column="64" selection-end-line="89" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="127" column="60" selection-start-line="127" selection-start-column="60" selection-end-line="127" selection-end-column="60" />
         </state>
       </provider>
     </entry>
@@ -1370,13 +1317,43 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/BoardPane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.022988506">
+          <caret line="97" column="52" selection-start-line="97" selection-start-column="52" selection-end-line="97" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/OfferTrade.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="265" column="27" selection-start-line="265" selection-start-column="27" selection-end-line="265" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/DiscardResourcesTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/DiscardResources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="24" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/soc/base/gui/CardPane.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43678162">
+        <state vertical-scroll-proportion="0.4376344">
           <caret line="37" column="89" selection-start-line="37" selection-start-column="89" selection-end-line="37" selection-end-column="89" />
           <folding>
             <element signature="e#1410#1411#0" expanded="true" />
@@ -1384,24 +1361,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/CardsFrame.java">
+    <entry file="file://$PROJECT_DIR$/src/soc/base/model/DevelopmentCard.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="119" column="0" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+          <caret line="57" column="46" selection-start-line="57" selection-start-column="46" selection-end-line="57" selection-end-column="46" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/OfferTrade.java">
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/ChooseDevCard.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.5376756">
-          <caret line="265" column="27" selection-start-line="265" selection-start-column="27" selection-end-line="265" selection-end-column="27" />
-          <folding>
-            <element signature="e#13782#13951#0" expanded="true" />
-            <element signature="e#13950#13951#0" expanded="true" />
-            <element signature="e#16071#16072#0" expanded="true" />
-            <element signature="e#16115#16116#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="87" column="156" selection-start-line="87" selection-start-column="156" selection-end-line="87" selection-end-column="156" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/soc/base/gui/CardsFrame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8451613">
+          <caret line="165" column="17" selection-start-line="165" selection-start-column="17" selection-end-line="165" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
