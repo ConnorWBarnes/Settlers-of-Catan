@@ -13,9 +13,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- * Represents the visual representation of the game board. Shows all the tiles, number tokens, harbors, and player
- * tokens on the board. Can also show all the valid locations to place something (i.e. a new road, a new settlement,
- * the robber, etc.)
+ * Represents the visual representation of the game board. Shows all the tiles,
+ * number tokens, harbors, and player tokens on the board. Can also show all the
+ * valid locations to place something (i.e. a new road, a new settlement, the
+ * robber, etc.)
  * @author Connor Barnes
  */
 public class BoardPane extends JLayeredPane {
@@ -29,19 +30,20 @@ public class BoardPane extends JLayeredPane {
     private final Integer TOKEN_LAYER = 3;      //Number tokens, roads, settlements, and cities
     private final Integer TOP_LAYER = 4;        //Stars, cancel button, and the robber
 
-	private GameIcons icons;
-	private LocationConverter locConverter;
-	private JLabel robberLabel;
+    private GameIcons icons;
+    private LocationConverter locConverter;
+    private JLabel robberLabel;
     private MouseListener starListener;
     private LocationListener locListener;
     private LinkedList<JLabel> stars;
     private HashMap<Integer, String> settlementLabelColors;
-	private HashMap<Integer, JLabel> settlementLabels;//Keys are the corner locations of the settlements that have been added
-															//Values are the indexes of the settlement panel in the layered pane
+    private HashMap<Integer, JLabel> settlementLabels;//Keys are the corner locations of the settlements that have been added
+    //Values are the indexes of the settlement panel in the layered pane
 
     /**
-     * Constructs a new layered pane that shows a board with the specified tiles and the specified number tokens.
-     * Automatically places the robber on the desert tile.
+     * Constructs a new layered pane that shows a board with the specified tiles
+     * and the specified number tokens. Automatically places the robber on the
+     * desert tile.
      * @param icons the icons used to display the board and everything on it
      * @param tiles the resource tiles to display (and where to display them)
      */
@@ -53,56 +55,61 @@ public class BoardPane extends JLayeredPane {
         settlementLabelColors = new HashMap<Integer, String>();
         settlementLabels = new HashMap<Integer, JLabel>();
         stars = new LinkedList<JLabel>();
-		
-		//Populate tileLabels and numberTokenLabels
-		JLabel[] tileLabels = buildTileLabels(tiles);
-		JLabel[] numberTokenLabels = buildNumberTokenLabels(tiles);
 
-		//Set the location and size of the base label and each tile and number token panel
+        //Populate tileLabels and numberTokenLabels
+        JLabel[] tileLabels = buildTileLabels(tiles);
+        JLabel[] numberTokenLabels = buildNumberTokenLabels(tiles);
+
+        //Set the location and size of the base label and each tile and number token panel
         JLabel baseLabel = new JLabel(this.icons.getBoardIcon());
         baseLabel.setBounds(0, 0, this.icons.getBoardIcon().getIconWidth(), this.icons.getBoardIcon().getIconHeight());
         setTileLabelBounds(tileLabels);
-		setNumberTokenLabelBounds(numberTokenLabels);
-		
-		//Add boardPanel to the layered pane
+        setNumberTokenLabelBounds(numberTokenLabels);
+
+        //Add boardPanel to the layered pane
         add(baseLabel, BACKGROUND_LAYER);
 
-		//Add the tile panels to the board
-		for (JLabel label : tileLabels) {
+        //Add the tile panels to the board
+        for (JLabel label : tileLabels) {
             add(label, TILE_LAYER);
         }
-		
-		//Add the number token panels to the board
-		for (JLabel label : numberTokenLabels) {
-			if (label == robberLabel) {
+
+        //Add the number token panels to the board
+        for (JLabel label : numberTokenLabels) {
+            if (label == robberLabel) {
                 add(robberLabel, TOP_LAYER);
             } else {
                 add(label, TOKEN_LAYER);
             }
-		}
+        }
         starListener = new StarListener();
-	}
+    }
 
     /**
-     * Displays a star at every location in the specified list of locations. The specified ActionListener is added to a
-     * button, and when a star is clicked, the button's ActionCommand is set so the star's corresponding location.
-     * @param validLocs the list of locations to display a star at
-     * @param locListener the EventListener that listens for when the player selects a location (or cancels)
-     * @param locType the type of locations in the specified list (see static variables)
+     * Displays a star at every location in the specified list of locations. The
+     * specified ActionListener is added to a button, and when a star is
+     * clicked, the button's ActionCommand is set so the star's corresponding
+     * location.
+     * @param validLocs   the list of locations to display a star at
+     * @param locListener the EventListener that listens for when the player
+     *                    selects a location (or cancels)
+     * @param locType     the type of locations in the specified list (see
+     *                    static variables)
      */
     public void showValidLocs(Collection<Integer> validLocs, LocationListener locListener, int locType, boolean cancelOption) {
         this.locListener = locListener;
-        if (cancelOption) {//TODO: Move cancel button
+        if (cancelOption) {
             //Create and add the cancel option
             JLabel cancelLabel = new JLabel(icons.getCancelIcon());
             cancelLabel.setName(String.valueOf(-1));
             cancelLabel.addMouseListener(starListener);
-            cancelLabel.setBounds(20, 20, (int) cancelLabel.getPreferredSize().getWidth(), (int) cancelLabel.getPreferredSize().getHeight());
+            cancelLabel.setSize(cancelLabel.getPreferredSize());
+            cancelLabel.setLocation(((GameIcons.BOARD_WIDTH / 2) - (cancelLabel.getWidth() / 2)), GameIcons.BOARD_HEIGHT - cancelLabel.getHeight() - 10);
             add(cancelLabel, TOP_LAYER);
             stars.add(cancelLabel);
         }
         //Put a star on every valid roadLoc
-		for (int loc : validLocs) {
+        for (int loc : validLocs) {
             JLabel starLabel = new JLabel();
             if (locType == LOC_TYPE_ROAD) {
                 starLabel.setIcon(icons.getStarIcon(GameIcons.PLAYER_TOKEN_STAR));
@@ -127,8 +134,8 @@ public class BoardPane extends JLayeredPane {
             }
             stars.add(starLabel);
         }
-		repaint();
-	}
+        repaint();
+    }
 
     /**
      * Removes all the star icons that show a valid location.
@@ -143,7 +150,8 @@ public class BoardPane extends JLayeredPane {
     }
 
     /**
-     * The interface for EventListeners that listen for when the user selects a location via the showValidLocs() method.
+     * The interface for EventListeners that listen for when the user selects a
+     * location via the showValidLocs() method.
      */
     public interface LocationListener extends EventListener {
         /**
@@ -158,78 +166,79 @@ public class BoardPane extends JLayeredPane {
     /**
      * Displays a road of the specified color at the specified location.
      * @param roadLoc the location of the road
-     * @param color the color of the road
+     * @param color   the color of the road
      */
-	public void addRoad(int roadLoc, String color) {
+    public void addRoad(int roadLoc, String color) {
         JLabel tempLabel = new JLabel(icons.getRoadIcon(color, locConverter.getRoadIconType(roadLoc)));
         //Set the label location
-		tempLabel.setLocation(locConverter.getRoadPoint(roadLoc));
+        tempLabel.setLocation(locConverter.getRoadPoint(roadLoc));
         tempLabel.setSize(tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
-		//Add the road to the board
+        //Add the road to the board
         add(tempLabel, TOKEN_LAYER);
         repaint();
-	}
+    }
 
     /**
      * Adds a settlement of the specified color to the specified location.
      * @param cornerLoc the location of the settlement
-     * @param color the color of the settlement
+     * @param color     the color of the settlement
      */
-	public void addSettlement(int cornerLoc, String color) {
-		JLabel tempLabel = new JLabel(icons.getSettlementIcon(color));
+    public void addSettlement(int cornerLoc, String color) {
+        JLabel tempLabel = new JLabel(icons.getSettlementIcon(color));
         settlementLabelColors.put(cornerLoc, color);
-		//Add the correct icon to the panel and set the panel bounds
+        //Add the correct icon to the panel and set the panel bounds
         tempLabel.setLocation(locConverter.getSettlementPoint(cornerLoc));
         tempLabel.setSize(tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
         add(tempLabel, TOKEN_LAYER);
         settlementLabels.put(cornerLoc, tempLabel);
-		repaint();
-	}
+        repaint();
+    }
 
     /**
-     * Removes the settlement at the specified location and replaces it with a city of the same color.
+     * Removes the settlement at the specified location and replaces it with a
+     * city of the same color.
      * @param cornerLoc the location of the settlement to replace with a city
      */
-	public void addCity(int cornerLoc) {
-		//Remove the label containing the settlement icon at this cornerLoc and update settlementLabelIndexes
-		remove(getIndexOf(settlementLabels.remove(Integer.valueOf(cornerLoc))));
-		//Add the correct icon to a label and set the panel bounds
-		JLabel tempLabel = new JLabel(icons.getCityIcon(settlementLabelColors.get(cornerLoc)));
-		tempLabel.setLocation(locConverter.getCityPoint(cornerLoc));
+    public void addCity(int cornerLoc) {
+        //Remove the label containing the settlement icon at this cornerLoc and update settlementLabelIndexes
+        remove(getIndexOf(settlementLabels.remove(Integer.valueOf(cornerLoc))));
+        //Add the correct icon to a label and set the panel bounds
+        JLabel tempLabel = new JLabel(icons.getCityIcon(settlementLabelColors.get(cornerLoc)));
+        tempLabel.setLocation(locConverter.getCityPoint(cornerLoc));
         tempLabel.setSize(tempLabel.getIcon().getIconWidth(), tempLabel.getIcon().getIconHeight());
-		//Add the city to the board
+        //Add the city to the board
         add(tempLabel, TOKEN_LAYER);
         repaint();
-	}
+    }
 
     /**
      * Moves the robber icon to the specified tile location.
      * @param tileLoc the new location of the robber
      */
-	public void moveRobber(int tileLoc) {
-		robberLabel.setLocation(locConverter.getRobberPoint(tileLoc));
-		revalidate();
+    public void moveRobber(int tileLoc) {
+        robberLabel.setLocation(locConverter.getRobberPoint(tileLoc));
+        revalidate();
         repaint();
-	}
+    }
 
     /**
      * Creates and returns an array of JPanels, each of which contain the
-     * ImageIcon of the terrain of the terrain hex in the corresponding index
-     * in the tiles argument.
+     * ImageIcon of the terrain of the terrain hex in the corresponding index in
+     * the tiles argument.
      * @param tiles the terrain hexes on the board
      * @return an array of JPanels that contain the terrain hex images
      */
-	private JLabel[] buildTileLabels(Tile[] tiles) {
-		JLabel[] tileLabels = new JLabel[tiles.length];
-		JLabel tempLabel;
+    private JLabel[] buildTileLabels(Tile[] tiles) {
+        JLabel[] tileLabels = new JLabel[tiles.length];
+        JLabel tempLabel;
         int index = 0;
-		for (Tile tile : tiles) {
-			tempLabel = new JLabel(icons.getTileIcon(tile.getTerrain()));
-			tileLabels[index] = tempLabel;
+        for (Tile tile : tiles) {
+            tempLabel = new JLabel(icons.getTileIcon(tile.getTerrain()));
+            tileLabels[index] = tempLabel;
             index++;
-		}
-		return tileLabels;
-	}
+        }
+        return tileLabels;
+    }
 
     /**
      * Creates and returns an array of JPanels, each of which contain the
@@ -240,19 +249,19 @@ public class BoardPane extends JLayeredPane {
      * @return an array of JPanels that contain the images of the number tokens
      * that go on each tile
      */
-	private JLabel[] buildNumberTokenLabels(Tile[] tiles)	{
-		JLabel[] numberTokenLabels = new JLabel[tiles.length];
-		for (int i = 0; i < tiles.length; i++) {
-			//If the current tile is the desert tile, create and put the robber there
+    private JLabel[] buildNumberTokenLabels(Tile[] tiles) {
+        JLabel[] numberTokenLabels = new JLabel[tiles.length];
+        for (int i = 0; i < tiles.length; i++) {
+            //If the current tile is the desert tile, create and put the robber there
             if (tiles[i].getTerrain().equals(Tile.DESERT)) {
                 robberLabel = new JLabel(icons.getRobberIcon());
-				numberTokenLabels[i] = robberLabel;
+                numberTokenLabels[i] = robberLabel;
             } else {
                 numberTokenLabels[i] = new JLabel(icons.getNumberTokenIcon(tiles[i].getNumberTokenLetter()));
             }
-		}
-		return numberTokenLabels;
-	}
+        }
+        return numberTokenLabels;
+    }
 
     /**
      * Moves and re-sizes each tile label so that they are in the correct
