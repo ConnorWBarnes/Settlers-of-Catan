@@ -4,8 +4,6 @@ import soc.base.gui.StealResourceCard;
 import soc.base.model.Player;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Tests the StealResourceCardFrame class by creating a few players, giving them

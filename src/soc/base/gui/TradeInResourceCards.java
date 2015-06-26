@@ -11,18 +11,18 @@ import java.util.ArrayList;
 /**
  * Contains a dialog window that allows the specified player to trade in some of
  * their resource cards in exchange for a resource card of their choosing. Each
- * of the specified player's resource cards is represented by an icon in the
- * top panel. The player chooses the cards to trade in by clicking on them.
- * When one of these icons is clicked, it is removed from the top panel and
- * placed in the middle panel with the other selected cards. If the player does
- * not want to trade in a card that they have already selected, they can click
- * on said card and it will be moved back to the top panel. The player selects
- * the type of resource card they would like to receive by selecting the
- * corresponding radio button in the bottom panel. When the player is finished
- * selecting the cards to trade in, they can click the "Trade" button at the
- * very bottom of the frame. The player is asked to confirm their selection
- * before the trade is completed. If the player has any settlements or cities
- * that are on a harbor, each harbor is displayed above the top panel.
+ * of the specified player's resource cards is represented by an icon in the top
+ * panel. The player chooses the cards to trade in by clicking on them. When one
+ * of these icons is clicked, it is removed from the top panel and placed in the
+ * middle panel with the other selected cards. If the player does not want to
+ * trade in a card that they have already selected, they can click on said card
+ * and it will be moved back to the top panel. The player selects the type of
+ * resource card they would like to receive by selecting the corresponding radio
+ * button in the bottom panel. When the player is finished selecting the cards
+ * to trade in, they can click the "Trade" button at the very bottom of the
+ * frame. The player is asked to confirm their selection before the trade is
+ * completed. If the player has any settlements or cities that are on a harbor,
+ * each harbor is displayed above the top panel.
  * @author Connor Barnes
  */
 public class TradeInResourceCards {
@@ -60,9 +60,9 @@ public class TradeInResourceCards {
     }
 
     /**
-     * Creates and displays a frame that allows the specified player to trade
-     * in some of their resource cards for a resource card of their choosing.
-     * @param icons the icons used to display each card and harbor
+     * Creates and displays a frame that allows the specified player to trade in
+     * some of their resource cards for a resource card of their choosing.
+     * @param icons  the icons used to display each card and harbor
      * @param player the player who wants to trade in some of their cards
      */
     private TradeInResourceCards(GameIcons icons, Player player) {
@@ -163,8 +163,8 @@ public class TradeInResourceCards {
 
     /**
      * Moves the minimum amount of cards needed for the player to receive a
-     * resource card of their choice. Only moves resource cards of the type
-     * that was clicked by the player. This listener is added to every label in
+     * resource card of their choice. Only moves resource cards of the type that
+     * was clicked by the player. This listener is added to every label in
      * keepPane/keepLabels.
      */
     private class KeepListener extends MouseAdapter {
@@ -239,8 +239,8 @@ public class TradeInResourceCards {
     /**
      * Disposes the frame if the "Cancel" button was clicked. If the "Trade"
      * button was clicked, the relevant data is collected and stored and the
-     * dialog is disposed. This listener is added to both the "Cancel"
-     * and the "Trade" buttons
+     * dialog is disposed. This listener is added to both the "Cancel" and the
+     * "Trade" buttons
      */
     private class ConfirmTradeListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {

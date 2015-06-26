@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Represents the frame that shows a player's resource and development cards. Also contains static methods for
- * creating just a CardPane of resource or development cards (for situations in which only one or the other is needed).
+ * Represents the frame that shows a player's resource and development cards.
+ * Also contains static methods for creating just a CardPane of resource or
+ * development cards (for situations in which only one or the other is needed).
  * @author Connor Barnes
  */
 public class CardsFrame extends JFrame {
@@ -22,13 +23,14 @@ public class CardsFrame extends JFrame {
 
     /**
      * Constructs a new CardsFrame that shows what the specified player has.
-     * @param icons the icons to use
+     * @param icons  the icons to use
      * @param player the information to display
      */
     public CardsFrame(GameIcons icons, Player player) {
         super(player.getName() + "'s Resource and DevelopmentCards");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.icons = icons;
+        setIconImage(this.icons.getWindowIcon().getImage());
         //Create the contents of the frame
         resourceCardsPane = buildResourceCardsPane(icons, player);
         JPanel resourceCardsPanel = new JPanel();
@@ -88,8 +90,8 @@ public class CardsFrame extends JFrame {
     }
 
     /**
-     * Removes a development card with the specified title from the development card panel
-     * (if one exists).
+     * Removes a development card with the specified title from the development
+     * card panel (if one exists).
      * @param devCardTitle the title of the DevelopmentCard to remove
      */
     public void removeDevCard(String devCardTitle) {
@@ -103,10 +105,12 @@ public class CardsFrame extends JFrame {
     }
 
     /**
-     * Creates and returns a CardPane containing the specified player's resource cards.
-     * @param icons the icons to use to display the resource cards
+     * Creates and returns a CardPane containing the specified player's resource
+     * cards.
+     * @param icons  the icons to use to display the resource cards
      * @param player the player whose resource cards are to be displayed
-     * @return a CardPane containing a CardPane of the specified player's resource cards
+     * @return a CardPane containing a CardPane of the specified player's
+     * resource cards
      */
     public static CardPane buildResourceCardsPane(GameIcons icons, Player player) {
         ArrayList<JLabel> cards = new ArrayList<JLabel>(player.getSumResourceCards());
@@ -127,8 +131,9 @@ public class CardsFrame extends JFrame {
     }
 
     /**
-     * Creates and returns a CardPane containing the specified DevelopmentCards.
-     * @param icons the icons to use to display the DevelopmentCards
+     * Creates and returns a CardPane containing the specified
+     * DevelopmentCards.
+     * @param icons    the icons to use to display the DevelopmentCards
      * @param devCards the DevelopmentCards to display
      * @return a CardPane containing the specified DevelopmentCards
      */
@@ -147,10 +152,13 @@ public class CardsFrame extends JFrame {
     }
 
     /**
-     * Returns the position of the DevelopmentCard with the specified title in a list of all DevelopmentCards that is
-     * sorted by type (i.e. victory point card or progress card) and then title. DevelopmentCards with invalid names come before ones with valid names.
+     * Returns the position of the DevelopmentCard with the specified title in a
+     * list of all DevelopmentCards that is sorted by type (i.e. victory point
+     * card or progress card) and then title. DevelopmentCards with invalid
+     * names come before ones with valid names.
      * @param devCardTitle the title of the DevelopmentCard
-     * @return the position of the DevelopmentCard with the specified title in the list described above
+     * @return the position of the DevelopmentCard with the specified title in
+     * the list described above
      */
     public static int getDevCardOrderIndex(String devCardTitle) {
         for (int i = 0; i < DevelopmentCard.VICTORY_POINT_CARDS.length; i++) {

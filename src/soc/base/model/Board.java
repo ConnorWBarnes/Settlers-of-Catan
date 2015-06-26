@@ -134,9 +134,12 @@ public class Board {
     }
 
     /**
-     * Returns the locations of all the roads that the player of the specified color has placed.
-     * @param playerColor the color of the player whose road locations are to be returned
-     * @return the locations of all the roads that the player of the specified color has placed
+     * Returns the locations of all the roads that the player of the specified
+     * color has placed.
+     * @param playerColor the color of the player whose road locations are to be
+     *                    returned
+     * @return the locations of all the roads that the player of the specified
+     * color has placed
      */
     public ArrayList<Integer> getRoadLocs(String playerColor) {
         if (playerRoadMap.get(playerColor) == null) {
@@ -162,9 +165,12 @@ public class Board {
     }
 
     /**
-     * Returns the length of the longest continuous road created by the roads that the player with the specified color has placed on the board.
-     * @param playerColor the color of the player whose longest road length is to be calculated
-     * @return the length of the longest continuous road created by the roads at the specified locations
+     * Returns the length of the longest continuous road created by the roads
+     * that the player with the specified color has placed on the board.
+     * @param playerColor the color of the player whose longest road length is
+     *                    to be calculated
+     * @return the length of the longest continuous road created by the roads at
+     * the specified locations
      */
     public int calcLongestRoadLength(String playerColor) {
         ArrayList<Integer> visited = new ArrayList<Integer>(playerRoadMap.get(playerColor).size());

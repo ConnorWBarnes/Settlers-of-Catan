@@ -8,10 +8,10 @@ import javax.swing.*;
 import java.util.HashMap;
 
 /**
- * Contains all the ImageIcons used in the game. Every ImageIcon is retrieved
- * by calling the appropriate method and passing the ImageIcon's description in
- * the method parameters (e.g. getResourceIcon("Brick") will return the
- * ImageIcon for the brick resource card).
+ * Contains all the ImageIcons used in the game. Every ImageIcon is retrieved by
+ * calling the appropriate method and passing the ImageIcon's description in the
+ * method parameters (e.g. getResourceIcon("Brick") will return the ImageIcon
+ * for the brick resource card).
  * @author Connor Barnes
  */
 public class GameIcons {
@@ -48,7 +48,7 @@ public class GameIcons {
     private HashMap<Integer, ImageIcon> redDieIcons;//Key is the number of dots
     private HashMap<Integer, ImageIcon> yellowDieIcons;//Key is the number of dots
     private ImageIcon boardIcon, robberIcon, longestRoadIcon, largestArmyIcon;
-    private ImageIcon tokenStarIcon, robberStarIcon, cancelIcon;
+    private ImageIcon tokenStarIcon, robberStarIcon, cancelIcon, windowIcon;
 
     public GameIcons() {
         tileIcons = new HashMap<String, ImageIcon>();
@@ -135,16 +135,17 @@ public class GameIcons {
         tokenStarIcon = createImageIcon(filePath + "Star (Token).png", "Click to select this location");
         robberStarIcon = createImageIcon(filePath + "Star (Robber).png", "Click to select this location");
         cancelIcon = createImageIcon(filePath + "Cancel.png", "Click to cancel");
+        windowIcon = createImageIcon(filePath + "Window Icon.png", "Settlers of Catan");
     }
 
     /**
-     * Creates and returns an ImageIcon with the image at the specified path
-     * and the specified description. If the image cannot be found, an error
-     * message is printed out and null is returned.
-     * @param path the file path to the image
+     * Creates and returns an ImageIcon with the image at the specified path and
+     * the specified description. If the image cannot be found, an error message
+     * is printed out and null is returned.
+     * @param path        the file path to the image
      * @param description the description of the image
-     * @return an ImageIcon with the image at the specified file path and
-     * the specified description
+     * @return an ImageIcon with the image at the specified file path and the
+     * specified description
      */
     protected ImageIcon createImageIcon(String path, String description) {
         java.net.URL imgURL = getClass().getResource(path);
@@ -193,10 +194,13 @@ public class GameIcons {
     }
 
     /**
-     * Returns the ImageIcon of a road of the specified color and the specified orientation.
-     * @param color The color of the road
-     * @param orientation The orientation of the road (i.e. VERTICAL, POSITIVE_SLOPE, or NEGATIVE_SLOPE)
-     * @return the ImageIcon of a road of the specified color and the specified orientation
+     * Returns the ImageIcon of a road of the specified color and the specified
+     * orientation.
+     * @param color       The color of the road
+     * @param orientation The orientation of the road (i.e. VERTICAL,
+     *                    POSITIVE_SLOPE, or NEGATIVE_SLOPE)
+     * @return the ImageIcon of a road of the specified color and the specified
+     * orientation
      */
     public ImageIcon getRoadIcon(String color, int orientation) {
         if (orientation == VERTICAL) {
@@ -257,7 +261,8 @@ public class GameIcons {
     }
 
     /**
-     * Returns the ImageIcon of the yellow die with the specified number of dots.
+     * Returns the ImageIcon of the yellow die with the specified number of
+     * dots.
      * @param dots the number of dots on the die
      * @return the ImageIcon of the yellow die with the specified number of dots
      */
@@ -315,5 +320,15 @@ public class GameIcons {
      */
     public ImageIcon getCancelIcon() {
         return cancelIcon;
+    }
+
+    /**
+     * Returns an ImageIcon containing the Image used for the IconImage of the
+     * main window.
+     * @return an ImageIcon containing the Image used for the IconImage of the
+     * main window
+     */
+    public ImageIcon getWindowIcon() {
+        return windowIcon;
     }
 }

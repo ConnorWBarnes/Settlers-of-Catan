@@ -9,8 +9,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * Tests the PlayerPanel class by creating a new instance of it using a new Player. When a button in the PlayerPanel is pressed, the
- * button's action command is printed out.
+ * Tests the PlayerPanel class by creating a new instance of it using a new
+ * Player. When a button in the PlayerPanel is pressed, the button's action
+ * command is printed out.
  * @author Connor Barnes
  */
 public class PlayerPanelTest {
@@ -39,9 +40,9 @@ public class PlayerPanelTest {
     }
 
     /**
-     * Prints out the ActionCommand of the ActionEvent fired by the button that was pressed.
-     * If the "End Turn" button was pressed, the color of the player is changed and the
-     * PlayerPanel is updated.
+     * Prints out the ActionCommand of the ActionEvent fired by the button that
+     * was pressed. If the "End Turn" button was pressed, the color of the
+     * player is changed and the PlayerPanel is updated.
      */
     private class ButtonListener implements ActionListener {
         @Override
@@ -61,7 +62,7 @@ public class PlayerPanelTest {
      * Starts the test.
      * @param args command line arguments (unused)
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         new PlayerPanelTest();
     }
 }

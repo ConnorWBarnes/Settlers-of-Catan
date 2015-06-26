@@ -51,8 +51,10 @@ public class Road {
     }
 
     /**
-     * Returns true if a player has placed a road token on this road, otherwise false.
-     * @return true if a player has placed a road token on this road, otherwise false
+     * Returns true if a player has placed a road token on this road, otherwise
+     * false.
+     * @return true if a player has placed a road token on this road, otherwise
+     * false
      */
     public boolean hasToken() {
         return color != null;
@@ -87,7 +89,8 @@ public class Road {
     }
 
     /**
-     * Returns an array of the locations of roads that are adjacent to this one.
+     * Returns an array of the locations of roads that are adjacent to this
+     * one.
      * @return an array of the locations of roads that are adjacent to this one
      */
     public int[] getAdjacentRoadLocs() {

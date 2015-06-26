@@ -9,8 +9,8 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
- * Represents a dialog that allows the specified player to construct a trade that
- * can then be offered to any other player.
+ * Represents a dialog that allows the specified player to construct a trade
+ * that can then be offered to any other player.
  * @author Connor Barnes
  */
 public class OfferTrade {
@@ -40,14 +40,16 @@ public class OfferTrade {
     }
 
     /**
-     * Allows the specified player to offer a trade of resource cards to any other player.
-     * Returns an array of ints where the first five are the cards that the specified player
-     * is willing to give, and the last five are the cards that the specified player wants
-     * to receive. Returns null if no trade was created.
-     * @param icons The icons to use to display the resource cards
+     * Allows the specified player to offer a trade of resource cards to any
+     * other player. Returns an array of ints where the first five are the cards
+     * that the specified player is willing to give, and the last five are the
+     * cards that the specified player wants to receive. Returns null if no
+     * trade was created.
+     * @param icons  The icons to use to display the resource cards
      * @param player The player creating the offer
-     * @return An array of ints representing the cards that the specified player is willing
-     * to give for the cards that the specified player wants (or null if no trade was created)
+     * @return An array of ints representing the cards that the specified player
+     * is willing to give for the cards that the specified player wants (or null
+     * if no trade was created)
      */
     //Note: This method only uses the methods and classes that are above the offerTrade() method
     public static Trade createOffer(GameIcons icons, Player player) {
@@ -56,9 +58,9 @@ public class OfferTrade {
     }
 
     /**
-     * Creates a dialog window that allows the specified player to create a trade of resource
-     * cards that can then be offered to any other player.
-     * @param icons The icons to use to display the resource cards
+     * Creates a dialog window that allows the specified player to create a
+     * trade of resource cards that can then be offered to any other player.
+     * @param icons  The icons to use to display the resource cards
      * @param player The player creating the offer
      */
     private OfferTrade(GameIcons icons, Player player) {
@@ -80,6 +82,7 @@ public class OfferTrade {
         //Add the contents to the dialog and display it
         dialog = new JDialog((JDialog) null, "Offer Trade", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setIconImage(icons.getWindowIcon().getImage());
         dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{offerTradeButton, cancelButton}));
         dialog.pack();
         dialog.setLocationRelativeTo(null);
@@ -218,8 +221,9 @@ public class OfferTrade {
     }
 
     /**
-     * Constructs giveCards and takeCards in trade such that it reflects the cards in
-     * givePane and takePane (respectfully), and then disposes the dialog window.
+     * Constructs giveCards and takeCards in trade such that it reflects the
+     * cards in givePane and takePane (respectfully), and then disposes the
+     * dialog window.
      */
     private class OfferTradeListener implements ActionListener {
         @Override
@@ -241,11 +245,12 @@ public class OfferTrade {
 
     /**
      * Displays the specified trade and asks the user if they want to accept it.
-     * Does not allow a player to accept a trade if they do not have the cards that the offerer wants.
-     * @param icons       The icons to use to display the trade
-     * @param trade       The trade to display
-     * @param offerer     The player offering the trade
-     * @param recipient   The player receiving the offer
+     * Does not allow a player to accept a trade if they do not have the cards
+     * that the offerer wants.
+     * @param icons     The icons to use to display the trade
+     * @param trade     The trade to display
+     * @param offerer   The player offering the trade
+     * @param recipient The player receiving the offer
      * @return true if the trade is accepted, otherwise false
      */
     //Note: This method only uses the methods and classes below (and the Trade class)
@@ -257,10 +262,10 @@ public class OfferTrade {
     /**
      * Creates a dialog window that displays the specified trade and gives the
      * user the option to accept or decline the trade.
-     * @param icons       The icons to use to display the trade
-     * @param trade       The trade to display
-     * @param offerer     The player offering the trade
-     * @param recipient   The player receiving the offer
+     * @param icons     The icons to use to display the trade
+     * @param trade     The trade to display
+     * @param offerer   The player offering the trade
+     * @param recipient The player receiving the offer
      */
     private OfferTrade(GameIcons icons, Trade trade, Player offerer, Player recipient) {
         this.icons = icons;
@@ -307,6 +312,7 @@ public class OfferTrade {
         //Add the contents to the dialog window and display it
         dialog = new JDialog((JDialog) null, "Offer Trade", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setIconImage(icons.getWindowIcon().getImage());
         dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{accept, viewCards, decline}));
         dialog.pack();
         dialog.setLocationRelativeTo(null);
@@ -314,10 +320,10 @@ public class OfferTrade {
     }
 
     /**
-     * Checks to see if the recipient has the resource cards that the offerer wants.
-     * If the recipient has the cards the offerer wants, then the
-     * dialog window is disposed. If not, then the user is notified and the
-     * dialog window is not disposed.
+     * Checks to see if the recipient has the resource cards that the offerer
+     * wants. If the recipient has the cards the offerer wants, then the dialog
+     * window is disposed. If not, then the user is notified and the dialog
+     * window is not disposed.
      */
     private class AcceptTradeListener implements ActionListener {
         @Override

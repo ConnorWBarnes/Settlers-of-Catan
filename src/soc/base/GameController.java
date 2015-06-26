@@ -53,6 +53,10 @@ public class GameController {
         new GameController();
     }
 
+    //TODO: Add event log
+    //TODO: Add support for multiplayer via internet
+    //TODO: Add option to save/load games
+
     public GameController() {
         icons = new GameIcons();
         devCardDeck = generateShuffledDevCards();
@@ -71,7 +75,6 @@ public class GameController {
         turnIterator = Arrays.asList(players).iterator();
 
         //Construct the remaining contents of the frame
-        //TODO: Add menu bar
         playerPanel = new PlayerPanel(icons, new PlayerPanelListener());
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(createMainPane(), BorderLayout.NORTH);
@@ -79,6 +82,7 @@ public class GameController {
         //Add the contents to the frame
         mainFrame = new JFrame("Settlers of Catan");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setIconImage(icons.getWindowIcon().getImage());
         mainFrame.add(mainPanel);
 
         //Let each player place their two initial settlements and roads
@@ -107,8 +111,8 @@ public class GameController {
     /**
      * Constructs and returns a Deque of all the development cards in a game of
      * Settlers of Catan. The order of the cards is random.
-     * @return A shuffled Deque of all the development cards in a game of Settlers
-     * of Catan
+     * @return A shuffled Deque of all the development cards in a game of
+     * Settlers of Catan
      */
     private Deque<DevelopmentCard> generateShuffledDevCards() {
         final int NUM_KNIGHT_CARDS = 14;
@@ -132,7 +136,8 @@ public class GameController {
     }
 
     /**
-     * Determines the order in which the specified players take turns and then displays a dialog window showing said order.
+     * Determines the order in which the specified players take turns and then
+     * displays a dialog window showing said order.
      * @param players The players whose turn order is to be determined
      */
     public void determineTurnOrder(Player[] players) {//The implementation for this method may change later on, which is why the current implementation is not in the constructor
@@ -170,9 +175,11 @@ public class GameController {
     }
 
     /**
-     * Creates and returns a JLayeredPane containing the BoardPane and the PlayerInfoPanels.
-     * When creating the BoardPane, a new Board is created and displayed and the user is asked if they would like to keep it or
-     * generate a new Board. Continues to generate new Boards until the user accepts one of them.
+     * Creates and returns a JLayeredPane containing the BoardPane and the
+     * PlayerInfoPanels. When creating the BoardPane, a new Board is created and
+     * displayed and the user is asked if they would like to keep it or generate
+     * a new Board. Continues to generate new Boards until the user accepts one
+     * of them.
      * @return A JLayeredPane containing the BoardPane and the PlayerInfoPanels
      */
     private JLayeredPane createMainPane() {
@@ -242,28 +249,26 @@ public class GameController {
         int redDie = (int) (Math.random() * 6 + 1);
         int yellowDie = (int) (Math.random() * 6 + 1);
         //Show the user what they rolled
-        JPanel tempPanel = new JPanel();
-        tempPanel.add(new JLabel(icons.getRedDieIcon(redDie)));
-        tempPanel.add(new JLabel(icons.getYellowDieIcon(yellowDie)));
-        JPanel message = new JPanel(new BorderLayout());
-        message.add(new JLabel("You rolled:", JLabel.CENTER), BorderLayout.NORTH);
-        message.add(tempPanel, BorderLayout.CENTER);
-        JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
+        JPanel dicePanel = new JPanel();
+        dicePanel.add(new JLabel(icons.getRedDieIcon(redDie)));
+        dicePanel.add(new JLabel(icons.getYellowDieIcon(yellowDie)));
+        JPanel diceMessage = new JPanel(new BorderLayout());
+        diceMessage.add(new JLabel("You rolled:", JLabel.CENTER), BorderLayout.NORTH);
+        diceMessage.add(dicePanel, BorderLayout.CENTER);
+        JOptionPane.showMessageDialog(mainFrame, diceMessage, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
         int numRolled = redDie + yellowDie;
-        //Move the robber (if appropriate)
-        if (numRolled == 7) {
+        if (numRolled == 7) {//Force players with more than 7 resource cards to discard half of them and then move the robber
             for (Player player : players) {
                 if (player.getSumResourceCards() > 7) {
                     int[] discardedResources = DiscardResources.discardResources(icons, player);
-                    //Discard the cards specified by the player
+                    //Discard the cards the player selected
                     for (int i = 0; i < RESOURCE_TYPES.length; i++) {
                         player.takeResource(RESOURCE_TYPES[i], discardedResources[i]);
                     }
                 }
             }
             moveRobber();
-        } else {
-            //Distribute the appropriate resources
+        } else {//Distribute the appropriate resources
             HashMap<String, CardPane> paneMap = new HashMap<String, CardPane>();//Key is player color, value is CardPane of their resources
             for (Tile tile : gameBoard.getNumberTokenTiles(numRolled)) {
                 if (!tile.hasRobber()) {
@@ -288,11 +293,11 @@ public class GameController {
                 }
             }
             //Show the resources that each player received
+            JPanel resourcePanel = new JPanel();
             if (paneMap.isEmpty()) {//No one received any resources
-                tempPanel = new JPanel();
-                tempPanel.add(new JLabel("None"));
+                resourcePanel.add(new JLabel("None"));
             } else {
-                tempPanel = new JPanel(new GridLayout(paneMap.size(), 2, -1, -1));
+                resourcePanel.setLayout(new GridLayout(paneMap.size(), 2, -1, -1));
                 JPanel resourcesPanel;
                 for (Player player : players) {//Displays players in order
                     if (paneMap.keySet().contains(player.getColor())) {
@@ -301,15 +306,15 @@ public class GameController {
                         resourcesPanel = new JPanel();
                         resourcesPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
                         resourcesPanel.add(paneMap.get(player.getColor()));
-                        tempPanel.add(tempLabel);
-                        tempPanel.add(resourcesPanel);
+                        resourcePanel.add(tempLabel);
+                        resourcePanel.add(resourcesPanel);
                     }
                 }
             }
-            message = new JPanel(new BorderLayout());
-            message.add(new JLabel("Resources Received:", JLabel.CENTER), BorderLayout.NORTH);
-            message.add(tempPanel, BorderLayout.CENTER);
-            JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
+            JPanel resourceMessage = new JPanel(new BorderLayout());
+            resourceMessage.add(new JLabel("Resources Received:", JLabel.CENTER), BorderLayout.NORTH);
+            resourceMessage.add(resourcePanel, BorderLayout.CENTER);
+            JOptionPane.showMessageDialog(mainFrame, resourceMessage, mainFrame.getTitle(), JOptionPane.INFORMATION_MESSAGE, new ImageIcon());
             playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
             playerPanel.setButtonsEnabled(true);
         }
@@ -359,7 +364,8 @@ public class GameController {
     }
 
     /**
-     * Constructs the set of locations at which the current player can place a new road.
+     * Constructs the set of locations at which the current player can place a
+     * new road.
      * @return the locations at which the current player can place a new road
      */
     private HashSet<Integer> getValidRoadLocs() {
@@ -482,7 +488,6 @@ public class GameController {
                 playerPanel.setButtonsEnabled(true);
                 mainFrame.toFront();
                 mainFrame.requestFocus();
-
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.BUILD_ROAD)) {
                 //Make sure the current player has the required resource cards and at least one road token
                 if (currentPlayer.getNumRemainingRoads() < 1) {//Probably the least common case, but I don't want someone to save up for a road only to find that they can't build one
@@ -771,6 +776,10 @@ public class GameController {
             boardPane.addRoad(roadLoc, currentPlayer.getColor());
             playerInfoPanelMap.get(currentPlayer).setNumRoads(currentPlayer.getNumRemainingRoads());
             //Let the next player take their turn
+            if (cardsFrame != null) {
+                cardsFrame.dispose();
+                cardsFrame = null;
+            }
             if (turnIterator.hasNext()) {
                 currentPlayer = turnIterator.next();
                 playerPanel.updatePlayer(currentPlayer);
@@ -978,9 +987,10 @@ public class GameController {
     }
 
     /**
-     * Allows the current player to place two roads without spending any resource cards. Returns the Road Building card
-     * to the player if they decide to cancel before placing the first road, but the player forfeits their second road
-     * if they decide to cancel after placing the first road.
+     * Allows the current player to place two roads without spending any
+     * resource cards. Returns the Road Building card to the player if they
+     * decide to cancel before placing the first road, but the player forfeits
+     * their second road if they decide to cancel after placing the first road.
      */
     private class RoadBuildingListener implements BoardPane.LocationListener {
         private boolean first = true;

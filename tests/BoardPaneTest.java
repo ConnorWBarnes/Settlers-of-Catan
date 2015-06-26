@@ -9,8 +9,8 @@ import java.util.Scanner;
 /**
  * Tests the BoardPane class. Constructs a new Board, and then uses said Board
  * to construct and test a new BoardPane. Each method in this class is designed
- * to test one aspect of the BoardPane class. To use them, add them to the main method
- * at the end of this class.
+ * to test one aspect of the BoardPane class. To use them, add them to the main
+ * method at the end of this class.
  * @author Connor Barnes
  */
 public class BoardPaneTest {
@@ -20,7 +20,7 @@ public class BoardPaneTest {
      * Creates and displays a BoardPane object. Does not test the
      * showValidLocs() method in the BoardPane class.
      */
-    public BoardPaneTest () {
+    public BoardPaneTest() {
         JFrame frame = new JFrame("BoardPane Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         boardPane = new BoardPane(new GameIcons(), (new Board()).getTiles());
@@ -53,8 +53,8 @@ public class BoardPaneTest {
     }
 
     /**
-     * Tests the decrementNumRoads method by adding a road of the specified color to
-     * every road location on the board.
+     * Tests the decrementNumRoads method by adding a road of the specified
+     * color to every road location on the board.
      * @param color the color of the road token
      */
     public void testAddRoad(String color) {
@@ -75,9 +75,9 @@ public class BoardPaneTest {
     }
 
     /**
-     * Tests the addCity method by adding a settlement of the specified
-     * color to every settlement location on the board and then adding a city
-     * of the specified color to every settlement location on the board.
+     * Tests the addCity method by adding a settlement of the specified color to
+     * every settlement location on the board and then adding a city of the
+     * specified color to every settlement location on the board.
      * @param color the color of the settlement/city token
      */
     public void testAddCity(String color) {
@@ -91,7 +91,8 @@ public class BoardPaneTest {
 
     /**
      * Tests the moveRobber method by moving the robber to every tile on the
-     * board. The robber moves to the next tile when the "Enter" key is pressed.
+     * board. The robber moves to the next tile when the "Enter" key is
+     * pressed.
      */
     public void testMoveRobber() {
         Scanner input = new Scanner(System.in);
@@ -114,7 +115,7 @@ public class BoardPaneTest {
     /**
      * @param args command line arguments (unused)
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         BoardPaneTest mainTest = new BoardPaneTest();
         mainTest.testShowValidLocs(BoardPane.LOC_TYPE_ROAD);
     }

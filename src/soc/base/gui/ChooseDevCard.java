@@ -13,11 +13,11 @@ import java.util.Comparator;
 import java.util.Enumeration;
 
 /**
- * Represents a dialog that allows the user to choose a development card from the specified development cards.
+ * Represents a dialog that allows the user to choose a development card from
+ * the specified development cards.
  * @author Connor Barnes
  */
 public class ChooseDevCard {
-    private GameIcons icons;
     private DevelopmentCard selectedCard;
     private JButton playButton;
     private ButtonGroup buttonGroup;
@@ -25,8 +25,9 @@ public class ChooseDevCard {
 
     /**
      * Asks the user to select one development card from the specified array and
-     * returns the card that the user selected (or null if the user did not select a card).
-     * @param icons The icons to use to display the development cards
+     * returns the card that the user selected (or null if the user did not
+     * select a card).
+     * @param icons    The icons to use to display the development cards
      * @param devCards The development cards from which to choose
      * @return The selected development card
      */
@@ -36,13 +37,12 @@ public class ChooseDevCard {
     }
 
     /**
-     * Creates and displays a frame containing the specified development
-     * cards using the specified icons.
-     * @param icons the icons to use to display the development cards
+     * Creates and displays a frame containing the specified development cards
+     * using the specified icons.
+     * @param icons    the icons to use to display the development cards
      * @param devCards the development cards to display
      */
     private ChooseDevCard(GameIcons icons, DevelopmentCard[] devCards) {
-        this.icons = icons;
         //Creates the radio buttons
         buttonGroup = new ButtonGroup();
         Arrays.sort(devCards, new DevCardComparator());
@@ -57,7 +57,7 @@ public class ChooseDevCard {
             tempButton.addActionListener(new PlayButtonEnabler());
             tempButton.setHorizontalAlignment(JRadioButton.CENTER);
             buttonGroup.add(tempButton);
-            tempLabel = new JLabel(this.icons.getDevCardIcon(card.getTitle()));
+            tempLabel = new JLabel(icons.getDevCardIcon(card.getTitle()));
             tempLabel.setToolTipText(card.getTitle() + ": " + card.getDescription());
             tempLabel.addMouseListener(new LabelListener(tempButton));
             labelPanel = new JPanel(new BorderLayout());
@@ -85,6 +85,7 @@ public class ChooseDevCard {
         //Add the contents to the dialog
         dialog = new JDialog((JDialog) null, "Choose Development Card", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setIconImage(icons.getWindowIcon().getImage());
         dialog.setContentPane(new JOptionPane(cardPanel, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new JButton[]{playButton, cancelButton}));
         //Show the dialog
         dialog.pack();
@@ -93,7 +94,8 @@ public class ChooseDevCard {
     }
 
     /**
-     * Represents a MouseListener that will clicked the radio button associated with it when the mouse is released.
+     * Represents a MouseListener that will clicked the radio button associated
+     * with it when the mouse is released.
      */
     private class LabelListener extends MouseAdapter {
         private JRadioButton button;//The button that will be clicked
@@ -118,8 +120,9 @@ public class ChooseDevCard {
     }
 
     /**
-     * Enables the "Play Card" button as soon as the first selection is made, and then removes
-     * this listener from all the buttons to prevent unnecessary repetition.
+     * Enables the "Play Card" button as soon as the first selection is made,
+     * and then removes this listener from all the buttons to prevent
+     * unnecessary repetition.
      */
     private class PlayButtonEnabler implements ActionListener {
         @Override
@@ -142,8 +145,8 @@ public class ChooseDevCard {
          * @param cardA the first DevelopmentCard to be compared
          * @param cardB the second DevelopmentCard to be compared
          * @return a negative integer, zero, or a positive integer as the first
-         * card's description is less than, equal to, or greater than the
-         * second card's description
+         * card's description is less than, equal to, or greater than the second
+         * card's description
          */
         @Override
         public int compare(DevelopmentCard cardA, DevelopmentCard cardB) {

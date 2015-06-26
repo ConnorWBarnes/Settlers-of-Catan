@@ -29,7 +29,7 @@ public class CardPane extends JLayeredPane {
     /**
      * Constructs a pane with the specified maxWidth that is filled with the
      * specified JLabels.
-     * @param labels the JLabels to display
+     * @param labels   the JLabels to display
      * @param maxWidth the maxWidth of the pane
      */
     public CardPane(List<JLabel> labels, int maxWidth, int height) {

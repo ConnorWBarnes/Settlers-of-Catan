@@ -60,6 +60,7 @@ public class StealResourceCard {
                 JOptionPane.showMessageDialog(null, "You must steal a resource card before continuing", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+        dialog.setIconImage(icons.getWindowIcon().getImage());
         if (this.potentialVictims.length == 1) {
             victim = this.potentialVictims[0];
             chooseCard();

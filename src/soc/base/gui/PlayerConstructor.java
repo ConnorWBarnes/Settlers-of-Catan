@@ -9,7 +9,8 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 /**
- * Represents a frame that allows the user to create new players for a new game of Settlers of Catan.
+ * Represents a frame that allows the user to create new players for a new game
+ * of Settlers of Catan.
  * @author Connor Barnes
  */
 public class PlayerConstructor {
@@ -104,9 +105,11 @@ public class PlayerConstructor {
         private JComboBox[] colorBoxes;
 
         /**
-         * Constructs a new panel that allows the user to construct a player for each player color in the specified array.
-         * Assumes that there are no duplicates in the specified array.
-         * @param playerColors The different options for the color of a player's tokens
+         * Constructs a new panel that allows the user to construct a player for
+         * each player color in the specified array. Assumes that there are no
+         * duplicates in the specified array.
+         * @param playerColors The different options for the color of a player's
+         *                     tokens
          */
         private PlayerConstructorPanel(String[] playerColors) {
             super();

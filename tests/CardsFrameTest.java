@@ -15,7 +15,7 @@ public class CardsFrameTest {
     /**
      * @param args the command line arguments
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         Player player = new Player();
         for (String resource : GameController.RESOURCE_TYPES) {
             player.giveResource(resource, 2);

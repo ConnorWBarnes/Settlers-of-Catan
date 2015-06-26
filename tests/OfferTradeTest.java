@@ -4,9 +4,10 @@ import soc.base.gui.OfferTrade;
 import soc.base.model.Player;
 
 /**
- * Tests the createOffer() and offerTrade() methods in the OfferTrade class. The createOffer() method
- * is tested by calling it and printing out the trade that is returned, and the offerTrade() method
- * is tested by calling it twice: once using a player who has the resources to complete the trade, and once using a
+ * Tests the createOffer() and offerTrade() methods in the OfferTrade class. The
+ * createOffer() method is tested by calling it and printing out the trade that
+ * is returned, and the offerTrade() method is tested by calling it twice: once
+ * using a player who has the resources to complete the trade, and once using a
  * player who does not have the resources to complete the trade.
  * @author Connor Barnes
  */

@@ -1,11 +1,9 @@
 import soc.base.gui.GameIcons;
 import soc.base.gui.PlayYearOfPlenty;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 /**
- * Tests the PlayYearOfPlenty class by calling PlayYearOfPlenty.selectCards() and printing out what is returned.
+ * Tests the PlayYearOfPlenty class by calling PlayYearOfPlenty.selectCards()
+ * and printing out what is returned.
  * @author Connor Barnes
  */
 public class PlayYearOfPlentyTest {

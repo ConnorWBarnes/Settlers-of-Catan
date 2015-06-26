@@ -31,7 +31,8 @@ public class Tile {
      * Constructs a tile with the specified terrain. The number token for this
      * tile is zero and is not occupied by the robber.
      * @param terrain the terrain of the tile
-     * @throws IllegalArgumentException if the specified terrain is not found in TERRAIN_TYPES
+     * @throws IllegalArgumentException if the specified terrain is not found in
+     *                                  TERRAIN_TYPES
      */
     public Tile(String terrain) {
         for (String terrainType : TERRAIN_TYPES) {
@@ -52,9 +53,10 @@ public class Tile {
      * Constructs a tile with the specified terrain and is occupied by the
      * robber if the robberStatus argument is true (otherwise not). The number
      * token for this tile is zero.
-     * @param terrain the terrain of the tile
+     * @param terrain      the terrain of the tile
      * @param robberStatus whether or not the robber occupies this tile
-     * @throws IllegalArgumentException if the specified terrain is not found in TERRAIN_TYPES
+     * @throws IllegalArgumentException if the specified terrain is not found in
+     *                                  TERRAIN_TYPES
      */
     public Tile(String terrain, boolean robberStatus) {
         for (String terrainType : TERRAIN_TYPES) {
@@ -91,7 +93,8 @@ public class Tile {
     }
 
     /**
-     * Returns the type of resource that this tile produces. Returns null if this tile is the desert tile.
+     * Returns the type of resource that this tile produces. Returns null if
+     * this tile is the desert tile.
      * @return the type of resource produced by this tile
      */
     public String getResourceProduced() {
@@ -114,9 +117,9 @@ public class Tile {
      * Sets this tile's number token to the specified number token.
      * @param token this tile's new number token
      */
-	public void setNumberToken(NumberToken token) {
-		numberToken = token;
-	}
+    public void setNumberToken(NumberToken token) {
+        numberToken = token;
+    }
 
     /**
      * Returns the number on this tile's number token.
@@ -131,20 +134,22 @@ public class Tile {
      * @return the letter above the number on the number token
      */
     public char getNumberTokenLetter() {
-        return  numberToken.getLetter();
+        return numberToken.getLetter();
     }
 
     /**
      * Determines whether or not the robber is occupying this tile.
      * @param robberStatus whether or not the robber is occupying this tile
      */
-	public void setRobberStatus(boolean robberStatus) {
+    public void setRobberStatus(boolean robberStatus) {
         hasRobber = robberStatus;
     }
 
     /**
-     * Returns true if the robber is currently occupying this tile; false otherwise.
-     * @return true if the robber is currently occupying this tile; false otherwise
+     * Returns true if the robber is currently occupying this tile; false
+     * otherwise.
+     * @return true if the robber is currently occupying this tile; false
+     * otherwise
      */
     public boolean hasRobber() {
         return hasRobber;
@@ -155,9 +160,9 @@ public class Tile {
      * tile.
      * @param newSettlementLoc the location of the new settlement
      */
-	public void addSettlementLoc(int newSettlementLoc) {
-		settlementLocs.add(newSettlementLoc);
-	}
+    public void addSettlementLoc(int newSettlementLoc) {
+        settlementLocs.add(newSettlementLoc);
+    }
 
     /**
      * Returns the list of locations of settlements adjacent to this tile.

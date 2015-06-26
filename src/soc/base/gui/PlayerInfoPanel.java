@@ -23,7 +23,7 @@ public class PlayerInfoPanel extends JPanel {
 
     /**
      * Creates a new JPanel that displays the specified player's information.
-     * @param icons The icons to use to display the information
+     * @param icons  The icons to use to display the information
      * @param player The player whose information is to be displayed
      */
     public PlayerInfoPanel(GameIcons icons, Player player, boolean orientation) {
@@ -134,7 +134,8 @@ public class PlayerInfoPanel extends JPanel {
     }
 
     /**
-     * Creates and returns a JPanel containing the number of tokens the player has of each type.
+     * Creates and returns a JPanel containing the number of tokens the player
+     * has of each type.
      * @param player The player whose information is to be displayed
      * @return A JPanel containing the player's token information
      */

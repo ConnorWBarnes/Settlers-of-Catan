@@ -113,7 +113,8 @@ public class LocationConverter {
     }
 
     /**
-     * Returns the position of the icon of the robber at the specified location.
+     * Returns the position of the icon of the robber at the specified
+     * location.
      * @param tileLoc the location of the tile that is under the robber
      * @return the position of the icon of the robber at the specified location
      */
@@ -158,7 +159,7 @@ public class LocationConverter {
         for (int i = 0; i < 4; i++) {
             roadPoints.put(i + 62, new Point(x + (i * GameIcons.TILE_WIDTH), y));
         }
-		/* Positive and negative slope road locations */
+        /* Positive and negative slope road locations */
         //First row
         x = FIRST_ROW_TILE_X + (((GameIcons.TILE_WIDTH / 2) - GameIcons.PLAYER_TOKEN_WIDTH) / 2);
         y = FIRST_ROW_TILE_Y + (((GameIcons.TILE_HEIGHT / 4) - GameIcons.PLAYER_TOKEN_HEIGHT) / 2);
@@ -204,7 +205,8 @@ public class LocationConverter {
     }
 
     /**
-     * Maps each settlement/city location to the point at which to place the icon for a settlement/city at that location.
+     * Maps each settlement/city location to the point at which to place the
+     * icon for a settlement/city at that location.
      */
     private void populateSettlementPoints() {
         int x, y;
@@ -283,7 +285,8 @@ public class LocationConverter {
     }
 
     /**
-     * Maps each tile location to the point at which to place the icon for a tile at that location.
+     * Maps each tile location to the point at which to place the icon for a
+     * tile at that location.
      */
     private void populateTilePoints() {
         final int SECOND_ROW_TILE_X = FIRST_ROW_TILE_X - (TILE_OFFSET_X);
@@ -317,7 +320,8 @@ public class LocationConverter {
     }
 
     /**
-     * Maps each tile location to the point at which to place the icon for a number token on the tile at that location.
+     * Maps each tile location to the point at which to place the icon for a
+     * number token on the tile at that location.
      */
     private void populateNumberTokenPoints() {
         final int FIRST_ROW_NUMBER_TOKEN_X = GameIcons.BOARD_WIDTH / 2 - (GameIcons.NUMBER_TOKEN_WIDTH / 2) - (2 * TILE_OFFSET_X);

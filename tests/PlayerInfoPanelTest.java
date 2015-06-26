@@ -7,8 +7,9 @@ import soc.base.model.Player;
 import javax.swing.*;
 
 /**
- * Tests the PlayerInfoPanel class by creating a player with a few resource cards and
- * a few development cards, and then using them to create and display a PlayerInfoPanel.
+ * Tests the PlayerInfoPanel class by creating a player with a few resource
+ * cards and a few development cards, and then using them to create and display
+ * a PlayerInfoPanel.
  * @author Connor Barnes
  */
 public class PlayerInfoPanelTest {

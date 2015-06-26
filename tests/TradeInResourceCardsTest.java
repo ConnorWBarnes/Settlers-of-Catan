@@ -3,9 +3,6 @@ import soc.base.gui.GameIcons;
 import soc.base.gui.TradeInResourceCards;
 import soc.base.model.Player;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 /**
  * Tests the TradeInFrame class. Constructs a new player and gives them 4
  * resources cards of one type, 3 resource cards of another type, and two

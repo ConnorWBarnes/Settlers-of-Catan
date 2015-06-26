@@ -1,17 +1,19 @@
-import soc.base.gui.GameIcons;
 import soc.base.gui.ChooseDevCard;
+import soc.base.gui.GameIcons;
 import soc.base.model.DevelopmentCard;
 import soc.base.model.Player;
 
 /**
- * Tests the ChooseDevCard class by creating a player, giving them a few development cards, and then uses the ChooseDevCard class
- * to ask the user to select a development card.
+ * Tests the ChooseDevCard class by creating a player, giving them a few
+ * development cards, and then uses the ChooseDevCard class to ask the user to
+ * select a development card.
  * @author Connor Barnes
  */
 public class ChooseDevCardTest {
     /**
-     * Creates a player, gives them a few development cards, and then uses the ChooseDevCard class
-     * to ask the user to select a development card. The title of the selected card is printed out.
+     * Creates a player, gives them a few development cards, and then uses the
+     * ChooseDevCard class to ask the user to select a development card. The
+     * title of the selected card is printed out.
      * @param args command line arguments
      */
     public static void main(String[] args) {

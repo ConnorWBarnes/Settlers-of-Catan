@@ -71,9 +71,10 @@ public class Player {
     }
 
     /**
-     * Constructs a player with the specified color and with the specified name.
+     * Constructs a player with the specified color and with the specified
+     * name.
      * @param color the color of the player's tokens
-     * @param name the name of the player
+     * @param name  the name of the player
      */
     public Player(String color, String name) {
         this.color = color;
@@ -156,12 +157,14 @@ public class Player {
     }
 
     /**
-     * Gives this player the specified amount of resource cards of the
-     * specified type.
+     * Gives this player the specified amount of resource cards of the specified
+     * type.
      * @param resource the type of resource to give
-     * @param amount the number of resource cards to give
+     * @param amount   the number of resource cards to give
      * @return true if the cards were added, otherwise false
-     * @throws IllegalArgumentException if the specified amount causes the player to have a negative amount of cards
+     * @throws IllegalArgumentException if the specified amount causes the
+     *                                  player to have a negative amount of
+     *                                  cards
      */
     public boolean giveResource(String resource, int amount) {
         for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
@@ -181,9 +184,11 @@ public class Player {
     /**
      * Takes the specified amount of resource cards of the specified type.
      * @param resource the type of resource to take
-     * @param amount the number of resource cards to take
+     * @param amount   the number of resource cards to take
      * @return true if the cards were removed, otherwise false
-     * @throws IllegalArgumentException if the specified amount causes the player to have a negative amount of cards
+     * @throws IllegalArgumentException if the specified amount causes the
+     *                                  player to have a negative amount of
+     *                                  cards
      */
     public boolean takeResource(String resource, int amount) {
         for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {
@@ -234,9 +239,10 @@ public class Player {
     /**
      * Adds the specified settlement location to the list of settlements this
      * player has on the board.
-     * @param settlementLoc the location of the player's new settlement
-     * Note: Does not check to see if there is a harbor at the specified
-     * location. Harbors must be updated using addHarbor(String harbor).
+     * @param settlementLoc the location of the player's new settlement Note:
+     *                      Does not check to see if there is a harbor at the
+     *                      specified location. Harbors must be updated using
+     *                      addHarbor(String harbor).
      */
     public void addSettlement(int settlementLoc) {
         //Error checking occurs in controller
@@ -246,8 +252,8 @@ public class Player {
     }
 
     /**
-     * Updates this player's instance variables as if they had just replaced
-     * a settlement with a city.
+     * Updates this player's instance variables as if they had just replaced a
+     * settlement with a city.
      */
     public void upgradeSettlement() {
         numRemainingSettlements++;
@@ -265,7 +271,8 @@ public class Player {
     /**
      * Adds the specified harbor to the list of harbors this player can access.
      * @param type the resource type that the new harbor affects
-     * @throws IllegalArgumentException if the specified type is not a valid harbor
+     * @throws IllegalArgumentException if the specified type is not a valid
+     *                                  harbor
      */
     public void addHarbor(String type) {
         if (type.equals(GameController.HARBOR_TYPE_ANY) || Arrays.asList(GameController.RESOURCE_TYPES).contains(type)) {
@@ -352,7 +359,8 @@ public class Player {
      * Returns the number of resource cards of the specified type that this
      * player has.
      * @param resource the type of resource
-     * @return the number of resource cards of the specified type (or -1 if the specified type doesn't exist)
+     * @return the number of resource cards of the specified type (or -1 if the
+     * specified type doesn't exist)
      */
     public int getNumResourceCards(String resource) {
         for (int i = 0; i < GameController.RESOURCE_TYPES.length; i++) {

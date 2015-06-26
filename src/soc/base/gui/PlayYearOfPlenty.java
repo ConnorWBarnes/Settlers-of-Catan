@@ -11,11 +11,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * Contains a dialog window that asks the user to select the two resource cards they wish to receive, as if they have just played the
- * "Year of Plenty" development card. Each type of resource card is displayed in the top of the window, and the selected cards are
- * displayed in the bottom of the window. When a resource type in the top of the window is clicked, a card of the same type is added
- * to the list of selected cards (if two cards have not already been selected). When a selected resource card is clicked, it is removed
- * from the list of selected cards.
+ * Contains a dialog window that asks the user to select the two resource cards
+ * they wish to receive, as if they have just played the "Year of Plenty"
+ * development card. Each type of resource card is displayed in the top of the
+ * window, and the selected cards are displayed in the bottom of the window.
+ * When a resource type in the top of the window is clicked, a card of the same
+ * type is added to the list of selected cards (if two cards have not already
+ * been selected). When a selected resource card is clicked, it is removed from
+ * the list of selected cards.
  * @author Connor Barnes
  */
 public class PlayYearOfPlenty {
@@ -61,6 +64,7 @@ public class PlayYearOfPlenty {
         //Add the contents to the dialog and display it
         dialog = new JDialog((JDialog) null, DevelopmentCard.YEAR_OF_PLENTY, true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setIconImage(icons.getWindowIcon().getImage());
         dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{takeResourcesButton, cancelButton}));
         dialog.pack();
         dialog.setLocationRelativeTo(null);
@@ -68,8 +72,10 @@ public class PlayYearOfPlenty {
     }
 
     /**
-     * Constructs and returns a JPanel containing a button for each resource type that, when pressed, adds a resource
-     * card of the corresponding type to the selected resource panel (unless the selected resource panel is full).
+     * Constructs and returns a JPanel containing a button for each resource
+     * type that, when pressed, adds a resource card of the corresponding type
+     * to the selected resource panel (unless the selected resource panel is
+     * full).
      * @return a JPanel containing a button for each resource type
      */
     private JPanel buildResourceTypesPanel() {
@@ -86,8 +92,8 @@ public class PlayYearOfPlenty {
     }
 
     /**
-     * Constructs and returns a JPanel containing the two JLabels that display the resource cards that have been
-     * selected.
+     * Constructs and returns a JPanel containing the two JLabels that display
+     * the resource cards that have been selected.
      * @return a JPanel containing the selected resource cards
      */
     private JPanel buildSelectedResourcesPanel() {
@@ -100,8 +106,9 @@ public class PlayYearOfPlenty {
     }
 
     /**
-     * Adds a resource card of the type specified by the button that was clicked to the selected resource panel (unless
-     * the selected resource panel is full).
+     * Adds a resource card of the type specified by the button that was clicked
+     * to the selected resource panel (unless the selected resource panel is
+     * full).
      */
     private class ResourceTypeListener implements ActionListener {
         @Override
@@ -119,7 +126,8 @@ public class PlayYearOfPlenty {
     }
 
     /**
-     * Removes the resource card that was clicked from the selected resources panel.
+     * Removes the resource card that was clicked from the selected resources
+     * panel.
      */
     private class SelectedResourceListener extends MouseAdapter {
         @Override
@@ -134,8 +142,9 @@ public class PlayYearOfPlenty {
     }
 
     /**
-     * Constructs selectedResources, fills it with the types of resources that were selected, and then
-     * disposes the dialog window. Asks the user for confirmation if only one resource was selected.
+     * Constructs selectedResources, fills it with the types of resources that
+     * were selected, and then disposes the dialog window. Asks the user for
+     * confirmation if only one resource was selected.
      */
     private class TakeResourcesListener implements ActionListener {
         @Override

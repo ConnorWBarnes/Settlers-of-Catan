@@ -11,8 +11,8 @@ import java.awt.event.*;
  * (represented by buttons) the player can take once they have rolled. These
  * actions include building a structure (i.e. road, settlement, etc.), building
  * a development card, viewing current resource cards and development cards,
- * offering a trade to another player, trading in resource cards, and ending
- * the turn.
+ * offering a trade to another player, trading in resource cards, and ending the
+ * turn.
  * @author Connor Barnes
  */
 public class PlayerPanel extends JPanel {
@@ -39,7 +39,7 @@ public class PlayerPanel extends JPanel {
      * Constructs a new player panel with the specified icons and adds the
      * specified ActionListener to each button (i.e. Build Road, View Cards,
      * etc.).
-     * @param icons the icons to use to display player information
+     * @param icons          the icons to use to display player information
      * @param buttonListener the ActionListener to add to each button
      */
     public PlayerPanel(GameIcons icons, ActionListener buttonListener) {
@@ -83,12 +83,13 @@ public class PlayerPanel extends JPanel {
      * Creates and returns a JPanel containing the JLabel that contains the
      * building costs icon.
      * @return a JPanel containing the JLabel that contains the building costs
-     *         icon
+     * icon
      */
     private JPanel buildCostsPanel() {
         playerColor = "Red"; //Red is default/placeholder
         costsLabel = new JLabel(new ImageIcon(icons.getCostsCardIcon(playerColor).getImage().getScaledInstance((int) (GameIcons.COSTS_CARD_WIDTH * (buttonPanel.getPreferredSize().getHeight() / GameIcons.COSTS_CARD_HEIGHT)), (int) buttonPanel.getPreferredSize().getHeight(), Image.SCALE_SMOOTH)));
         costsLabel.addMouseListener(new CostsCardListener());
+        costsLabel.setToolTipText("Click to enlarge");
         JPanel costsPanel = new JPanel();
         costsPanel.add(costsLabel);
         return costsPanel;
@@ -97,7 +98,8 @@ public class PlayerPanel extends JPanel {
     /**
      * Creates all the player buttons and adds them to a JPanel (which is
      * returned).
-     * @param buttonListener the ActionListener to add to all the player buttons
+     * @param buttonListener the ActionListener to add to all the player
+     *                       buttons
      * @return a JPanel containing all the player buttons
      */
     private JPanel buildButtonPanel(ActionListener buttonListener) {

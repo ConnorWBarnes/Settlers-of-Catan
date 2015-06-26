@@ -9,13 +9,13 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
- * ResourceDiscard is a frame that allows the specified player to discard half of
- * their resource cards (rounding down). Each of the specified player's resource
- * cards is represented by an icon in the top half of the frame. The player
- * chooses the cards to discard by clicking on them. When one of these icons is
- * clicked, it is removed from the top half of the frame and placed in the
- * bottom half of the frame. If the player does not want to discard a card in
- * the bottom half of the frame, they can click on said card and it will be
+ * ResourceDiscard is a frame that allows the specified player to discard half
+ * of their resource cards (rounding down). Each of the specified player's
+ * resource cards is represented by an icon in the top half of the frame. The
+ * player chooses the cards to discard by clicking on them. When one of these
+ * icons is clicked, it is removed from the top half of the frame and placed in
+ * the bottom half of the frame. If the player does not want to discard a card
+ * in the bottom half of the frame, they can click on said card and it will be
  * moved back to the top of the frame. When the player is finished selecting the
  * cards to discard, they can click the "Discard" button at the very bottom of
  * the frame. The player is asked to confirm their selection before the cards
@@ -67,6 +67,7 @@ public class DiscardResources {
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+        dialog.setIconImage(icons.getWindowIcon().getImage());
         dialog.setContentPane(new JOptionPane(discardPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new JButton[]{viewDevCards, discard}));
         dialog.pack();
         dialog.setLocationRelativeTo(null);

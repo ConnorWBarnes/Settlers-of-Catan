@@ -7,21 +7,21 @@ import java.util.LinkedList;
  * @author Connor Barnes
  */
 public class Corner {
-	private Settlement settlement;//null means the corner is unoccupied
-	private String harbor;//null means this corner has no harbor
+    private Settlement settlement;//null means the corner is unoccupied
+    private String harbor;//null means this corner has no harbor
     private int[] adjacentCornerLocs;//Used when checking for adjacent settlements when adding a settlement
     private LinkedList<Integer> adjacentRoadLocs, adjacentTileLocs;
 
     /**
      * Constructs an empty corner.
      */
-	public Corner()	{
-		settlement = new Settlement();
-		harbor = null;
+    public Corner() {
+        settlement = new Settlement();
+        harbor = null;
         adjacentCornerLocs = null;
         adjacentTileLocs = new LinkedList<Integer>();
-		adjacentRoadLocs = new LinkedList<Integer>();
-	}
+        adjacentRoadLocs = new LinkedList<Integer>();
+    }
 
     /**
      * Constructs a deep copy of the specified corner.
@@ -38,7 +38,8 @@ public class Corner {
 
     /**
      * Sets the array of adjacent corner locations to the specified array.
-     * @param cornerLocs the locations of the corners that are adjacent to this corner
+     * @param cornerLocs the locations of the corners that are adjacent to this
+     *                   corner
      */
     public void setAdjacentCornerLocs(int[] cornerLocs) {
         adjacentCornerLocs = cornerLocs;
@@ -60,8 +61,8 @@ public class Corner {
      * Adds the specified location to the list of locations of adjacent roads.
      * @param roadLoc the location to add to the list
      */
-    public void addAdjacentRoadLoc(int roadLoc)	{
-		adjacentRoadLocs.add(roadLoc);
+    public void addAdjacentRoadLoc(int roadLoc) {
+        adjacentRoadLocs.add(roadLoc);
     }
 
     /**
@@ -76,8 +77,8 @@ public class Corner {
      * Adds the specified location to the list of locations of adjacent tiles.
      * @param tileLoc the location to add to the list
      */
-    public void addAdjacentTileLoc(int tileLoc)	{
-		adjacentTileLocs.add(tileLoc);
+    public void addAdjacentTileLoc(int tileLoc) {
+        adjacentTileLocs.add(tileLoc);
     }
 
     /**
@@ -119,7 +120,7 @@ public class Corner {
     /**
      * Upgrades the settlement on this corner to a city.
      */
-    public void upgradeSettlement()	{
+    public void upgradeSettlement() {
         settlement.isCity = true;
     }
 
@@ -153,19 +154,21 @@ public class Corner {
     }
 
     /**
-     * Returns true if there is a harbor adjacent to this corner; otherwise, returns false.
-     * @return true if there is a harbor adjacent to this corner; otherwise, returns false
+     * Returns true if there is a harbor adjacent to this corner; otherwise,
+     * returns false.
+     * @return true if there is a harbor adjacent to this corner; otherwise,
+     * returns false
      */
     public boolean hasHarbor() {
         return harbor != null;
-	}
+    }
 
     /**
      * Represents a settlement or a city.
      */
     private class Settlement {
-		private String color;//The player that owns this settlement
-		private boolean isCity;//true means this is a city, false means this is a settlement
+        private String color;//The player that owns this settlement
+        private boolean isCity;//true means this is a city, false means this is a settlement
 
         /**
          * Creates a new settlement without a color.
@@ -183,5 +186,5 @@ public class Corner {
             color = settlement.color;
             isCity = settlement.isCity;
         }
-	}
+    }
 }
