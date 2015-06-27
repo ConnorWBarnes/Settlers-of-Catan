@@ -31,9 +31,15 @@ public class CardPane extends JLayeredPane {
      * specified JLabels.
      * @param labels   the JLabels to display
      * @param maxWidth the maxWidth of the pane
+     * @throws IllegalArgumentException if any of the specified JLabels has a name that is null
      */
     public CardPane(List<JLabel> labels, int maxWidth, int height) {
         super();
+        for (JLabel label : labels) {
+            if (label.getName() == null) {
+                throw new IllegalArgumentException("All JLabels must have non-null names");
+            }
+        }
         this.labels = new ArrayList<JLabel>(labels);//Ensures labels can only be modified by this class
         Collections.sort(this.labels, new Comparator<JLabel>() {//Sort the labels by name
             @Override
@@ -53,8 +59,12 @@ public class CardPane extends JLayeredPane {
      * Adds the specified JLabel to the pane. The location of the new card is
      * based on the name of the specified JLabel.
      * @param label the JLabel to add
+     * @throws IllegalArgumentException if the name of the specified JLabel is null
      */
     public void addCard(JLabel label) {
+        if (label.getName() == null) {
+            throw new IllegalArgumentException("All JLabels must have non-null names");
+        }
         label.setSize(label.getPreferredSize());
         boolean cardAdded = false;
         for (int i = labels.size() - 1; i >= 0; i--) {

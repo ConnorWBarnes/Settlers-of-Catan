@@ -1,10 +1,7 @@
 package soc.base;
 
 import soc.base.gui.*;
-import soc.base.model.Board;
-import soc.base.model.DevelopmentCard;
-import soc.base.model.Player;
-import soc.base.model.Tile;
+import soc.base.model.*;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -414,7 +411,7 @@ public class GameController {
                 startNextTurn();
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.OFFER_TRADE)) {
                 playerPanel.setButtonsEnabled(false);
-                OfferTrade.Trade trade = OfferTrade.createOffer(icons, currentPlayer);
+                Trade trade = CreateTrade.createTrade(icons, currentPlayer);
                 if (trade != null) {
                     ArrayList<Checkbox> recipients = new ArrayList<Checkbox>(players.length - 1);
                     JPanel checkBoxPanel = new JPanel(new GridLayout(1, players.length - 1));

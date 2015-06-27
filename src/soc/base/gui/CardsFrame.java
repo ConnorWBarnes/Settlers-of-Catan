@@ -140,7 +140,9 @@ public class CardsFrame extends JFrame {
     public static CardPane buildDevCardsPane(GameIcons icons, Collection<DevelopmentCard> devCards) {
         ArrayList<JLabel> devCardLabels = new ArrayList<JLabel>(devCards.size());
         if (devCards.isEmpty()) {
-            devCardLabels.add(new JLabel("You do not have any development cards"));
+            JLabel tempLabel = new JLabel("You do not have any development cards");
+            tempLabel.setName(EMPTY);
+            devCardLabels.add(tempLabel);
         } else {
             for (DevelopmentCard card : devCards) {
                 JLabel tempLabel = new JLabel(icons.getDevCardIcon(card.getTitle()));

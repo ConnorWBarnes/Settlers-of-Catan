@@ -1,10 +1,12 @@
 import soc.base.GameController;
+import soc.base.gui.CreateTrade;
 import soc.base.gui.GameIcons;
 import soc.base.gui.OfferTrade;
 import soc.base.model.Player;
+import soc.base.model.Trade;
 
 /**
- * Tests the createOffer() and offerTrade() methods in the OfferTrade class. The
+ * Tests the CreateTrade.createTrade() and OfferTrade.offerTrade() methods. The
  * createOffer() method is tested by calling it and printing out the trade that
  * is returned, and the offerTrade() method is tested by calling it twice: once
  * using a player who has the resources to complete the trade, and once using a
@@ -18,7 +20,7 @@ public class OfferTradeTest {
             offerer.giveResource(resource, 2);
         }
         GameIcons icons = new GameIcons();
-        OfferTrade.Trade trade = OfferTrade.createOffer(icons, offerer);
+        Trade trade = CreateTrade.createTrade(icons, offerer);
         if (trade != null) {
             //Print out the trade
             System.out.println("Give cards:");
