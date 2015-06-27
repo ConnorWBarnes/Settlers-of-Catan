@@ -1,5 +1,7 @@
 package soc.base.model;
 
+import soc.base.GameController;
+
 import java.util.LinkedList;
 
 /**
@@ -137,10 +139,20 @@ public class Corner {
     /**
      * Sets this corner's harbor to the specified harbor.
      * @param harbor the harbor that is adjacent to this corner
+     * @throws IllegalArgumentException if the specified harbor is not a valid harbor type
      */
     public void setHarbor(String harbor) {
-        //Throw InvalidHarborException?
-        this.harbor = harbor;
+        if (harbor.equals(GameController.HARBOR_TYPE_ANY)) {
+            this.harbor = harbor;
+        } else {
+            for (String resource : GameController.RESOURCE_TYPES) {
+                if (resource.equals(harbor)) {
+                    this.harbor = harbor;
+                    return;
+                }
+            }
+            throw new IllegalArgumentException("Invalid harbor type");
+        }
     }
 
     /**

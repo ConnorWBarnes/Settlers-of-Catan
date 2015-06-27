@@ -103,14 +103,14 @@ public class Board {
     /**
      * Upgrades the settlement at the specified location to a city.
      * @param cornerLoc the location of the settlement
-     * @throws RuntimeException if there is no settlement or there is a city
+     * @throws IllegalArgumentException if there is no settlement or there is a city
      *                          already at the specified location
      */
     public void upgradeSettlement(int cornerLoc) {
         if (!cornerMap[cornerLoc].hasSettlement()) {
-            throw new RuntimeException("Cannot upgrade a nonexistent settlement");
+            throw new IllegalArgumentException("Cannot upgrade a nonexistent settlement");
         } else if (cornerMap[cornerLoc].hasCity()) {
-            throw new RuntimeException("Cannot upgrade a city");
+            throw new IllegalArgumentException("Cannot upgrade a city");
         } else {
             cornerMap[cornerLoc].upgradeSettlement();
         }

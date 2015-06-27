@@ -1,7 +1,7 @@
 package soc.base.model;
 
 /**
- * Represents a Development Card.
+ * Represents a development card. Consists of a title and a description.
  * @author Connor Barnes
  */
 public class DevelopmentCard {
