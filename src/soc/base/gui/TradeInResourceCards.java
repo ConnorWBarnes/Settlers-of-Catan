@@ -137,7 +137,7 @@ public class TradeInResourceCards {
      */
     private JPanel buildDiscardPanel() {
         //Construct discardPane
-        discardPane = new CardPane((int) (GameIcons.CARD_WIDTH * 1.5), GameIcons.CARD_HEIGHT);
+        discardPane = new CardPane((int) (GameIcons.CARD_WIDTH * 1.4), GameIcons.CARD_HEIGHT);
         //Construct the JComboBox that holds each resource type
         ImageIcon[] resourceIcons = new ImageIcon[GameController.RESOURCE_TYPES.length];
         for (int i = 0; i < resourceIcons.length; i++) {

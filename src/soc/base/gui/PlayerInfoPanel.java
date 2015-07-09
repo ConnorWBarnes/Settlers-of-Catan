@@ -17,7 +17,10 @@ public class PlayerInfoPanel extends JPanel {
     public static boolean TOP_CORNER = true;
     public static boolean BOTTOM_CORNER = false;
 
+    private final int ROAD_AND_ARMY_PANEL_INDEX = 0;
+
     private GameIcons icons;
+    private boolean orientation;
     private JLabel roadsLabel, settlementsLabel, citiesLabel, resourcesLabel, devCardsLabel, knightCardsPlayedLabel;
     private JLabel longestRoadLabel, largestArmyLabel;
 
@@ -29,22 +32,29 @@ public class PlayerInfoPanel extends JPanel {
     public PlayerInfoPanel(GameIcons icons, Player player, boolean orientation) {
         super(new BorderLayout(-1, -1));
         this.icons = icons;
+        this.orientation = orientation;
         //Create the contents of the panel
         JLabel nameLabel = new JLabel(player.getColoredName(), JLabel.CENTER);
         nameLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         JPanel tokenAndCardPanel = new JPanel(new BorderLayout(-1, -1));
         tokenAndCardPanel.add(buildTokenPanel(player), BorderLayout.NORTH);
         tokenAndCardPanel.add(buildCardPanel(player), BorderLayout.CENTER);
+        longestRoadLabel = new JLabel();
+        longestRoadLabel.setHorizontalAlignment(JLabel.CENTER);
+        largestArmyLabel = new JLabel();
+        largestArmyLabel.setHorizontalAlignment(JLabel.CENTER);
         //Add the contents to the panel
-        if (orientation) {//orientation == NAME_ON_TOP
+        if (this.orientation) {//this.orientation == TOP_CORNER
             add(nameLabel, BorderLayout.NORTH);
             add(tokenAndCardPanel, BorderLayout.CENTER);
-            add(buildRoadAndArmyPanel(player), BorderLayout.SOUTH);
-        } else {
+            add(new JPanel(), BorderLayout.SOUTH, ROAD_AND_ARMY_PANEL_INDEX);//placeholder for setLongestRoad() and setLargestArmy()
+        } else {//this.orientation == BOTTOM_CORNER
             add(nameLabel, BorderLayout.CENTER);
             add(tokenAndCardPanel, BorderLayout.SOUTH);
-            add(buildRoadAndArmyPanel(player), BorderLayout.NORTH);
+            add(new JPanel(), BorderLayout.NORTH, ROAD_AND_ARMY_PANEL_INDEX);//placeholder for setLongestRoad() and setLargestArmy()
         }
+        setLongestRoad(player.hasLongestRoad());
+        setLargestArmy(player.hasLargestArmy());
     }
 
     /**
@@ -115,6 +125,12 @@ public class PlayerInfoPanel extends JPanel {
         } else {
             longestRoadLabel.setIcon(null);
         }
+        remove(ROAD_AND_ARMY_PANEL_INDEX);
+        if (orientation) {//this.orientation == TOP_CORNER
+            add(buildRoadAndArmyPanel(), BorderLayout.SOUTH, ROAD_AND_ARMY_PANEL_INDEX);
+        } else {//this.orientation == BOTTOM_CORNER
+            add(buildRoadAndArmyPanel(), BorderLayout.NORTH, ROAD_AND_ARMY_PANEL_INDEX);
+        }
         repaint();
     }
 
@@ -129,6 +145,12 @@ public class PlayerInfoPanel extends JPanel {
             largestArmyLabel.setIcon(new ImageIcon(icons.getLargestArmyIcon().getImage().getScaledInstance((int) devCardsLabel.getPreferredSize().getWidth(), (int) devCardsLabel.getPreferredSize().getHeight(), Image.SCALE_SMOOTH)));
         } else {
             largestArmyLabel.setIcon(null);
+        }
+        remove(ROAD_AND_ARMY_PANEL_INDEX);
+        if (orientation) {//this.orientation == TOP_CORNER
+            add(buildRoadAndArmyPanel(), BorderLayout.SOUTH, ROAD_AND_ARMY_PANEL_INDEX);
+        } else {//this.orientation == BOTTOM_CORNER
+            add(buildRoadAndArmyPanel(), BorderLayout.NORTH, ROAD_AND_ARMY_PANEL_INDEX);
         }
         repaint();
     }
@@ -178,22 +200,10 @@ public class PlayerInfoPanel extends JPanel {
     }
 
     /**
-     * Creates and returns a JPanel that may or may not contain the Longest Road
-     * icon and/or the Largest Army icon, depending on whether or not the player
-     * has Longest Road and Largest Army.
-     * @param player The player whose information is to be displayed
-     * @return A JPanel containing the player's Longest Road and Largest Army
-     * information
+     * Creates and returns a JPanel containing longestRoadLabel and largestArmyLabel.
+     * @return A JPanel containing longestRoadLabel and largestArmyLabel
      */
-    private JPanel buildRoadAndArmyPanel(Player player) {
-        //Create the contents of the panel
-        longestRoadLabel = new JLabel();
-        longestRoadLabel.setHorizontalAlignment(JLabel.CENTER);
-        setLongestRoad(player.hasLongestRoad());
-        largestArmyLabel = new JLabel();
-        largestArmyLabel.setHorizontalAlignment(JLabel.CENTER);
-        setLargestArmy(player.hasLargestArmy());
-        //Add the contents to the panel
+    private JPanel buildRoadAndArmyPanel() {
         JPanel roadAndArmyPanel = new JPanel(new GridLayout(1, 2));
         roadAndArmyPanel.add(longestRoadLabel);
         roadAndArmyPanel.add(largestArmyLabel);

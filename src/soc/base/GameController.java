@@ -8,6 +8,8 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.*;
 import java.util.List;
 
@@ -398,6 +400,12 @@ public class GameController {
                     cardsFrame.requestFocus();
                 } else {
                     cardsFrame = new CardsFrame(icons, currentPlayer);
+                    cardsFrame.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            cardsFrame = null;
+                        }
+                    });
                 }
             } else if (actionEvent.getActionCommand().equals(PlayerPanel.END_TURN)) {
                 playerPanel.setButtonsEnabled(false);
@@ -603,7 +611,7 @@ public class GameController {
                     } else {
                         currentPlayer.playDevCard(chosenDevCard.getTitle());
                         if (cardsFrame != null) {
-                            cardsFrame.removeDevCard(actionEvent.getActionCommand());
+                            cardsFrame.removeDevCard(String.valueOf(CardsFrame.getDevCardOrderIndex(actionEvent.getActionCommand())));
                         }
                         playerInfoPanelMap.get(currentPlayer).setNumDevCards(currentPlayer.getSumDevCards());
                         mainFrame.toFront();
@@ -887,7 +895,6 @@ public class GameController {
                 gameBoard.addRoad(roadLoc, currentPlayer.getColor());
                 currentPlayer.decrementNumRoads();
                 currentPlayer.setLongestRoadLength(gameBoard.calcLongestRoadLength(currentPlayer.getColor()));
-                checkLongestRoad();
                 //Update the view
                 boardPane.addRoad(roadLoc, currentPlayer.getColor());
                 playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());

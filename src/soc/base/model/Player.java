@@ -153,7 +153,11 @@ public class Player {
      * color of this player
      */
     public String getColoredName() {
-        return "<html><font color=\"" + color + "\">" + name + "</font>";
+        if (color.equalsIgnoreCase("white")) {
+            return "<html><font color=\"gray\">" + name + "</font>";
+        } else {
+            return "<html><font color=\"" + color + "\">" + name + "</font>";
+        }
     }
 
     /**
@@ -291,7 +295,7 @@ public class Player {
         if (length < 1) {
             throw new IllegalArgumentException("The length of a player's longest road can never be less than 1");
         } else {
-            longestRoadLength = 1;
+            longestRoadLength = length;
         }
     }
 
