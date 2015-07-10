@@ -86,7 +86,7 @@ public class ChooseDevCard {
         dialog = new JDialog((JDialog) null, "Choose Development Card", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setIconImage(icons.getWindowIcon().getImage());
-        dialog.setContentPane(new JOptionPane(cardPanel, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new JButton[]{playButton, cancelButton}));
+        dialog.setContentPane(new JOptionPane(cardPanel, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new JButton[]{cancelButton, playButton}));
         //Show the dialog
         dialog.pack();
         dialog.setLocationRelativeTo(null);

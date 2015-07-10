@@ -93,7 +93,7 @@ public class OfferTrade {
         dialog = new JDialog((JDialog) null, "Offer Trade", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setIconImage(icons.getWindowIcon().getImage());
-        dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{accept, viewCards, decline}));
+        dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{decline, viewCards, accept}));
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);

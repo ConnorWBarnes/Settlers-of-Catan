@@ -22,11 +22,11 @@ public class PlayerPanel extends JPanel {
     public static final String BUILD_DEV_CARD = "Build Development Card";
     public static final String VIEW_CARDS = "View Cards";
     public static final String OFFER_TRADE = "Offer Trade";
-    public static final String PLAY_DEV_CARD = "Play Development Card";
     public static final String TRADE_IN_RESOURCE_CARDS = "Trade in Resource Cards";
+    public static final String PLAY_DEV_CARD = "Play Development Card";
     public static final String END_TURN = "End Turn";
     public static final String[] BUTTON_NAMES = {BUILD_ROAD, BUILD_SETTLEMENT, BUILD_CITY, BUILD_DEV_CARD, VIEW_CARDS,
-            OFFER_TRADE, PLAY_DEV_CARD, TRADE_IN_RESOURCE_CARDS, END_TURN};
+            OFFER_TRADE, TRADE_IN_RESOURCE_CARDS, PLAY_DEV_CARD, END_TURN};
 
     private GameIcons icons;
     private JButton[] playerButtons;

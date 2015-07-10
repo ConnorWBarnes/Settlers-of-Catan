@@ -65,7 +65,7 @@ public class PlayYearOfPlenty {
         dialog = new JDialog((JDialog) null, DevelopmentCard.YEAR_OF_PLENTY, true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setIconImage(icons.getWindowIcon().getImage());
-        dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{takeResourcesButton, cancelButton}));
+        dialog.setContentPane(new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{cancelButton, takeResourcesButton}));
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
