@@ -199,7 +199,7 @@ public class LongestRoadTest {
     private HashSet<Integer> getValidRoadLocs(String color) {
         HashSet<Integer> validRoadLocs = new HashSet<Integer>();
         if (gameBoard.getRoadLocs(color) == null) {
-            for (int i = 0; i < gameBoard.getNumRoads(); i++) {
+            for (int i = 0; i < gameBoard.getNumRoadLocs(); i++) {
                 if (!gameBoard.getRoad(i).hasToken()) {
                     validRoadLocs.add(i);
                 }

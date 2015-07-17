@@ -554,7 +554,7 @@ public class GameController {
                 } else {
                     //Construct a list of the locations at which the current player has an upgradable settlement
                     ArrayList<Integer> validCityLocs = new ArrayList<Integer>();
-                    for (int cornerLoc : currentPlayer.getSettlementLocs()) {
+                    for (int cornerLoc : gameBoard.getSettlementLocs(currentPlayer.getColor())) {
                         if (!gameBoard.getCorner(cornerLoc).hasCity()) {
                             validCityLocs.add(cornerLoc);
                         }
@@ -750,7 +750,7 @@ public class GameController {
             playerIndex--;
             //Add the settlement to the board
             gameBoard.addSettlement(settlementLoc, currentPlayer.getColor());
-            currentPlayer.addSettlement(settlementLoc);
+            currentPlayer.placeSettlement();
             if (gameBoard.getCorner(settlementLoc).hasHarbor()) {
                 currentPlayer.addHarbor(gameBoard.getCorner(settlementLoc).getHarbor());
             }
@@ -777,7 +777,7 @@ public class GameController {
         public void locationSelected(int roadLoc) {
             //Add the road to the board
             gameBoard.addRoad(roadLoc, currentPlayer.getColor());
-            currentPlayer.decrementNumRoads();
+            currentPlayer.placeRoad();
             boardPane.addRoad(roadLoc, currentPlayer.getColor());
             playerInfoPanelMap.get(currentPlayer).setNumRoads(currentPlayer.getNumRemainingRoads());
             //Let the next player take their turn
@@ -893,7 +893,7 @@ public class GameController {
                 currentPlayer.takeResource(BRICK, 1);
                 currentPlayer.takeResource(LUMBER, 1);
                 gameBoard.addRoad(roadLoc, currentPlayer.getColor());
-                currentPlayer.decrementNumRoads();
+                currentPlayer.placeRoad();
                 currentPlayer.setLongestRoadLength(gameBoard.calcLongestRoadLength(currentPlayer.getColor()));
                 //Update the view
                 boardPane.addRoad(roadLoc, currentPlayer.getColor());
@@ -924,7 +924,7 @@ public class GameController {
                 currentPlayer.takeResource(LUMBER, 1);
                 currentPlayer.takeResource(WOOL, 1);
                 gameBoard.addSettlement(settlementLoc, currentPlayer.getColor());
-                currentPlayer.addSettlement(settlementLoc);
+                currentPlayer.placeSettlement();
                 if (gameBoard.getCorner(settlementLoc).hasHarbor()) {
                     currentPlayer.addHarbor(gameBoard.getCorner(settlementLoc).getHarbor());
                 }
@@ -969,7 +969,7 @@ public class GameController {
                 currentPlayer.takeResource(GRAIN, 2);
                 currentPlayer.takeResource(ORE, 3);
                 gameBoard.upgradeSettlement(settlementLoc);
-                currentPlayer.upgradeSettlement();
+                currentPlayer.placeCity();
                 //Update the view
                 boardPane.addCity(settlementLoc);
                 playerInfoPanelMap.get(currentPlayer).setNumResourceCards(currentPlayer.getSumResourceCards());
@@ -1004,7 +1004,7 @@ public class GameController {
             if (roadLoc > -1) {//User did not cancel
                 //Update the model
                 gameBoard.addRoad(roadLoc, currentPlayer.getColor());
-                currentPlayer.decrementNumRoads();
+                currentPlayer.placeRoad();
                 checkLongestRoad();
                 //Update the view
                 boardPane.addRoad(roadLoc, currentPlayer.getColor());

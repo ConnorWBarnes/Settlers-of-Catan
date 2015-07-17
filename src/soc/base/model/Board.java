@@ -16,6 +16,7 @@ public class Board {
     private int robberLoc;
     private HashMap<Integer, LinkedList<Tile>> numberTokenMap;//Key is a number token, value is a list of the tiles that have that number token
     private HashMap<String, ArrayList<Integer>> playerRoadMap;//Key is player color, value is a list of all their road locations
+    private HashMap<String, ArrayList<Integer>> playerSettlementMap;//Key is player color, value is a list of the locations of their settlements & cities
 
     /**
      * Constructs a new Settlers of Catan board. The location of each tile is
@@ -27,6 +28,7 @@ public class Board {
         buildCornerMap();
         buildRoadMap();
         playerRoadMap = new HashMap<String, ArrayList<Integer>>();
+        playerSettlementMap = new HashMap<String, ArrayList<Integer>>();
     }
 
     /**
@@ -91,23 +93,54 @@ public class Board {
      * location.
      * @param cornerLoc the location of the new settlement
      * @param color     the color of the new settlement
+     * @throws IndexOutOfBoundsException if the specified location is invalid
+     * @throws IllegalArgumentException if the corner at the specified location already has a settlement
      */
     public void addSettlement(int cornerLoc, String color) {
-        //Error checking occurs in controller
-        cornerMap[cornerLoc].addSettlement(color);
-        for (Integer tileLoc : cornerMap[cornerLoc].getAdjacentTileLocs()) {
-            tileMap[tileLoc].addSettlementLoc(cornerLoc);
+        if (cornerLoc < 0 || cornerLoc >= cornerMap.length) {
+            throw new IndexOutOfBoundsException("Invalid corner location");
+        } else if (cornerMap[cornerLoc].hasSettlement()) {
+            throw new IllegalArgumentException("Cannot add a settlement to a corner that already has a settlement");
+        } else {
+            cornerMap[cornerLoc].addSettlement(color);
+            for (Integer tileLoc : cornerMap[cornerLoc].getAdjacentTileLocs()) {
+                tileMap[tileLoc].addSettlementLoc(cornerLoc);
+            }
+            if (playerSettlementMap.get(color) == null) {
+                playerSettlementMap.put(color, new ArrayList<Integer>());
+            }
+            playerSettlementMap.get(color).add(cornerLoc);
+        }
+    }
+
+    /**
+     * Returns a list of the locations of the settlements that the player of the
+     * specified color has on the board. Returns null if a player of the
+     * specified color does not exist.
+     * @param color the color of the player whose settlement locations will be
+     *              returned
+     * @return a list of the locations of settlements on the board belonging to
+     * the player of the specified color
+     */
+    public ArrayList<Integer> getSettlementLocs(String color) {
+        try {
+            return new ArrayList<Integer>(playerSettlementMap.get(color));
+        } catch (NullPointerException exception) {
+            return null;
         }
     }
 
     /**
      * Upgrades the settlement at the specified location to a city.
      * @param cornerLoc the location of the settlement
+     * @throws IndexOutOfBoundsException if the specified location is invalid
      * @throws IllegalArgumentException if there is no settlement or there is a city
      *                          already at the specified location
      */
     public void upgradeSettlement(int cornerLoc) {
-        if (!cornerMap[cornerLoc].hasSettlement()) {
+        if (cornerLoc < 0 || cornerLoc >= cornerMap.length) {
+            throw new IndexOutOfBoundsException("Invalid corner location");
+        } else if (!cornerMap[cornerLoc].hasSettlement()) {
             throw new IllegalArgumentException("Cannot upgrade a nonexistent settlement");
         } else if (cornerMap[cornerLoc].hasCity()) {
             throw new IllegalArgumentException("Cannot upgrade a city");
@@ -117,10 +150,10 @@ public class Board {
     }
 
     /**
-     * Returns the total number of roads on the board.
-     * @return the total number of roads on the board
+     * Returns the total number of road locations on the board.
+     * @return the total number of road locations on the board
      */
-    public int getNumRoads() {
+    public int getNumRoadLocs() {
         return roadMap.length;
     }
 

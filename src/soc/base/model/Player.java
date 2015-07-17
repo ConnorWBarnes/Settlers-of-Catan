@@ -5,7 +5,6 @@ import soc.base.GameController;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
 
 /**
  * Represents a player in a game of Settlers of Catan.
@@ -16,7 +15,6 @@ public class Player {
     private int numRemainingSettlements, numRemainingCities, numRemainingRoads;//Number of remaining tokens this player has
     private int[] resourceCards;
     private ArrayList<DevelopmentCard> devCards;
-    private LinkedList<Integer> settlementLocs;//Locations of settlements and cities owned by this player
     private HashSet<String> harbors;//All types of harbors that this player can access
     private int sumResourceCards, victoryPoints, longestRoadLength, numKnightCardsPlayed;
     private boolean longestRoad, largestArmy;//Whether or not this player has Longest Road or Largest Army, respectively
@@ -36,7 +34,6 @@ public class Player {
         numRemainingCities = 4;
         numRemainingRoads = 15;
         devCards = new ArrayList<DevelopmentCard>();
-        settlementLocs = new LinkedList<Integer>();
         harbors = new HashSet<String>();
         victoryPoints = 0;
         longestRoadLength = 0;
@@ -61,7 +58,6 @@ public class Player {
         numRemainingCities = 4;
         numRemainingRoads = 15;
         devCards = new ArrayList<DevelopmentCard>();
-        settlementLocs = new LinkedList<Integer>();
         harbors = new HashSet<String>();
         victoryPoints = 0;
         longestRoadLength = 0;
@@ -88,7 +84,6 @@ public class Player {
         numRemainingCities = 4;
         numRemainingRoads = 15;
         devCards = new ArrayList<DevelopmentCard>();
-        settlementLocs = new LinkedList<Integer>();
         harbors = new HashSet<String>();
         victoryPoints = 0;
         longestRoadLength = 0;
@@ -113,7 +108,6 @@ public class Player {
         numRemainingCities = player.numRemainingCities;
         numRemainingRoads = player.numRemainingRoads;
         devCards = new ArrayList<DevelopmentCard>(player.devCards);
-        settlementLocs = new LinkedList<Integer>(player.settlementLocs);
         harbors = new HashSet<String>(player.harbors);
         victoryPoints = player.victoryPoints;
         longestRoadLength = player.longestRoadLength;
@@ -123,11 +117,32 @@ public class Player {
     }
 
     /**
+     * Indicates whether or not the specified object is "equal to" this one. Returns true if
+     * the specified object is a Player and its name and color match this Player's name and color.
+     * @param object the object with which to compare
+     * @return true if the the specified object is a Player and its name and color match this Player's name and color
+     */
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Player
+                && ((Player) object).getName().equals(name)
+                && ((Player) object).getColor().equals(color);
+    }
+
+    /**
      * Sets the color of this player to the specified color.
      * @param color this player's new color
      */
     public void setColor(String color) {
         this.color = color;
+    }
+
+    /**
+     * Returns the color of this player's tokens.
+     * @return the color of this player's tokens
+     */
+    public String getColor() {
+        return color;
     }
 
     /**
@@ -215,7 +230,6 @@ public class Player {
      */
     public void giveDevCard(DevelopmentCard devCard) {
         devCards.add(devCard);
-
         if (devCard.getDescription().equals("1 Victory Point!")) {
             victoryPoints++;
         }
@@ -241,35 +255,67 @@ public class Player {
     }
 
     /**
-     * Adds the specified settlement location to the list of settlements this
-     * player has on the board.
-     * @param settlementLoc the location of the player's new settlement Note:
-     *                      Does not check to see if there is a harbor at the
-     *                      specified location. Harbors must be updated using
-     *                      addHarbor(String harbor).
+     * Decrements the number of unplaced settlement tokens and increments the number of victory points this player has.
+     * @throws RuntimeException if this player does not have any settlement tokens left to place
      */
-    public void addSettlement(int settlementLoc) {
-        //Error checking occurs in controller
-        settlementLocs.add(settlementLoc);
-        numRemainingSettlements--;
-        victoryPoints++;
+    public void placeSettlement() {
+        if (numRemainingSettlements == 0) {
+            throw new RuntimeException("This player does not have any settlement tokens left to place");
+        } else {
+            numRemainingSettlements--;
+            victoryPoints++;
+        }
+    }
+
+    /**
+     * Returns the number of settlement tokens not on the board.
+     * @return the number of settlement tokens not on the board
+     */
+    public int getNumRemainingSettlements() {
+        return numRemainingSettlements;
     }
 
     /**
      * Updates this player's instance variables as if they had just replaced a
      * settlement with a city.
+     * @throws RuntimeException if this player does not have any city tokens left to place
      */
-    public void upgradeSettlement() {
-        numRemainingSettlements++;
-        numRemainingCities--;
-        victoryPoints++;
+    public void placeCity() {
+        if (numRemainingCities == 0) {
+            throw new RuntimeException("This player does not have any city tokens left to place");
+        } else {
+            numRemainingSettlements++;
+            numRemainingCities--;
+            victoryPoints++;
+        }
+    }
+
+    /**
+     * Returns the number of city tokens not on the board.
+     * @return the number of city tokens not on the board
+     */
+    public int getNumRemainingCities() {
+        return numRemainingCities;
     }
 
     /**
      * Decrements the number of roads this player has left to place.
+     * @throws RuntimeException if this player does not have any road tokens left to place
      */
-    public void decrementNumRoads() {
-        numRemainingRoads--;
+    public void placeRoad() {
+        if (numRemainingRoads == 0) {
+            throw new RuntimeException("This player does not have any road tokens left to place");
+        } else {
+            numRemainingRoads--;
+        }
+    }
+
+    /**
+     * Returns the number of road tokens not on the board.
+     * @return the number of road tokens not on the board
+     */
+    public int getNumRemainingRoads() {
+        return numRemainingRoads;
     }
 
     /**
@@ -284,6 +330,14 @@ public class Player {
         } else {
             throw new IllegalArgumentException("Invalid harbor type");
         }
+    }
+
+    /**
+     * Returns a list of all the harbors that this player can access.
+     * @return a list of all the harbors that this player can access
+     */
+    public HashSet<String> getHarbors() {
+        return new HashSet<String>(harbors);
     }
 
     /**
@@ -328,38 +382,6 @@ public class Player {
     }
 
     /**
-     * Returns the color of this player's tokens.
-     * @return the color of this player's tokens
-     */
-    public String getColor() {
-        return color;
-    }
-
-    /**
-     * Returns the number of settlement tokens not on the board.
-     * @return the number of settlement tokens not on the board
-     */
-    public int getNumRemainingSettlements() {
-        return numRemainingSettlements;
-    }
-
-    /**
-     * Returns the number of city tokens not on the board.
-     * @return the number of city tokens not on the board
-     */
-    public int getNumRemainingCities() {
-        return numRemainingCities;
-    }
-
-    /**
-     * Returns the number of road tokens not on the board.
-     * @return the number of road tokens not on the board
-     */
-    public int getNumRemainingRoads() {
-        return numRemainingRoads;
-    }
-
-    /**
      * Returns the number of resource cards of the specified type that this
      * player has.
      * @param resource the type of resource
@@ -397,22 +419,6 @@ public class Player {
      */
     public int getSumDevCards() {
         return devCards.size();
-    }
-
-    /**
-     * Returns a list of the locations of this player's settlements.
-     * @return a list of the locations of this player's settlements
-     */
-    public LinkedList<Integer> getSettlementLocs() {
-        return new LinkedList<Integer>(settlementLocs);
-    }
-
-    /**
-     * Returns a list of all the harbors that this player can access.
-     * @return a list of all the harbors that this player can access
-     */
-    public HashSet<String> getHarbors() {
-        return new HashSet<String>(harbors);
     }
 
     /**

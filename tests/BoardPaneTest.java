@@ -53,7 +53,7 @@ public class BoardPaneTest {
     }
 
     /**
-     * Tests the decrementNumRoads method by adding a road of the specified
+     * Tests the placeRoad method by adding a road of the specified
      * color to every road location on the board.
      * @param color the color of the road token
      */
@@ -64,7 +64,7 @@ public class BoardPaneTest {
     }
 
     /**
-     * Tests the addSettlement method by adding a settlement of the specified
+     * Tests the placeSettlement method by adding a settlement of the specified
      * color to every settlement location on the board.
      * @param color the color of the settlement token
      */
