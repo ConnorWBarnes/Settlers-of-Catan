@@ -35,7 +35,7 @@ public class PlayerConstructor {
     }
 
     /**
-     * Constructs and displays the dialog that collects the player information.
+     * Creates and displays the dialog that collects the player information.
      * @param playerColors The player token color options
      */
     private PlayerConstructor(String[] playerColors) {
@@ -118,15 +118,13 @@ public class PlayerConstructor {
             colorBoxes = new JComboBox[playerColors.length];
             //Create information fields for each player
             JPanel[] panels = new JPanel[playerColors.length];
-            JPanel tempPanel;
-            JLabel tempLabel;
             for (int i = 0; i < panels.length; i++) {
                 //Create and add the text field
-                tempPanel = new JPanel();
+                JPanel tempPanel = new JPanel();
                 nameFields[i] = new JTextField(30);
                 tempPanel.add(nameFields[i]);
                 //Create and add the color combo box
-                tempLabel = new JLabel("Color:");
+                JLabel tempLabel = new JLabel("Color:");
                 tempLabel.setHorizontalAlignment(JLabel.RIGHT);
                 colorBoxes[i] = new JComboBox<String>(playerColors);
                 colorBoxes[i].setSelectedIndex(i);
@@ -138,11 +136,11 @@ public class PlayerConstructor {
                 panels[i].add(tempLabel, BorderLayout.NORTH);
                 panels[i].add(tempPanel, BorderLayout.CENTER);
             }
-            tempPanel = new JPanel(new GridLayout(4, 1));
+            JPanel tempPanel = new JPanel(new GridLayout(4, 1));
             for (JPanel panel : panels) {
                 tempPanel.add(panel);
             }
-            tempLabel = new JLabel("Please enter each player's information");
+            JLabel tempLabel = new JLabel("Please enter each player's information");
             tempLabel.setHorizontalAlignment(JLabel.CENTER);
             tempLabel.setVerticalAlignment(JLabel.CENTER);
             errorLabel = new JLabel("<html><center><font color='red'>", JLabel.CENTER);
