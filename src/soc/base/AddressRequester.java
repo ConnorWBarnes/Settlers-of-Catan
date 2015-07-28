@@ -7,27 +7,29 @@ import java.beans.PropertyChangeListener;
 import java.util.EventListener;
 
 /**
- * Asks the user for the hostname/IP address and port number of the server to
- * which they wish to connect.
+ * Asks the user for the address and port number of the server to which they wish to connect.
+ * Extends the JDialog class but does not dispose itself when a button is clicked (except the "Cancel" button)
+ * in order to make it faster and easier for the client to revise the address they entered (in case the user enters
+ * an invalid address).
  * @author Connor Barnes
  */
-public class ConnectionInfoRequester extends JDialog {
+public class AddressRequester extends JDialog {
     private final String CANCEL = "Cancel";
     private final String HELP = "Help";
     private final String CONNECT = "Connect";
 
     private JOptionPane optionPane;
     private JTextField addressField;
-    private ConnectionInfoListener infoListener;
+    private AddressListener addressListener;
 
     /**
      * Creates and displays the dialog that asks the user for the address and
      * port number of the server to which they wish to connect.
      */
-    public ConnectionInfoRequester(ConnectionInfoListener infoListener) {
+    public AddressRequester(AddressListener addressListener) {
         super((JDialog) null, "Connect", true);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        this.infoListener = infoListener;
+        this.addressListener = addressListener;
         //Create the contents of the dialog
         addressField = new JTextField(26);
         addressField.setHorizontalAlignment(JTextField.CENTER);
@@ -45,16 +47,16 @@ public class ConnectionInfoRequester extends JDialog {
     }
 
     /**
-     * Parses the information entered by the user and ensures that it is valid.
+     * Determines which button was pressed and then performs the appropriate action.
      */
     private class ChangeListener implements PropertyChangeListener {
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             if (optionPane.isVisible() && (propertyChangeEvent.getSource() == optionPane) && (propertyChangeEvent.getPropertyName().equals(JOptionPane.VALUE_PROPERTY)) && !optionPane.getValue().equals(JOptionPane.UNINITIALIZED_VALUE)) {
                 if (optionPane.getValue().equals(CANCEL)) {
-                    System.exit(0);
+                    dispose();
                 } else if (optionPane.getValue().equals(HELP)) {
-                    JOptionPane.showMessageDialog(ConnectionInfoRequester.this, "Enter the IP address or hostname of the server to connect to.\n" +
+                    JOptionPane.showMessageDialog(AddressRequester.this, "Enter the IP address or hostname of the server to connect to.\n" +
                             "\nIf you would like to specify the port number, enter it after\n" +
                             "the IP address or hostname and separate them with a colon\n" +
                             "(e.g. 192.168.1.14:54321 or machine.host.com:54321).\n" +
@@ -62,7 +64,7 @@ public class ConnectionInfoRequester extends JDialog {
                             "(54321) is used.", "Help", JOptionPane.INFORMATION_MESSAGE);
                     optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
                 } else {//optionPane.getValue().equals(CONNECT))
-                    infoListener.connectionInfoEntered(addressField.getText());
+                    addressListener.addressEntered(addressField.getText());
                     optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
                 }
             }
@@ -70,15 +72,15 @@ public class ConnectionInfoRequester extends JDialog {
     }
 
     /**
-     * The listener interface for receiving the information entered by the
+     * The listener interface for receiving the address entered by the
      * user.
      */
-    public interface ConnectionInfoListener extends EventListener {
+    public interface AddressListener extends EventListener {
         /**
-         * Passes the information that the user entered to the listener. Invoked
+         * Passes the address that the user entered to the listener. Invoked
          * when the user clicks the "Connect" button.
-         * @param infoEntered The information entered by the user
+         * @param address The information entered by the user
          */
-        void connectionInfoEntered(String infoEntered);
+        void addressEntered(String address);
     }
 }
