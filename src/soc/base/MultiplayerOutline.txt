@@ -1,0 +1,56 @@
+Multiplayer Outline
+
+1) Ask client for server address
+    - The address entered is invalid
+        Notify the client, tell them why it is invalid, and then let them revise it
+    - The address entered is valid, but a connection could not be established
+        Notify the client and ask them to double-check that the address is correct
+    - A connection is established
+        Proceed to the next step
+
+2) Ask client for name
+    - Name is already taken by another player in the same lobby
+        Notify the client and ask them to enter a different name
+   	- No other players in the lobby have the specified name
+        Give the name to the player, add them to the lobby, and notify everyone else via chat
+
+3) Display lobby and allow players to select their color and say that they're ready (via checkbox)
+    - A player selects a color that has already been selected by a player that is ready
+        Disable the checkbox
+    - A player selects a color that has not already been selected by a player that is ready
+        Enable the checkbox
+    - A player becomes ready and another player has the first player's color selected
+        Disable the checkbox for the player who is not ready
+    - A player clicks the checkbox before the client has been notified that their selected color has been taken
+        Un-check the checkbox and disable it
+    - A player disconnects
+        Remove them from the lobby and re-enable the checkbox for any player(s) who had the disconnected player's color selected
+    - All players are ready
+        Proceed to the next step
+
+4) Generate a board and let players vote to use it or to generate another one
+    - A player does not vote
+        Only allow players to vote for a certain amount of time (1 minute?)
+    - The vote is a tie
+        Discard the current board and generate another one (or randomly decide to keep it or to discard it?)
+    - A player wants to change their vote
+        Allow players to change their vote until the vote time expires
+
+5) Randomly generate the turn order and show it to all players
+
+6) Start the setup process and display who's turn it is and what they are placing
+
+7) Start the game
+
+Events to display in chat:
+- A player connects or disconnects
+- A player's turn begins
+- A player rolls the dice (include what was rolled)
+- A player builds a road/settlement/city/development card
+- A player trades in 2/3/4 resource cards of the same type for a resource card of their choice (include the resource type traded in and the resource type received)
+- Two players trade resource cards (include what was traded)
+- A development card is played (include what the development card was and what the player did with it)
+- The robber is moved
+- A player discards half of their resource cards (include what was discarded)
+- A player earns Longest Road or Largest Army
+- A player wins
