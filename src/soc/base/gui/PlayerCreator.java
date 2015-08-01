@@ -13,34 +13,34 @@ import java.util.ArrayList;
  * of Settlers of Catan.
  * @author Connor Barnes
  */
-public class PlayerConstructor {
-    private Player[] constructedPlayers;
+public class PlayerCreator {
+    private Player[] createdPlayers;
     private JDialog dialog;
     private JOptionPane optionPane;
-    private PlayerConstructorPanel playerConstructorPanel;
+    private PlayerCreatorPanel playerCreatorPanel;
 
     /**
-     * Asks the user for each player's information, constructs a Player object
+     * Asks the user for each player's information, creates a Player object
      * for each player, and returns an array of the Player objects. Player
      * information is obtained via a dialog window that allows the user to enter
      * each player's name and color. Does not allow the user to continue if two
-     * players have the same color.
+     * players have the same color. Returns null if the dialog was closed.
      * @param playerColors The player token color options
-     * @return An array containing the Player objects constructed with the
-     * user's input
+     * @return An array containing the Player objects created with the
+     * user's input (or null if the dialog was closed)
      */
-    public static Player[] constructPlayers(String[] playerColors) {
-        PlayerConstructor playerConstructor = new PlayerConstructor(playerColors);
-        return playerConstructor.constructedPlayers;
+    public static Player[] createPlayers(String[] playerColors) {
+        PlayerCreator playerCreator = new PlayerCreator(playerColors);
+        return playerCreator.createdPlayers;
     }
 
     /**
      * Creates and displays the dialog that collects the player information.
      * @param playerColors The player token color options
      */
-    private PlayerConstructor(String[] playerColors) {
-        playerConstructorPanel = new PlayerConstructorPanel(playerColors);
-        optionPane = new JOptionPane(playerConstructorPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null);
+    private PlayerCreator(String[] playerColors) {
+        playerCreatorPanel = new PlayerCreatorPanel(playerColors);
+        optionPane = new JOptionPane(playerCreatorPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null);
         optionPane.addPropertyChangeListener(new ChangeListener());
         dialog = new JDialog((JDialog) null, "Player Information", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -58,11 +58,11 @@ public class PlayerConstructor {
         @Override
         public void propertyChange(PropertyChangeEvent event) {
             if (optionPane.isVisible() && (event.getSource() == optionPane) && (event.getPropertyName().equals(JOptionPane.VALUE_PROPERTY)) && !optionPane.getValue().equals(JOptionPane.UNINITIALIZED_VALUE)) {
-                ArrayList<String> names = playerConstructorPanel.getNames();
-                ArrayList<String> colors = playerConstructorPanel.getColors();
+                ArrayList<String> names = playerCreatorPanel.getNames();
+                ArrayList<String> colors = playerCreatorPanel.getColors();
                 //Make sure information was entered
                 if (names.size() == 0) {
-                    playerConstructorPanel.addErrorMessage("Player information is required in order to start the game");
+                    playerCreatorPanel.addErrorMessage("Player information is required in order to start the game");
                     dialog.pack();
                     optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
                 } else {
@@ -70,7 +70,7 @@ public class PlayerConstructor {
                     for (int i = 0; i < names.size(); i++) {
                         for (int j = i + 1; j < names.size(); j++) {
                             if (names.get(i).equals(names.get(j)) || colors.get(i).equals(colors.get(j))) {
-                                playerConstructorPanel.addErrorMessage("Every player must have a unique name and color");
+                                playerCreatorPanel.addErrorMessage("Every player must have a unique name and color");
                                 dialog.pack();
                                 optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
                                 return;
@@ -85,9 +85,9 @@ public class PlayerConstructor {
                         }
                     }
                     dialog.dispose();
-                    constructedPlayers = new Player[names.size()];
-                    for (int i = 0; i < constructedPlayers.length; i++) {
-                        constructedPlayers[i] = new Player(colors.get(i), names.get(i));
+                    createdPlayers = new Player[names.size()];
+                    for (int i = 0; i < createdPlayers.length; i++) {
+                        createdPlayers[i] = new Player(colors.get(i), names.get(i));
                     }
                 }
             }
@@ -98,20 +98,20 @@ public class PlayerConstructor {
      * Represents the contents of the dialog window (excluding the "Ok"
      * button).
      */
-    private class PlayerConstructorPanel extends JPanel {
+    private class PlayerCreatorPanel extends JPanel {
         private String[] playerColors;
         private JLabel errorLabel;
         private JTextField[] nameFields;
         private JComboBox[] colorBoxes;
 
         /**
-         * Constructs a new panel that allows the user to construct a player for
+         * Creates a new panel that allows the user to create a player for
          * each player color in the specified array. Assumes that there are no
          * duplicates in the specified array.
          * @param playerColors The different options for the color of a player's
          *                     tokens
          */
-        private PlayerConstructorPanel(String[] playerColors) {
+        private PlayerCreatorPanel(String[] playerColors) {
             super();
             this.playerColors = playerColors;
             nameFields = new JTextField[playerColors.length];
