@@ -89,19 +89,24 @@ public class Board {
     }
 
     /**
-     * Adds a settlement of the specified color to the board at the specified
+     * Places a settlement of the specified color on the board at the specified
      * location.
      * @param cornerLoc the location of the new settlement
      * @param color     the color of the new settlement
      * @throws IndexOutOfBoundsException if the specified location is invalid
-     * @throws IllegalArgumentException if the corner at the specified location already has a settlement
+     * @throws IllegalArgumentException if there is a settlement at or adjacent to the corner at the specified location
      */
-    public void addSettlement(int cornerLoc, String color) {
+    public void placeSettlement(int cornerLoc, String color) {
         if (cornerLoc < 0 || cornerLoc >= cornerMap.length) {
             throw new IndexOutOfBoundsException("Invalid corner location");
         } else if (cornerMap[cornerLoc].hasSettlement()) {
-            throw new IllegalArgumentException("Cannot add a settlement to a corner that already has a settlement");
+            throw new IllegalArgumentException("Cannot place a settlement on a corner that already has a settlement");
         } else {
+            for (int adjacentCornerLoc : cornerMap[cornerLoc].getAdjacentCornerLocs()) {
+                if (cornerMap[adjacentCornerLoc].hasSettlement()) {
+                    throw new IllegalArgumentException("Cannot place a settlement adjacent to another settlement");
+                }
+            }
             cornerMap[cornerLoc].addSettlement(color);
             for (Integer tileLoc : cornerMap[cornerLoc].getAdjacentTileLocs()) {
                 tileMap[tileLoc].addSettlementLoc(cornerLoc);
@@ -114,12 +119,12 @@ public class Board {
     }
 
     /**
-     * Returns a list of the locations of the settlements that the player of the
+     * Returns a list of the locations of the settlements and cities that the player of the
      * specified color has on the board. Returns null if a player of the
      * specified color does not exist.
-     * @param color the color of the player whose settlement locations will be
+     * @param color the color of the player whose settlement and city locations will be
      *              returned
-     * @return a list of the locations of settlements on the board belonging to
+     * @return a list of the locations of settlements and cities on the board belonging to
      * the player of the specified color
      */
     public ArrayList<Integer> getSettlementLocs(String color) {
@@ -168,11 +173,11 @@ public class Board {
 
     /**
      * Returns the locations of all the roads that the player of the specified
-     * color has placed.
+     * color has placed (or null if there is no player with the specified color).
      * @param playerColor the color of the player whose road locations are to be
      *                    returned
      * @return the locations of all the roads that the player of the specified
-     * color has placed
+     * color has placed (or null if there is no player with the specified color)
      */
     public ArrayList<Integer> getRoadLocs(String playerColor) {
         if (playerRoadMap.get(playerColor) == null) {
@@ -187,14 +192,21 @@ public class Board {
      * location.
      * @param roadLoc the location of the new road
      * @param color   the color of the new road
+     * @throws IndexOutOfBoundsException if the specified location is invalid
+     * @throws IllegalArgumentException if a road has already been placed at the specified location
      */
     public void addRoad(int roadLoc, String color) {
-        //Error checking occurs in controller
-        roadMap[roadLoc].setColor(color);
-        if (playerRoadMap.get(color) == null) {
-            playerRoadMap.put(color, new ArrayList<Integer>());
+        if (roadLoc < 0 || roadLoc >= roadMap.length) {
+            throw new IndexOutOfBoundsException("Invalid road location");
+        } else if (roadMap[roadLoc].getColor() != null) {//There is already a road at the specified location
+            throw new IllegalArgumentException("Two roads cannot occupy the same location");
+        } else {
+            roadMap[roadLoc].setColor(color);
+            if (playerRoadMap.get(color) == null) {
+                playerRoadMap.put(color, new ArrayList<Integer>());
+            }
+            playerRoadMap.get(color).add(roadLoc);
         }
-        playerRoadMap.get(color).add(roadLoc);
     }
 
     /**

@@ -1,14 +1,16 @@
+import soc.base.GameController;
 import soc.base.gui.BoardPane;
 import soc.base.gui.GameIcons;
 import soc.base.model.Board;
 
 import javax.swing.*;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Tests the BoardPane class. Constructs a new Board, and then uses said Board
- * to construct and test a new BoardPane. Each method in this class is designed
+ * Tests the BoardPane class by creating a new Board object, placing a few settlements and cities (and roads next to them) at random locations,
+ * moves the robber to a random location, and then uses said Board to create a new BoardPane object for testing. Each method in this class is designed
  * to test one aspect of the BoardPane class. To use them, add them to the main
  * method at the end of this class.
  * @author Connor Barnes
@@ -20,10 +22,36 @@ public class BoardPaneTest {
      * Creates and displays a BoardPane object. Does not test the
      * showValidLocs() method in the BoardPane class.
      */
-    public BoardPaneTest() {
+    public BoardPaneTest(boolean addRandomTokens) {
         JFrame frame = new JFrame("BoardPane Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        boardPane = new BoardPane(new GameIcons(), (new Board()).getTiles());
+        Board board = new Board();
+        if (addRandomTokens) {
+            Random random = new Random();
+            for (String playerColor : GameController.PLAYER_COLORS) {
+                //Place a settlement at a random location with a road next to it
+                int cornerLoc = random.nextInt(board.getNumCorners());
+                try {
+                    board.placeSettlement(cornerLoc, playerColor);
+                    LinkedList<Integer> adjacentRoadLocs = board.getCorner(cornerLoc).getAdjacentRoadLocs();
+                    board.addRoad(adjacentRoadLocs.get(random.nextInt(adjacentRoadLocs.size())), playerColor);
+                } catch (IllegalArgumentException e) {
+                    //Either the settlement location or the road location was already occupied. In either case, just move on
+                }
+                //Place a city at a random location with a road next to it
+                cornerLoc = random.nextInt(board.getNumCorners());
+                try {
+                    board.placeSettlement(cornerLoc, playerColor);
+                    board.upgradeSettlement(cornerLoc);
+                    LinkedList<Integer> adjacentRoadLocs = board.getCorner(cornerLoc).getAdjacentRoadLocs();
+                    board.addRoad(adjacentRoadLocs.get(random.nextInt(adjacentRoadLocs.size())), playerColor);
+                } catch (IllegalArgumentException e) {
+                    //Either the settlement location or the road location was already occupied. In either case, just move on
+                }
+            }
+            board.moveRobber(random.nextInt(board.getNumTiles()));
+        }
+        boardPane = new BoardPane(new GameIcons(), board);
         frame.add(boardPane);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -113,10 +141,10 @@ public class BoardPaneTest {
     }
 
     /**
+     * Starts the test.
      * @param args command line arguments (unused)
      */
     public static void main(String[] args) {
-        BoardPaneTest mainTest = new BoardPaneTest();
-        mainTest.testShowValidLocs(BoardPane.LOC_TYPE_ROAD);
+        BoardPaneTest mainTest = new BoardPaneTest(true);
     }
 }

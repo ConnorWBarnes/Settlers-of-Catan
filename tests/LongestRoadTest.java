@@ -37,7 +37,7 @@ public class LongestRoadTest {
     public LongestRoadTest() {
         //Create the contents of the frame
         gameBoard = new Board();
-        boardPane = new BoardPane(new GameIcons(), gameBoard.getTiles());
+        boardPane = new BoardPane(new GameIcons(), gameBoard);
         JPanel infoPanel = new JPanel();
         infoPanel.add(createColorButtonPanel());
         infoPanel.add(createTokenButtonPanel());
@@ -172,7 +172,7 @@ public class LongestRoadTest {
     private class SettlementSelectedListener implements BoardPane.LocationListener {
         @Override
         public void locationSelected(int location) {
-            gameBoard.addSettlement(location, colorGroup.getSelection().getActionCommand());
+            gameBoard.placeSettlement(location, colorGroup.getSelection().getActionCommand());
             boardPane.addSettlement(location, colorGroup.getSelection().getActionCommand());
             //If the new settlement is in between two of another player's roads, update that player's longest road length
             String playerColor = null;
