@@ -25,12 +25,13 @@ public class PlayerCreator {
      * information is obtained via a dialog window that allows the user to enter
      * each player's name and color. Does not allow the user to continue if two
      * players have the same color. Returns null if the dialog was closed.
+     * @param icons The icons to use to display the player colors
      * @param playerColors The player token color options
      * @return An array containing the Player objects created with the
      * user's input (or null if the dialog was closed)
      */
-    public static Player[] createPlayers(String[] playerColors) {
-        PlayerCreator playerCreator = new PlayerCreator(playerColors);
+    public static Player[] createPlayers(GameIcons icons, String[] playerColors) {
+        PlayerCreator playerCreator = new PlayerCreator(icons, playerColors);
         return playerCreator.createdPlayers;
     }
 
@@ -38,8 +39,8 @@ public class PlayerCreator {
      * Creates and displays the dialog that collects the player information.
      * @param playerColors The player token color options
      */
-    private PlayerCreator(String[] playerColors) {
-        playerCreatorPanel = new PlayerCreatorPanel(playerColors);
+    private PlayerCreator(GameIcons icons, String[] playerColors) {
+        playerCreatorPanel = new PlayerCreatorPanel(icons, playerColors);
         optionPane = new JOptionPane(playerCreatorPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null);
         optionPane.addPropertyChangeListener(new ChangeListener());
         dialog = new JDialog((JDialog) null, "Player Information", true);
@@ -108,15 +109,20 @@ public class PlayerCreator {
          * Creates a new panel that allows the user to create a player for
          * each player color in the specified array. Assumes that there are no
          * duplicates in the specified array.
+         * @param icons The icons to use to display the player colors
          * @param playerColors The different options for the color of a player's
          *                     tokens
          */
-        private PlayerCreatorPanel(String[] playerColors) {
+        private PlayerCreatorPanel(GameIcons icons, String[] playerColors) {
             super();
             this.playerColors = playerColors;
             nameFields = new JTextField[playerColors.length];
             colorBoxes = new JComboBox[playerColors.length];
             //Create information fields for each player
+            ImageIcon[] colorIcons = new ImageIcon[playerColors.length];
+            for (int i = 0; i < playerColors.length; i++) {
+                colorIcons[i] = icons.getSettlementIcon(playerColors[i]);
+            }
             JPanel[] panels = new JPanel[playerColors.length];
             for (int i = 0; i < panels.length; i++) {
                 //Create and add the text field
@@ -126,7 +132,7 @@ public class PlayerCreator {
                 //Create and add the color combo box
                 JLabel tempLabel = new JLabel("Color:");
                 tempLabel.setHorizontalAlignment(JLabel.RIGHT);
-                colorBoxes[i] = new JComboBox<String>(playerColors);
+                colorBoxes[i] = new JComboBox<ImageIcon>(colorIcons);
                 colorBoxes[i].setSelectedIndex(i);
                 tempPanel.add(tempLabel);
                 tempPanel.add(colorBoxes[i]);
@@ -166,8 +172,8 @@ public class PlayerCreator {
         }
 
         /**
-         * Returns an ArrayList of the colors of each player.
-         * @return an ArrayList of the colors of each player
+         * Returns an ArrayList containing the color of each player.
+         * @return an ArrayList containing the color of each player
          */
         private ArrayList<String> getColors() {
             ArrayList<String> colors = new ArrayList<String>(colorBoxes.length);

@@ -1,3 +1,4 @@
+import soc.base.gui.GameIcons;
 import soc.base.gui.PlayerCreator;
 import soc.base.model.Player;
 
@@ -8,7 +9,7 @@ import soc.base.model.Player;
 public class PlayerCreatorTest {
     public static void main(String[] args) {
         String[] playerColors = {"Blue", "Orange", "Red", "White"};
-        Player[] constructedPlayers = PlayerCreator.createPlayers(playerColors);
+        Player[] constructedPlayers = PlayerCreator.createPlayers(new GameIcons(), playerColors);
         if (constructedPlayers != null) {
             for (Player player : constructedPlayers) {
                 System.out.println("Color: " + player.getColor() + " Name: " + player.getName());

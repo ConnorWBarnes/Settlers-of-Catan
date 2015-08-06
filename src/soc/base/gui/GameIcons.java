@@ -157,6 +157,8 @@ public class GameIcons {
         }
     }
 
+    //TODO: Should the "get" methods return a copy of the ImageIcon instead of the ImageIcon itself?
+
     /**
      * Returns the ImageIcon of a tile with the specified terrain.
      * @param terrain the terrain of the tile
