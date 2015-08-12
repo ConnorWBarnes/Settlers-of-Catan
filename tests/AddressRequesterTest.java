@@ -1,4 +1,4 @@
-import soc.base.AddressRequester;
+import soc.base.net.AddressRequester;
 
 /**
  * Tests the AddressRequester class by creating an instance of it with an
@@ -10,7 +10,7 @@ public class AddressRequesterTest {
         new AddressRequester(new AddressRequester.AddressListener() {
             @Override
             public void addressEntered(String address) {
-                System.out.println(address);
+                System.out.println("Address: " + address);
             }
         });
     }

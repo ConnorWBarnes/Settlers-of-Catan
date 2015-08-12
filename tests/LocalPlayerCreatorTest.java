@@ -1,15 +1,14 @@
 import soc.base.gui.GameIcons;
-import soc.base.gui.PlayerCreator;
+import soc.base.gui.LocalPlayerCreator;
 import soc.base.model.Player;
 
 /**
- * Tests the createPlayers() method in the PlayerCreator class.
+ * Tests the createLocalPlayers() method in the LocalPlayerCreator class.
  * @author Connor Barnes
  */
-public class PlayerCreatorTest {
+public class LocalPlayerCreatorTest {
     public static void main(String[] args) {
-        String[] playerColors = {"Blue", "Orange", "Red", "White"};
-        Player[] constructedPlayers = PlayerCreator.createPlayers(new GameIcons(), playerColors);
+        Player[] constructedPlayers = LocalPlayerCreator.createLocalPlayers(new GameIcons(), new String[]{"Blue", "Orange", "Red", "White"});
         if (constructedPlayers != null) {
             for (Player player : constructedPlayers) {
                 System.out.println("Color: " + player.getColor() + " Name: " + player.getName());

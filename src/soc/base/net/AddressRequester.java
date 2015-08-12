@@ -1,4 +1,4 @@
-package soc.base;
+package soc.base.net;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +34,7 @@ public class AddressRequester extends JDialog {
         addressField = new JTextField(26);
         addressField.setHorizontalAlignment(JTextField.CENTER);
         JPanel message = new JPanel(new BorderLayout());
-        message.add(new JLabel("Connect to server at:", JLabel.CENTER), BorderLayout.NORTH);
+        message.add(new JLabel("Server Address", JLabel.CENTER), BorderLayout.NORTH);
         message.add(addressField, BorderLayout.CENTER);
         optionPane = new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, new ImageIcon(), new Object[]{CANCEL, HELP, CONNECT}, CONNECT);
         optionPane.addPropertyChangeListener(new ChangeListener());
