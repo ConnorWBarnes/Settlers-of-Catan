@@ -66,7 +66,7 @@ public class PreGameLobbyView {
             dialog.setContentPane(tempPanel);
             //Create information fields for each player and add them to the dialog window
             for (int i = 0; i <= enableIndex; i++) {
-                addPlayer();
+                addPlayer(i);
             }
             //Enable the specified set of player information fields
             nameFields.get(enableIndex).setEnabled(true);
@@ -164,35 +164,41 @@ public class PreGameLobbyView {
     }
 
     /**
-     * Adds an additional set of disabled player information fields to the
-     * bottom of the dialog.
+     * Inserts an additional set of disabled player information fields at the specified index.
+     * @param fieldIndex The index at which to add an additional set of disabled player information fields
      * @throws IndexOutOfBoundsException if no more players can be added
      */
-    public void addPlayer() {
+    public void addPlayer(int fieldIndex) {
         if (playerInfoPanels.size() == playerColors.length) {
             throw new IndexOutOfBoundsException("Cannot add more players than player color options");
         } else {
-            int lastIndex = playerInfoPanels.size();
             //Create the information fields
-            nameFields.add(new JTextField(30));
-            colorBoxes.add(new JComboBox<ImageIcon>(colorIcons));
-            colorBoxes.get(lastIndex).setSelectedIndex(lastIndex);
-            checkBoxes.add(new JCheckBox("Ready:"));
-            checkBoxes.get(lastIndex).setHorizontalTextPosition(JCheckBox.LEADING);
+            nameFields.add(fieldIndex, new JTextField(30));
+            colorBoxes.add(fieldIndex, new JComboBox<ImageIcon>(colorIcons));
+            colorBoxes.get(fieldIndex).setSelectedIndex(fieldIndex);
+            checkBoxes.add(fieldIndex, new JCheckBox("Ready:"));
+            checkBoxes.get(fieldIndex).setHorizontalTextPosition(JCheckBox.LEADING);
             //Disable them
-            nameFields.get(lastIndex).setEnabled(false);
-            colorBoxes.get(lastIndex).setEnabled(false);
-            checkBoxes.get(lastIndex).setEnabled(false);
-            //Add them to the dialog window
+            nameFields.get(fieldIndex).setEnabled(false);
+            colorBoxes.get(fieldIndex).setEnabled(false);
+            checkBoxes.get(fieldIndex).setEnabled(false);
+            //Add them to a panel and add the panel to playerInfoPanels
             JPanel tempPanel = new JPanel();
-            tempPanel.add(nameFields.get(lastIndex));
+            tempPanel.add(nameFields.get(fieldIndex));
             tempPanel.add(new JLabel("Color:", JLabel.RIGHT));
-            tempPanel.add(colorBoxes.get(lastIndex));
-            tempPanel.add(checkBoxes.get(lastIndex));
-            playerInfoPanels.add(new JPanel(new BorderLayout()));
-            playerInfoPanels.get(lastIndex).add(new JLabel("Player " + playerInfoPanels.size()), BorderLayout.NORTH, PLAYER_NUMBER_LABEL_INDEX);
-            playerInfoPanels.get(lastIndex).add(tempPanel, BorderLayout.CENTER);
-            contentPanel.add(playerInfoPanels.get(lastIndex), lastIndex);
+            tempPanel.add(colorBoxes.get(fieldIndex));
+            tempPanel.add(checkBoxes.get(fieldIndex));
+            playerInfoPanels.add(fieldIndex, new JPanel(new BorderLayout()));
+            playerInfoPanels.get(fieldIndex).add(new JLabel("Player " + playerInfoPanels.size()), BorderLayout.NORTH, PLAYER_NUMBER_LABEL_INDEX);
+            playerInfoPanels.get(fieldIndex).add(tempPanel, BorderLayout.CENTER);
+            //Remove the panels below the new panel from the dialog
+            for (int i = contentPanel.getComponentCount() - 1; i >= fieldIndex; i--) {
+                contentPanel.remove(i);
+            }
+            //Add the new panel to the dialog and then re-add all the panels below the new panel
+            for (int i = fieldIndex; i < playerInfoPanels.size(); i++) {
+                contentPanel.add(playerInfoPanels.get(i), i);
+            }
             dialog.pack();
         }
     }
