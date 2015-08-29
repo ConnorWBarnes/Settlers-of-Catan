@@ -40,7 +40,7 @@ public class PreGameLobbyViewTest {
         lobbyView.setColorSelection(0, 2);
         lobbyView.setReadyStatus(0, true);
         //Add another set and edit the fields in the new set
-        lobbyView.addPlayer();
+        lobbyView.addPlayer(3);
         lobbyView.setUsername(3, "uporcupines");
         lobbyView.setColorSelection(3, 0);
         //Remove a set
