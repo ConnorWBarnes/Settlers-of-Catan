@@ -1,6 +1,6 @@
 import soc.base.GameController;
 import soc.base.gui.GameIcons;
-import soc.base.gui.OnlinePreGameLobby;
+import soc.base.net.PreGameLobbyView;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -9,49 +9,49 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Tests the OnlinePreGameLobby class by creating an instance of it, adding a
+ * Tests the PreGameLobbyView class by creating an instance of it, adding a
  * set of player information fields, editing the disabled fields, removing a set
  * of fields, and adding listeners to the enabled fields that print out the
  * state of the field when an event occurs.
  * @author Connor Barnes
  */
-public class OnlinePreGameLobbyTest {
+public class PreGameLobbyViewTest {
     /**
      * Starts the test.
      * @param args command line arguments (unused)
      */
     public static void main(String[] args) {
-        new OnlinePreGameLobbyTest();
+        new PreGameLobbyViewTest();
     }
 
     /**
-     * Creates an instance of the OnlinePreGameLobby class, adds a set of
+     * Creates an instance of the PreGameLobbyView class, adds a set of
      * player information fields, edits the disabled fields, removes a set of
      * fields, and adds listeners to the enabled fields.
      */
-    public OnlinePreGameLobbyTest() {
-        OnlinePreGameLobby lobby = new OnlinePreGameLobby(new GameIcons(), GameController.PLAYER_COLORS, 2);
+    public PreGameLobbyViewTest() {
+        PreGameLobbyView lobbyView = new PreGameLobbyView(new GameIcons(), GameController.PLAYER_COLORS, 2);
         //Add event listeners to the enabled player information fields
-        lobby.addUsernameListener(new UsernameListener());
-        lobby.addColorSelectionListener(new ColorListener());
-        lobby.addCheckBoxListener(new ReadyListener());
+        lobbyView.addUsernameListener(new UsernameListener());
+        lobbyView.addColorSelectionListener(new ColorListener());
+        lobbyView.addCheckBoxListener(new ReadyListener());
         //Edit a set of disabled player information fields
-        lobby.setUsername(0, "unitedporcupines");
-        lobby.setColorSelection(0, 2);
-        lobby.setReadyStatus(0, true);
+        lobbyView.setUsername(0, "unitedporcupines");
+        lobbyView.setColorSelection(0, 2);
+        lobbyView.setReadyStatus(0, true);
         //Add another set and edit the fields in the new set
-        lobby.addPlayer();
-        lobby.setUsername(3, "uporcupines");
-        lobby.setColorSelection(3, 0);
+        lobbyView.addPlayer();
+        lobbyView.setUsername(3, "uporcupines");
+        lobbyView.setColorSelection(3, 0);
         //Remove a set
-        lobby.removePlayer(1);
+        lobbyView.removePlayer(1);
         //Disable the enabled check box
-        lobby.setCheckBoxEnabled(false);
+        lobbyView.setCheckBoxEnabled(false);
     }
 
     /**
      * DocumentListener that is added to the enabled username field in the
-     * OnlinePreGameLobby object.
+     * PreGameLobbyView object.
      */
     private class UsernameListener implements DocumentListener {
         /**
@@ -91,7 +91,7 @@ public class OnlinePreGameLobbyTest {
 
     /**
      * ActionListener that is added to the enabled color selection field in the
-     * OnlinePreGameLobby object.
+     * PreGameLobbyView object.
      */
     private class ColorListener implements ActionListener {
         /**

@@ -1,4 +1,6 @@
-package soc.base.gui;
+package soc.base.net;
+
+import soc.base.gui.GameIcons;
 
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
  * for displaying the name and color that the other players have chosen.
  * @author Connor Barnes
  */
-public class OnlinePreGameLobby {
+public class PreGameLobbyView {
     private final int PLAYER_NUMBER_LABEL_INDEX = 0;
 
     private JDialog dialog;
@@ -41,7 +43,7 @@ public class OnlinePreGameLobby {
      *                                   within the bounds of the playerColors
      *                                   argument
      */
-    public OnlinePreGameLobby(GameIcons icons, String[] playerColors, int enableIndex) {
+    public PreGameLobbyView(GameIcons icons, String[] playerColors, int enableIndex) {
         if (enableIndex < 0 || enableIndex >= playerColors.length) {
             throw new IndexOutOfBoundsException("The enableIndex argument is not within the bounds of the playerColors argument");
         } else {
@@ -154,7 +156,7 @@ public class OnlinePreGameLobby {
      * @param enabled true to enable the check box at index enableIndex; false
      *                to disable it.
      */
-    public void setCheckBoxEnabled(boolean enabled) {//TODO: Make sure this method overrides user input (make it synchronized?)
+    public void setCheckBoxEnabled(boolean enabled) {
         checkBoxes.get(enableIndex).setEnabled(enabled);
         if (!enabled) {
             checkBoxes.get(enableIndex).setSelected(false);//Does not fire an ActionEvent

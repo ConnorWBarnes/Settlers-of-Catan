@@ -8,7 +8,7 @@ import java.util.EventListener;
 
 /**
  * Asks the user for the address and port number of the server to which they wish to connect.
- * Extends the JDialog class but when a button is clicked (except the "Cancel" button)
+ * Extends the JDialog class but does not dispose itself when a button is clicked (except the "Cancel" button)
  * in order to make it faster and easier for the client to revise the address they entered (in case the user enters
  * an invalid address).
  * @author Connor Barnes
@@ -27,7 +27,7 @@ public class AddressRequester extends JDialog {
      * port number of the server to which they wish to connect.
      */
     public AddressRequester(AddressListener addressListener) {
-        super((JDialog) null, "Connect", true);
+        super((JDialog) null, "Connect", false);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.addressListener = addressListener;
         //Create the contents of the dialog
@@ -50,8 +50,6 @@ public class AddressRequester extends JDialog {
      * Determines which button was pressed and then performs the appropriate action. If the "Cancel" button is clicked,
      * the dialog is disposed. If the "Help" button is clicked, a dialog containing information that the user might find
      * helpful is displayed. If the "Connect" button is clicked, the text in the text field is passed to the AddressListener.
-     * If the AddressListener does not throw an exception, the dialog is disposed. If the AddressListener throws an exception,
-     * the dialog is not disposed and the exception's message is displayed via another dialog.
      */
     private class ChangeListener implements PropertyChangeListener {
         @Override
@@ -68,18 +66,8 @@ public class AddressRequester extends JDialog {
                             "(54321) is used.", "Help", JOptionPane.INFORMATION_MESSAGE);
                     optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
                 } else {//optionPane.getValue().equals(CONNECT))
-                    try {
-                        addressListener.addressEntered(addressField.getText());
-                        dispose();
-                    } catch (Exception e) {
-                        String errorMessage = e.getMessage();
-                        if (errorMessage == null) {
-                            e.printStackTrace();
-                            errorMessage = "An unknown error occurred. Please check the address and try again.";
-                        }
-                        JOptionPane.showMessageDialog(AddressRequester.this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-                        optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
-                    }
+                    addressListener.addressEntered(addressField.getText());
+                    optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
                 }
             }
         }
@@ -92,11 +80,9 @@ public class AddressRequester extends JDialog {
     public interface AddressListener extends EventListener {
         /**
          * Passes the address that the user entered to the listener. Invoked
-         * when the user clicks the "Connect" button, and should throw an exception if a connection cannot be
-         * established with the server at the specified address.
+         * when the user clicks the "Connect" button.
          * @param address The server address entered by the user
-         * @throws Exception if a connection cannot be established with the server at the specified address
          */
-        void addressEntered(String address) throws Exception;
+        void addressEntered(String address);
     }
 }
