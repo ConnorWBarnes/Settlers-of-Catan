@@ -8,11 +8,12 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Allows the user to create new players for an online game of Settlers of
- * Catan.
+ * Displays the names and the colors of all the players before the game starts. Allows the user
+ * to set their player name and color, but not the name or color of anyone else. Includes methods
+ * for displaying the name and color that the other players have chosen.
  * @author Connor Barnes
  */
-public class OnlinePlayerCreator {
+public class OnlinePreGameLobby {
     private final int PLAYER_NUMBER_LABEL_INDEX = 0;
 
     private JDialog dialog;
@@ -40,7 +41,7 @@ public class OnlinePlayerCreator {
      *                                   within the bounds of the playerColors
      *                                   argument
      */
-    public OnlinePlayerCreator(GameIcons icons, String[] playerColors, int enableIndex) {
+    public OnlinePreGameLobby(GameIcons icons, String[] playerColors, int enableIndex) {
         if (enableIndex < 0 || enableIndex >= playerColors.length) {
             throw new IndexOutOfBoundsException("The enableIndex argument is not within the bounds of the playerColors argument");
         } else {
@@ -58,7 +59,7 @@ public class OnlinePlayerCreator {
             JPanel tempPanel = new JPanel(new BorderLayout());
             tempPanel.add(new JLabel("Please enter your player information", JLabel.CENTER), BorderLayout.NORTH);
             tempPanel.add(contentPanel, BorderLayout.CENTER);
-            dialog = new JDialog((JDialog) null, "Player Information", false);
+            dialog = new JDialog((JDialog) null, "Settlers of Catan", false);
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             dialog.setContentPane(tempPanel);
             //Create information fields for each player and add them to the dialog window
@@ -118,6 +119,8 @@ public class OnlinePlayerCreator {
                 || colorIndex < 0
                 || colorIndex >= playerColors.length) {
             throw new IndexOutOfBoundsException();
+        } else if (fieldIndex == enableIndex) {
+            throw new IllegalArgumentException();
         } else {
             colorBoxes.get(fieldIndex).setSelectedIndex(colorIndex);
             colorBoxes.get(fieldIndex).repaint();
@@ -145,29 +148,17 @@ public class OnlinePlayerCreator {
     }
 
     /**
-     * Adds the specified DocumentListener to the Document underlying the name
-     * field that is enabled.
-     * @param listener The listener to add to the Document underlying the name
-     *                 field that is enabled
+     * Enables or disables the "Ready" check box at index enableIndex. If the
+     * enabled argument is true and the check box at index enabledIndex is
+     * already selected, the check box is deselected and then disabled.
+     * @param enabled true to enable the check box at index enableIndex; false
+     *                to disable it.
      */
-    public void addUsernameListener(DocumentListener listener) {
-        nameFields.get(enableIndex).getDocument().addDocumentListener(listener);//Is this a security risk/encapsulation issue?
-    }
-
-    /**
-     * Adds the specified ActionListener to the JComboBox that is enabled.
-     * @param listener The listener to add to the JComboBox
-     */
-    public void addColorSelectionListener(ActionListener listener) {
-        colorBoxes.get(enableIndex).addActionListener(listener);
-    }
-
-    /**
-     * Adds the specified ActionListener to the check box that is enabled.
-     * @param listener The listener to add to the check box
-     */
-    public void addCheckBoxListener(ActionListener listener) {
-        checkBoxes.get(enableIndex).addActionListener(listener);
+    public void setCheckBoxEnabled(boolean enabled) {//TODO: Make sure this method overrides user input (make it synchronized?)
+        checkBoxes.get(enableIndex).setEnabled(enabled);
+        if (!enabled) {
+            checkBoxes.get(enableIndex).setSelected(false);//Does not fire an ActionEvent
+        }
     }
 
     /**
@@ -234,6 +225,32 @@ public class OnlinePlayerCreator {
                 enableIndex--;
             }
         }
+    }
+
+    /**
+     * Adds the specified DocumentListener to the Document underlying the name
+     * field that is enabled.
+     * @param listener The listener to add to the Document underlying the name
+     *                 field that is enabled
+     */
+    public void addUsernameListener(DocumentListener listener) {
+        nameFields.get(enableIndex).getDocument().addDocumentListener(listener);//Is this a security risk/encapsulation issue?
+    }
+
+    /**
+     * Adds the specified ActionListener to the JComboBox that is enabled.
+     * @param listener The listener to add to the JComboBox
+     */
+    public void addColorSelectionListener(ActionListener listener) {
+        colorBoxes.get(enableIndex).addActionListener(listener);
+    }
+
+    /**
+     * Adds the specified ActionListener to the check box that is enabled.
+     * @param listener The listener to add to the check box
+     */
+    public void addCheckBoxListener(ActionListener listener) {
+        checkBoxes.get(enableIndex).addActionListener(listener);
     }
 
     /**

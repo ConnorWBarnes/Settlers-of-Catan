@@ -5,18 +5,16 @@ Multiplayer Outline
         Notify the client, tell them why it is invalid, and then let them revise it
     - The address entered is valid, but a connection could not be established
         Notify the client and ask them to double-check that the address is correct
-    - A connection is established
-        Proceed to the next step
+    - A connection is established, but the lobby is full
+        Notify the client and let them try a different address
+    - A connection is established, and the lobby is not full
+        Add the client to the lobby
 
-2) Ask client for name
-    - Name is already taken by another player in the same lobby
-        Notify the client and ask them to enter a different name
-   	- No other players in the lobby have the specified name
-        Give the name to the player, add them to the lobby, and notify everyone else via chat
-
-3) Display lobby and allow players to select their color and say that they're ready (via checkbox)
-    - A player selects a color that has already been selected by a player that is ready
+2) Display lobby and allow players to set their username and select their color. Include a checkbox that players can use to signal that they are ready.
+    - A player selects a color that has already been selected by a player who is ready
         Disable the checkbox
+    - A player selects a color that has already been selected by a player who is not ready
+        Enable the checkbox
     - A player selects a color that has not already been selected by a player that is ready
         Enable the checkbox
     - A player becomes ready and another player has the first player's color selected
@@ -28,7 +26,7 @@ Multiplayer Outline
     - All players are ready
         Proceed to the next step
 
-4) Generate a board and let players vote to use it or to generate another one
+3) Generate a board and let players vote to use it or to generate another one
     - A player does not vote
         Only allow players to vote for a certain amount of time (1 minute?)
     - The vote is a tie
@@ -36,11 +34,11 @@ Multiplayer Outline
     - A player wants to change their vote
         Allow players to change their vote until the vote time expires
 
-5) Randomly generate the turn order and show it to all players
+4) Randomly generate the turn order and show it to all players
 
-6) Start the setup process and display who's turn it is and what they are placing
+5) Start the setup process and display who's turn it is and what they are placing
 
-7) Start the game
+6) Start the game
 
 Events to display in chat:
 - A player connects or disconnects
